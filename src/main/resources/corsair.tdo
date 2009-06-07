@@ -1,0 +1,39 @@
+[Corsair]
+  Name=Corsair
+  Type=Complex
+  Vertexes=Vertexes
+  Planes=Planes
+
+[Vertexes]
+  FrontLeft=       -02 +00 +07
+  FrontRight=      +02 +00 +07
+  MidTopLeft=      -02 +01 +02
+  MidTopRight=     +02 +01 +02
+  MidBottomLeft=   -02 -01 +02
+  MidBottomRight=  +02 -01 +02
+  MidLeft=         -03 +00 +01
+  MidRight=        +03 +00 +01
+  BackTopLeft=     -02 +01 -06
+  BackTopRight=    +02 +01 -06
+  BackBottomLeft=  -02 -01 -06
+  BackBottomRight= +02 -01 -06
+  BackLeft=        -03 +00 -07
+  BackRight=       +03 +00 -07
+
+[Planes]
+  CockpitTop=FrontLeft FrontRight MidTopRight MidTopLeft $FFFFFF
+  CockpitBottom=FrontRight FrontLeft MidBottomLeft MidBottomRight $FFFFFF
+  CockpitTopLeft=FrontLeft MidTopLeft MidLeft $FFFFFF
+  CockpitTopRight=FrontRight MidRight MidTopRight $FFFFFF
+  CockpitBottomLeft=FrontLeft MidLeft MidBottomLeft $FFFFFF
+  CockpitBottomRight=FrontRight MidBottomRight MidRight $FFFFFF
+  Top=MidTopLeft MidTopRight BackTopRight BackTopLeft $FFFFFF
+  Bottom=MidBottomRight MidBottomLeft BackBottomLeft BackBottomRight $FFFFFF
+  TopLeft=MidLeft MidTopLeft BackTopLeft BackLeft $FFFFFF
+  TopRight=MidTopRight MidRight BackRight BackTopRight $FFFFFF
+  BottomLeft=MidLeft BackLeft BackBottomLeft MidBottomLeft $FFFFFF
+  BottomRight=MidRight MidBottomRight BackBottomRight BackRight $FFFFFF
+  BackTop=BackLeft BackTopLeft BackTopRight BackRight $FFFFFF
+  BottomTop=BackLeft BackRight BackBottomRight BackBottomLeft $FFFFFF
+
+

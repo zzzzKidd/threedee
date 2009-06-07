@@ -1,0 +1,305 @@
+[Worcem]
+  Name=Worcem
+  Type=Complex
+  Vertexes=Vertexes
+  Planes=Planes
+
+[Vertexes]
+  C1=  -04 -01 +04
+  C2=  -04 -01 +12
+  C3=  -02 -01 +14
+  C4=  +02 -01 +14
+  C5=  +04 -01 +12
+  C6=  +04 -01 +04
+  C7=  -02 +00 +06
+  C8=  -02 +00 +11
+  C9=  +02 +00 +11
+  C10= +02 +00 +06
+  C11= -02 -02 +06
+  C12= -02 -02 +11
+  C13= +02 -02 +11
+  C14= +02 -02 +06
+
+  M1=  -04 +02 +00
+  M2=  +04 +02 +00
+  M3=  +04 +02 -08
+  M4=  -04 +02 -08
+  M5=  -04 -01 +00
+  M6=  +04 -01 +00
+  M7=  +04 -01 -08
+  M8=  -04 -01 -08
+  M9=  -02 +01 -11
+  M10= +02 +01 -11
+  M11= -02 -01 -11
+  M12= +02 -01 -11
+  M13= -04 +01 +00
+  M14= +04 +01 +00
+  M15= +04 +01 -08
+  M16= -04 +01 -08
+
+  FA1=  -06 +01 +02
+  FA2=  -06 +02 +00
+  FA3=  -06 +02 -08
+  FA4=  -06 +01 -10
+  FA5=  -06 -01 +02
+  FA6=  -06 -02 +00
+  FA7=  -06 -02 -08
+  FA8=  -06 -01 -10
+
+  FA9=  -07 +01 +02
+  FA10=  -07 +02 +00
+  FA11=  -07 +02 -08
+  FA12=  -07 +01 -10
+  FA13=  -07 -01 +02
+  FA14=  -07 -02 +00
+  FA15=  -07 -02 -08
+  FA16=  -07 -01 -10
+
+  FA17=  -08 +01 +02
+  FA18=  -08 +02 +00
+  FA19=  -08 +02 -08
+  FA20=  -08 +01 -10
+  FA21=  -08 -01 +02
+  FA22=  -08 -02 +00
+  FA23=  -08 -02 -08
+  FA24=  -08 -01 -10
+
+  FA25=  -09 +01 +02
+  FA26=  -09 +02 +00
+  FA27=  -09 +02 -08
+  FA28=  -09 +01 -10
+  FA29=  -09 -01 +02
+  FA30=  -09 -02 +00
+  FA31=  -09 -02 -08
+  FA32=  -09 -01 -10
+
+  FA33=  -12 +01 +00
+  FA34=  -12 +01 -08
+  FA35=  -12 -01 +00
+  FA36=  -12 -01 -08
+
+  FB1=  +06 +01 +02
+  FB2=  +06 +02 +00
+  FB3=  +06 +02 -08
+  FB4=  +06 +01 -10
+  FB5=  +06 -01 +02
+  FB6=  +06 -02 +00
+  FB7=  +06 -02 -08
+  FB8=  +06 -01 -10
+
+  FB9=  +07 +01 +02
+  FB10=  +07 +02 +00
+  FB11=  +07 +02 -08
+  FB12=  +07 +01 -10
+  FB13=  +07 -01 +02
+  FB14=  +07 -02 +00
+  FB15=  +07 -02 -08
+  FB16=  +07 -01 -10
+
+  FB17=  +08 +01 +02
+  FB18=  +08 +02 +00
+  FB19=  +08 +02 -08
+  FB20=  +08 +01 -10
+  FB21=  +08 -01 +02
+  FB22=  +08 -02 +00
+  FB23=  +08 -02 -08
+  FB24=  +08 -01 -10
+
+  FB25=  +09 +01 +02
+  FB26=  +09 +02 +00
+  FB27=  +09 +02 -08
+  FB28=  +09 +01 -10
+  FB29=  +09 -01 +02
+  FB30=  +09 -02 +00
+  FB31=  +09 -02 -08
+  FB32=  +09 -01 -10
+
+  FB33=  +12 +01 +00
+  FB34=  +12 +01 -08
+  FB35=  +12 -01 +00
+  FB36=  +12 -01 -08
+
+  EA1=  -07 +01 +10
+  EA2=  -07 +02 +06
+  EA3=  -08 +02 +06
+  EA4=  -08 +01 +06
+
+  EB1=  -07 -01 +10
+  EB2=  -07 -02 +06
+  EB3=  -08 -02 +06
+  EB4=  -08 -01 +06
+
+  EC1=  +07 +01 +10
+  EC2=  +07 +02 +06
+  EC3=  +08 +02 +06
+  EC4=  +08 +01 +06
+
+  ED1=  +07 -01 +10
+  ED2=  +07 -02 +06
+  ED3=  +08 -02 +06
+  ED4=  +08 -01 +06
+
+  DA1=  -08 +02 -13
+  DA2=  -07 +02 -13
+  DA3=  -07 +01 -13
+  DA4=  -08 +01 -13
+
+  DB1=  -08 -02 -13
+  DB2=  -07 -02 -13
+  DB3=  -07 -01 -13
+  DB4=  -08 -01 -13
+
+  DC1=  +08 +02 -13
+  DC2=  +07 +02 -13
+  DC3=  +07 +01 -13
+  DC4=  +08 +01 -13
+
+  DD1=  +08 -02 -13
+  DD2=  +07 -02 -13
+  DD3=  +07 -01 -13
+  DD4=  +08 -01 -13
+
+[Planes]
+  C1=C7 C8 C9 C10 $ffffff
+  C2=C14 C13 C12 C11 $ffffff
+  C3=C8 C3 C4 C9 $ffffff
+  C4=C13 C4 C3 C12 $ffffff
+  C5=C1 C2 C8 C7 $ffffff
+  C6=C1 C11 C12 C2 $ffffff
+  C7=C2 C3 C8 $ffffff
+  C8=C2 C12 C3 $ffffff
+  C9=C4 C5 C9 $ffffff
+  C10=C5 C4 C13 $ffffff
+  C11=C5 C6 C10 C9 $ffffff
+  C12=C6 C5 C13 C14 $ffffff
+  C13=C1 C7 C11 $ffffff
+  C14=C6 C14 C10 $ffffff
+
+  G1=M1 C7 C10 M2 $ffffff
+  G2=M5 M6 C14 C11 $ffffff
+  G3=M1 M5 C11 C7 $ffffff
+  G4=M6 M2 C10 C14 $ffffff
+
+  M1=M1 M2 M3 M4 $ffffff
+  M2=M6 M5 M8 M11 M12 M7 $ffffff
+  M3=M4 M3 M10 M9 $ffffff
+  M4=M9 M10 M12 M11 $ffffff
+  M5=M4 M9 M11 M8 $ffffff
+  M6=M10 M3 M7 M12 $ffffff
+  M7=M13 M1 M4 M16 $ffffff
+  M8=M3 M2 M14 M15 $ffffff
+
+  FA1=FA2 M13 M16 FA3 $ffffff
+  FA2=M5 FA6 FA7 M8 $ffffff
+  FA3=FA1 M13 FA2 $ffffff
+  FA4=FA6 M5 FA5 $ffffff
+  FA5=FA1 FA5 M5 M13 $ffffff
+  FA6=FA3 M16 FA4 $ffffff
+  FA7=FA8 M8 FA7 $ffffff
+  FA8=FA4 M16 M8 FA8 $ffffff
+
+  FA9=FA26 FA2 FA3 FA27 $ffffff
+  FA10=FA33 FA26 FA27 FA34 $ffffff
+  FA11=FA33 FA34 FA36 FA35 $ffffff
+  FA12=FA35 FA36 FA31 FA30 $ffffff
+  FA13=FA30 FA31 FA7 FA6 $ffffff
+  FA14=FA33 FA35 FA29 FA25 $ffffff
+  FA15=FA25 FA29 FA5 FA1 $ffffff
+  FA16=FA33 FA25 FA26 $ffffff
+  FA17=FA35 FA30 FA29 $ffffff
+  FA18=FA34 FA28 FA32 FA36 $ffffff
+  FA19=FA28 FA4 FA8 FA32 $ffffff
+  FA20=FA34 FA27 FA28 $ffffff
+  FA21=FA36 FA32 FA31 $ffffff
+  FA22=FA25 FA17 FA18 FA26 $ffffff
+  FA23=FA9 FA1 FA2 FA10 $ffffff
+  FA24=FA27 FA19 FA20 FA28 $ffffff
+  FA25=FA11 FA3 FA4 FA12 $ffffff
+  FA26=FA29 FA30 FA22 FA21 $ffffff
+  FA27=FA14 FA6 FA5 FA13 $ffffff
+  FA28=FA32 FA24 FA23 FA31 $ffffff
+  FA29=FA16 FA8 FA7 FA15 $ffffff
+
+  FB1=FB3 M15 M14 FB2 $ffffff
+  FB2=M7 FB7 FB6 M6 $ffffff
+  FB3=FB2 M14 FB1 $ffffff
+  FB4=FB5 M6 FB6 $ffffff
+  FB5=M14 M6 FB5 FB1 $ffffff
+  FB6=FB4 M15 FB3 $ffffff
+  FB7=FB7 M7 FB8 $ffffff
+  FB8=FB8 M7 M15 FB4 $ffffff
+
+  FB9=FB27 FB3 FB2 FB26 $ffffff
+  FB10=FB34 FB27 FB26 FB33 $ffffff
+  FB11=FB35 FB36 FB34 FB33 $ffffff
+  FB12=FB30 FB31 FB36 FB35 $ffffff
+  FB13=FB6 FB7 FB31 FB30 $ffffff
+  FB14=FB25 FB29 FB35 FB33 $ffffff
+  FB15=FB1 FB5 FB29 FB25 $ffffff
+  FB16=FB26 FB25 FB33 $ffffff
+  FB17=FB29 FB30 FB35 $ffffff
+  FB18=FB36 FB32 FB28 FB34 $ffffff
+  FB19=FB32 FB8 FB4 FB28 $ffffff
+  FB20=FB28 FB27 FB34 $ffffff
+  FB21=FB31 FB32 FB36 $ffffff
+  FB22=FB26 FB18 FB17 FB25 $ffffff
+  FB23=FB10 FB2 FB1 FB9 $ffffff
+  FB24=FB28 FB20 FB19 FB27 $ffffff
+  FB25=FB12 FB4 FB3 FB11 $ffffff
+  FB26=FB21 FB22 FB30 FB29 $ffffff
+  FB27=FB13 FB5 FB6 FB14 $ffffff
+  FB28=FB31 FB23 FB24 FB32 $ffffff
+  FB29=FB15 FB7 FB8 FB16 $ffffff
+
+  EA1=FA10 EA2 EA1 FA9 $ffffff
+  EA2=FA18 EA3 EA2 FA10 $ffffff
+  EA3=EA4 EA3 FA18 FA17 $ffffff
+  EA4=FA9 EA1 EA4 FA17 $ffffff
+  EA5=EA3 EA1 EA2 $ffffff
+  EA6=EA3 EA4 EA1 $ffffff
+
+  EB1=FA13 EB1 EB2 FA14 $ffffff
+  EB2=FA14 EB2 EB3 FA22 $ffffff
+  EB3=FA21 FA22 EB3 EB4 $ffffff
+  EB4=FA21 EB4 EB1 FA13 $ffffff
+  EB5=EB2 EB1 EB3 $ffffff
+  EB6=EB1 EB4 EB3 $ffffff
+
+  EC1=FB9 EC1 EC2 FB10 $ffffff
+  EC2=FB10 EC2 EC3 FB18 $ffffff
+  EC3=FB17 FB18 EC3 EC4 $ffffff
+  EC4=FB17 EC4 EC1 FB9 $ffffff
+  EC5=EC2 EC1 EC3 $ffffff
+  EC6=EC1 EC4 EC3 $ffffff
+
+  ED1=FB14 ED2 ED1 FB13 $ffffff
+  ED2=FB22 ED3 ED2 FB14 $ffffff
+  ED3=ED4 ED3 FB22 FB21 $ffffff
+  ED4=FB13 ED1 ED4 FB21 $ffffff
+  ED5=ED3 ED1 ED2 $ffffff
+  ED6=ED3 ED4 ED1 $ffffff
+
+  DA1=DA1 FA19 FA11 DA2 $ffffff
+  DA2=DA2 FA11 FA12 DA3 $ffffff
+  DA3=FA19 DA1 DA4 FA20 $ffffff
+  DA4=DA4 DA3 FA12 FA20 $ffffff
+  DA5=DA1 DA2 DA3 DA4 $0000ff
+
+  DB1=DB2 FA15 FA23 DB1 $ffffff
+  DB2=DB3 FA16 FA15 DB2 $ffffff
+  DB3=FA24 DB4 DB1 FA23 $ffffff
+  DB4=FA24 FA16 DB3 DB4 $ffffff
+  DB5=DB4 DB3 DB2 DB1 $0000ff
+
+  DC1=DC2 FB11 FB19 DC1 $ffffff
+  DC2=DC3 FB12 FB11 DC2 $ffffff
+  DC3=FB20 DC4 DC1 FB19 $ffffff
+  DC4=FB20 FB12 DC3 DC4 $ffffff
+  DC5=DC4 DC3 DC2 DC1 $0000ff
+
+  DD1=DD1 FB23 FB15 DD2 $ffffff
+  DD2=DD2 FB15 FB16 DD3 $ffffff
+  DD3=FB23 DD1 DD4 FB24 $ffffff
+  DD4=DD4 DD3 FB16 FB24 $ffffff
+  DD5=DD1 DD2 DD3 DD4 $0000ff
+
