@@ -18,7 +18,7 @@ import de.ailis.threedee.scene.CameraNode;
 import de.ailis.threedee.scene.ModelNode;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
-import de.ailis.threedee.scene.updater.YawUpdater;
+import de.ailis.threedee.scene.updater.KeyboardUpdater;
 
 
 /**
@@ -66,15 +66,25 @@ public class Demo
         scene.setRootNode(root);
         
         final Model model = TDOReader.read(Demo.class.getResourceAsStream("/worcem.tdo"));
+        final SceneNode shipNode = new SceneNode();
         final ModelNode modelNode = new ModelNode(model);
-        modelNode.addUpdater(new YawUpdater(Math.toRadians(22.5)));
-        root.appendChild(modelNode);
+        modelNode.rotateY(Math.toRadians(180));
+       // modelNode.addUpdater(new YawUpdater(Math.toRadians(22.5)));
+        shipNode.appendChild(modelNode);
+        root.appendChild(shipNode);
+        shipNode.translate(0, 0, 7375927931L * 2);
         
 
         final CameraNode camera = new CameraNode();
         camera.translate(0, 15, -35);
-        //node.appendChild(camera);
+        camera.translate(0, 0, 7375927931L * 2);
+        root.appendChild(camera);
         camera.rotateX(Math.toRadians(22.5));
+        
+        final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
+        
+        camera.addUpdater(keyboardUpdater);
+        frame.addKeyListener(keyboardUpdater);
         
         
         frame.add(new ThreeDeePanel(scene, camera), BorderLayout.CENTER);
