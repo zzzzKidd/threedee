@@ -6,6 +6,8 @@
 
 package de.ailis.threedee.math;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -17,8 +19,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @version $Revision$
  */
 
-public class Matrix4d
+public class Matrix4d implements Serializable
 {
+    /** Serial version UID */
+    private static final long serialVersionUID = 1831757793057781305L;
+
     /** The identity matrix */
     private final static Matrix4d IDENTITY =
         new Matrix4d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.ailis.threedee.math.Line;
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.math.Vector3d;
 import de.ailis.threedee.model.Material;
@@ -153,8 +154,8 @@ public class PolygonBuffer
 
     public void render(final Graphics2D g, final int width, final int height)
     {
-        final int[] x = new int[this.maxPolySize];
-        final int[] y = new int[this.maxPolySize];
+        final int[] x = new int[this.maxPolySize + 5];
+        final int[] y = new int[this.maxPolySize + 5];
 
         // Precision factor to smooth out rounding errors when converting double
         // coordinates to integer screen coordinates
@@ -177,14 +178,28 @@ public class PolygonBuffer
         g.scale(1.0 / precisionFactor, 1.0 / precisionFactor);
         g.setStroke(new BasicStroke(precisionFactor));
 
+        // Generate the view frustum for clipping the polygons
+        final Frustum frustum =
+            new Frustum(width, height, factor / precisionFactor);
+
         // Draw the polygons
         for (final Polygon polygon: this.polygons)
         {
-            final int vertices = polygon.countVertices();
-            for (int v = 0; v < vertices; v++)
+            // final Polygon clippedPolygon = clipPolygon(polygon, frustum);
+
+            final List<Vector3d> vertices = clipPolygon(polygon, frustum);
+            final int vertexCount = vertices.size();
+            if (vertexCount == 0) continue;
+            int v = 0;
+            for (final Vector3d vertex: vertices)
             {
-                final Vector3d vertex =
-                    this.vertices.get(polygon.getVertex(v));
+
+                // final int vertices = clippedPolygon.countVertices();
+                // if (vertices == 0) continue;
+                // for (int v = 0; v < vertices; v++)
+                // {
+                // final Vector3d vertex =
+                // this.vertices.get(clippedPolygon.getVertex(v));
 
                 final double dx = vertex.getX();
                 final double dy = vertex.getY();
@@ -192,6 +207,7 @@ public class PolygonBuffer
 
                 x[v] = (int) Math.round(dx * factor / dz);
                 y[v] = (int) Math.round(-dy * factor / dz);
+                v++;
             }
 
 
@@ -216,7 +232,7 @@ public class PolygonBuffer
                     (int) (colorFactor * color.getBlue()));
 
             g.setColor(color);
-            g.fillPolygon(x, y, vertices);
+            g.fillPolygon(x, y, vertexCount);
 
             // display normals
             if (false)
@@ -235,5 +251,98 @@ public class PolygonBuffer
         }
 
         g.setTransform(oldTransform);
+    }
+
+
+    // FUNKTIONIERT NICHT!!! ICH MUSS DAS GANZE POLYGON FUENF MAL CLIPPEN UND
+    // NICHT JEDE LINE EINZELN
+    private List<Vector3d> clipPolygon(final Polygon polygon,
+        final Frustum frustum)
+    {
+        final List<Vector3d> vertices = new ArrayList<Vector3d>();
+
+        for (int i = 0, max = polygon.countVertices(); i < max; i++)
+        {
+            // Get the two vertices of the line
+            final Vector3d a = this.vertices.get(polygon.getVertex(i));
+            final Vector3d b =
+                this.vertices.get(polygon.getVertex((i + 1) % max));
+
+            // Clip the line
+            final Line line = frustum.clip(new Line(a, b));
+
+            // If line is null then it is completely clipped away, so ignore
+            // it
+            if (line == null) continue;
+
+            // Add point A to the list of new vertices
+            vertices.add(line.getA());
+
+            // If point B differs from original point B then also add it to the
+            // list of new vertices
+            final Vector3d newB = line.getB();
+            if (!newB.equals(b)) vertices.add(newB);
+        }
+
+        // Return the clipped polygon vertices
+        return vertices;
+    }
+
+
+    /**
+     * @param polygon
+     * @param clipNormal
+     * @param distance
+     * @return
+     */
+
+    private Polygon clipPolygon2(final Polygon polygon, final Frustum frustum)
+    {
+        final List<Integer> newVertices = new ArrayList<Integer>();
+
+        final Vector3d planeNormal = frustum.getNear().getNormal();
+        final double planeDistance = frustum.getNear().getDistance();
+
+        final int max = polygon.countVertices();
+        for (int i = 0; i < max; i++)
+        {
+            final int v1 = polygon.getVertex(i);
+            final int v2 = polygon.getVertex((i + 1) % max);
+            final Vector3d a = this.vertices.get(v1);
+            final Vector3d b = this.vertices.get(v2);
+
+            final double distanceA = a.multiply(planeNormal) - planeDistance;
+            final double distanceB = b.multiply(planeNormal) - planeDistance;
+
+            // If both points are on the backside of the plane then ignore the
+            // line
+            if (distanceA < 0 && distanceB < 0) continue;
+
+            // Calculate the intersection point
+            final double s = distanceA / (distanceA - distanceB);
+            final Vector3d intersect =
+                new Vector3d(a.getX() + s * (b.getX() - a.getX()), a.getY()
+                    + s * (b.getY() - a.getY()), a.getZ() + s
+                    * (b.getZ() - a.getZ()));
+            final int vNew = this.vertices.size();
+            this.vertices.add(intersect);
+
+            // Add first point is outside then add the intersect point. If
+            // first point is inside then add it without modification
+            if (distanceA < 0)
+                newVertices.add(vNew);
+            else
+                newVertices.add(v1);
+
+            // If second point is outside then add the intersect point. If it
+            // is inside then ignore the point because it will be added as the
+            // first point of the next line
+            if (distanceB < 0) newVertices.add(vNew);
+        }
+
+        final int[] newVertices2 = new int[newVertices.size()];
+        for (int i = 0; i < newVertices.size(); i++)
+            newVertices2[i] = newVertices.get(i);
+        return new Polygon(polygon.getMaterial(), newVertices2);
     }
 }

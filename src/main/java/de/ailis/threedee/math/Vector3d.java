@@ -6,6 +6,8 @@
 
 package de.ailis.threedee.math;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -17,8 +19,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @version $Revision$
  */
 
-public class Vector3d
+public class Vector3d implements Serializable
 {
+    /** Serial version UID */
+    private static final long serialVersionUID = 6049078497430956466L;
+
     /** The cached vector length */
     private transient double lenCache = -1;
 

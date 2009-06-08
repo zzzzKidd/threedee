@@ -83,7 +83,7 @@ public class Demo
         
         final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
         
-        camera.addUpdater(keyboardUpdater);
+        shipNode.addUpdater(keyboardUpdater);
         frame.addKeyListener(keyboardUpdater);
         
         
