@@ -19,6 +19,9 @@ import de.ailis.threedee.math.Vector3d;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.Polygon;
+import de.ailis.threedee.scene.light.Light;
+import de.ailis.threedee.scene.light.PointLight;
+import de.ailis.threedee.scene.light.TransformedLight;
 
 
 /**
@@ -39,8 +42,15 @@ public class PolygonBuffer
     private final List<TransformedPolygon> polygons =
         new ArrayList<TransformedPolygon>();
 
+    /** The polygons in the buffer (Sorted by Z coordinate) */
+    private final List<TransformedLight> lights =
+        new ArrayList<TransformedLight>();
+
     /** The maximum polygon size */
     private int maxPolySize = 0;
+
+    /** The global ambient color */
+    private Color globalAmbient = Color.DARK_GRAY;
 
 
     /**
@@ -51,7 +61,21 @@ public class PolygonBuffer
     {
         this.vertices.clear();
         this.polygons.clear();
+        this.lights.clear();
         this.maxPolySize = 0;
+    }
+
+
+    /**
+     * Sets the global ambient color.
+     * 
+     * @param globalAmbient
+     *            The global ambient color to set
+     */
+
+    public void setGlobalAmbient(final Color globalAmbient)
+    {
+        this.globalAmbient = globalAmbient;
     }
 
 
@@ -138,6 +162,21 @@ public class PolygonBuffer
 
 
     /**
+     * Adds the specified light to the polygon buffer.
+     * 
+     * @param light
+     *            The light to add
+     * @param transform
+     *            The transformation matrix to use
+     */
+
+    public void add(final Light light, final Matrix4d transform)
+    {
+        this.lights.add(new TransformedLight(light, transform));
+    }
+
+
+    /**
      * Renders the polygon buffer.
      * 
      * @param g
@@ -184,7 +223,7 @@ public class PolygonBuffer
             // Clip the polygon with the frustum
             final Polygon clippedPolygon =
                 frustum.clip(polygon, this.vertices);
-            
+
             // If polygon was clipped completely away then skip it
             if (clippedPolygon == null) continue;
 
@@ -206,24 +245,7 @@ public class PolygonBuffer
             }
 
             final Vector3d normal = polygon.getNormal(this.vertices);
-
-            double colorFactor = 0;
-            if (true)
-            {
-                final Vector3d light = new Vector3d(0.5, 0.5, -0.5);
-                final double angle = Math.toDegrees(light.getAngle(normal));
-                colorFactor = Math.max(colorFactor, 1 - (angle / 90));
-                colorFactor = Math.max(colorFactor, 0.2);
-            }
-            else
-                colorFactor = 1;
-
-            final Material material = polygon.getMaterial();
-            Color color = material.getColor();
-            color =
-                new Color((int) (colorFactor * color.getRed()),
-                    (int) (colorFactor * color.getGreen()),
-                    (int) (colorFactor * color.getBlue()));
+            final Color color = calcPolygonColor(polygon);
 
             g.setColor(color);
             g.fillPolygon(x, y, vertexCount);
@@ -245,5 +267,95 @@ public class PolygonBuffer
         }
 
         g.setTransform(oldTransform);
+    }
+
+
+    /**
+     * Calculates the polygon color according to the material and the light
+     * sources.
+     * 
+     * TODO Implement specular color
+     * 
+     * @param polygon
+     *            The polygon
+     * @return The calculated polygon color
+     */
+
+    private Color calcPolygonColor(final Polygon polygon)
+    {
+        // Get the material from the polygon
+        final Material material = polygon.getMaterial();
+
+        // Get the position (The center) and the normal from the polygon
+        final Vector3d position = polygon.getCenter(this.vertices);
+        final Vector3d normal = polygon.getNormal(this.vertices);
+
+        // Get the color components of the global ambient color
+        final float[] globalAmbient =
+            this.globalAmbient.getRGBColorComponents(new float[3]);
+
+        // Get the ambient, diffuse and emissive color components of the
+        // material
+        final float[] ambient =
+            material.getAmbient().getRGBColorComponents(new float[3]);
+        final float[] diffuse =
+            material.getAmbient().getRGBColorComponents(new float[3]);
+        final float[] emissive =
+            material.getEmissive().getRGBColorComponents(new float[3]);
+
+        // We store the resulting color components here:
+        final float[] result = new float[3];
+
+        // We store the added diffuse color components here:
+        final float[] addedDiffuse = new float[] { 0, 0, 0 };
+
+        // Now we cycle through all color components and calculate the values
+        for (int i = 0; i < 3; i++)
+        {
+            // Calculate the ambient color value
+            ambient[i] = ambient[i] * globalAmbient[i];
+
+            // Iterate over all registered light sources and process them
+            for (final TransformedLight transLight: this.lights)
+            {
+                final Light light = transLight.getLight();
+                if (light instanceof PointLight)
+                {
+                    final PointLight pointLight = (PointLight) light;
+                    final float lightColor = pointLight.getColorComponent(i);
+
+                    final Vector3d lightPosition = transLight.getPosition();
+                    final Vector3d L = lightPosition.sub(position).toUnit();
+                    final float diffuseLight =
+                        (float) Math.max(normal.multiply(L), 0);
+
+                    addedDiffuse[i] += diffuse[i] * lightColor * diffuseLight;
+                }
+            }
+
+            result[i] =
+                Math.min(ambient[i] + emissive[i] + addedDiffuse[i], 1f);
+        }
+
+        return new Color(result[0], result[1], result[2]);
+
+        // float3 P = position.xyz;
+        // float3 N = normal;
+
+        // float3 emissive = Ke;
+        // float3 ambient = Ka * globalAmbient;
+
+        // float3 L = normalize(lightPosition - P);
+        // float diffuseLight = max(dot(N, L), 0);
+        // float3 diffuse = Kd * lightColor * diffuseLight;
+
+        // float3 V = normalize(eyePosition - P);
+        // float3 H = normalize(L + V);
+        // float specularLight = pow(max(dot(N, H), 0), shininess);
+
+        // if (diffuseLight <= 0) specularLight = 0;
+        // float3 specular = Ks * lightColor * specularLight;
+
+        // color.xyz = emissive + ambient + diffuse + specular;
     }
 }

@@ -66,12 +66,17 @@ public class TDOReader
                         final String[] parts3 = parts2[1].trim().split("[ ]+");
                         final String color = parts3[parts3.length - 1];
                         final Color matColor = new Color(Integer.parseInt(color.substring(1), 16));
+                        Color emissive;
+                        if (matColor.equals(Color.WHITE))
+                            emissive = Color.BLACK;
+                        else
+                            emissive = matColor;
                         final int[] vertices = new int[parts3.length - 1];
                         for (int i = 0; i < parts3.length - 1; i++)
                         {
                             vertices[i] = vertexNames.indexOf(parts3[i].trim());
                         }
-                        model.addPolygon(new Polygon(new Material(matColor), vertices));
+                        model.addPolygon(new Polygon(new Material(matColor, emissive), vertices));
                         break;
                 }
             }

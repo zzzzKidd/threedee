@@ -7,6 +7,7 @@
 package de.ailis.threedee;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 
@@ -15,9 +16,11 @@ import javax.swing.JFrame;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.reader.TDOReader;
 import de.ailis.threedee.scene.CameraNode;
+import de.ailis.threedee.scene.LightNode;
 import de.ailis.threedee.scene.ModelNode;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.light.PointLight;
 import de.ailis.threedee.scene.updater.KeyboardUpdater;
 
 
@@ -64,6 +67,7 @@ public class Demo
         
         final SceneNode root = new SceneNode();
         scene.setRootNode(root);
+        //scene.setGlobalAmbient(Color.BLACK);
         
         final Model model = TDOReader.read(Demo.class.getResourceAsStream("/worcem.tdo"));
         final SceneNode shipNode = new SceneNode();
@@ -72,14 +76,11 @@ public class Demo
        // modelNode.addUpdater(new YawUpdater(Math.toRadians(22.5)));
         shipNode.appendChild(modelNode);
         root.appendChild(shipNode);
-        shipNode.translate(0, 0, 7375927931L * 2);
         
 
         final CameraNode camera = new CameraNode();
-        camera.translate(0, 15, -35);
-        camera.translate(0, 0, 7375927931L * 2);
+        camera.translate(0, 0, -35);
         root.appendChild(camera);
-        camera.rotateX(Math.toRadians(22.5));
         
         final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
         
@@ -87,6 +88,16 @@ public class Demo
         frame.addKeyListener(keyboardUpdater);
         
         
+        final PointLight light1 = new PointLight(Color.BLUE);
+        final LightNode lightNode1 = new LightNode(light1);
+        lightNode1.translate(5, 5, 0);
+        root.appendChild(lightNode1);
+
+        final PointLight light2 = new PointLight(Color.GREEN);
+        final LightNode lightNode2 = new LightNode(light2);
+        lightNode2.translate(-5, 5, 0);
+        root.appendChild(lightNode2);
+
         frame.add(new ThreeDeePanel(scene, camera), BorderLayout.CENTER);
 
         frame.setVisible(true);

@@ -6,6 +6,7 @@
 
 package de.ailis.threedee.scene;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import de.ailis.threedee.math.Matrix4d;
@@ -27,6 +28,9 @@ public class Scene
     /** The polygon buffer */
     private final PolygonBuffer buffer = new PolygonBuffer();
 
+    /** The global ambient color */
+    private Color globalAmbient = Color.DARK_GRAY;
+    
 
     /**
      * Updates the scene with the specified time delta (Nanoseconds)
@@ -71,6 +75,7 @@ public class Scene
         // Initialize the polygon buffer and recursively render the scene
         // nodes into it
         this.buffer.clear();
+        this.buffer.setGlobalAmbient(this.globalAmbient);
         this.rootNode.render(this.buffer, rootTransform);
 
         // Render the polygon buffer onto the screen
@@ -89,5 +94,30 @@ public class Scene
     public void setRootNode(final SceneNode node)
     {
         this.rootNode = node;
+    }
+    
+    
+    /**
+     * Sets the global ambient color.
+     * 
+     * @param globalAmbient
+     *            The global ambient color to set
+     */
+
+    public void setGlobalAmbient(final Color globalAmbient)
+    {
+        this.globalAmbient = globalAmbient;
+    }
+
+    
+    /**
+     * Returns the global ambient color.
+     * 
+     * @return The global ambient color
+     */
+    
+    public Color getGlobalAmbient()
+    {
+        return this.globalAmbient;
     }
 }
