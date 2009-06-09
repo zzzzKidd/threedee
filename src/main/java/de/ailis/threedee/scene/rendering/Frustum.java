@@ -4,11 +4,12 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee.scene;
+package de.ailis.threedee.scene.rendering;
 
-import de.ailis.threedee.math.Line;
-import de.ailis.threedee.math.Plane;
+import java.util.List;
+
 import de.ailis.threedee.math.Vector3d;
+import de.ailis.threedee.model.Polygon;
 
 
 /**
@@ -51,8 +52,8 @@ public class Frustum
 
     public Frustum(final int width, final int height, final double scale)
     {
-        final double xAngle = Math.atan2(width / 2 - 5, scale) - 0.0001;
-        final double yAngle = Math.atan2(height / 2 - 5, scale) - 0.0001;
+        final double xAngle = Math.atan2(width / 2, scale) - 0.0001;
+        final double yAngle = Math.atan2(height / 2, scale) - 0.0001;
         final double sh = Math.sin(xAngle);
         final double sv = Math.sin(yAngle);
         final double ch = Math.cos(xAngle);
@@ -130,23 +131,25 @@ public class Frustum
      * Clips the specified line. Returns null if the line was completely clipped
      * away
      * 
-     * @param line
+     * @param polygon
      *            The line to clip
+     * @param vertices
+     *            The vertices referenced by the polygon
      * @return The clipped line or null if the line was completely clipped away
      */
 
-    public Line clip(final Line line)
+    public Polygon clip(final Polygon polygon, final List<Vector3d> vertices)
     {
-        Line clippedLine = line.clip(this.left);
-        if (clippedLine == null) return null;
-        clippedLine = clippedLine.clip(this.right);
-        if (clippedLine == null) return null;
-        clippedLine = clippedLine.clip(this.top);
-        if (clippedLine == null) return null;
-        clippedLine = clippedLine.clip(this.bottom);
-        if (clippedLine == null) return null;
-        clippedLine = clippedLine.clip(this.near);
-        if (clippedLine == null) return null;
-        return clippedLine;
+        Polygon clippedPolygon = polygon.clip(this.left, vertices);
+        if (clippedPolygon == null) return null;
+        clippedPolygon = clippedPolygon.clip(this.right, vertices);
+        if (clippedPolygon == null) return null;
+        clippedPolygon = clippedPolygon.clip(this.top, vertices);
+        if (clippedPolygon == null) return null;
+        clippedPolygon = clippedPolygon.clip(this.bottom, vertices);
+        if (clippedPolygon == null) return null;
+        clippedPolygon = clippedPolygon.clip(this.near, vertices);
+        if (clippedPolygon == null) return null;
+        return clippedPolygon;
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.math.Transformable;
+import de.ailis.threedee.scene.rendering.PolygonBuffer;
 import de.ailis.threedee.scene.updater.NodeUpdater;
 
 

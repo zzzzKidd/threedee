@@ -8,6 +8,7 @@ package de.ailis.threedee.scene;
 
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.model.Model;
+import de.ailis.threedee.scene.rendering.PolygonBuffer;
 
 
 /**

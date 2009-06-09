@@ -4,7 +4,7 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee.math;
+package de.ailis.threedee.scene.rendering;
 
 import java.io.Serializable;
 
@@ -12,9 +12,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import de.ailis.threedee.math.Vector3d;
+
 
 /**
- * A plane
+ * A plane is defined by it's normal and a distance from the viewer.
  * 
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision$

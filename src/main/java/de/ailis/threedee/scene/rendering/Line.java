@@ -4,13 +4,16 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee.math;
+package de.ailis.threedee.scene.rendering;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import de.ailis.threedee.math.Vector3d;
 
 
 /**
@@ -25,11 +28,11 @@ public class Line implements Serializable
     /** Serial version UID */
     private static final long serialVersionUID = 2466415424540661964L;
 
-    /** The point A of the line */
-    private final Vector3d a;
+    /** The vertex index of point A of the line */
+    private final int a;
 
-    /** The point B of the line */
-    private final Vector3d b;
+    /** The vertex index of point B of the line */
+    private final int b;
 
 
     /**
@@ -41,7 +44,7 @@ public class Line implements Serializable
      *            The point B of the line
      */
 
-    public Line(final Vector3d a, final Vector3d b)
+    public Line(final int a, final int b)
     {
         this.a = a;
         this.b = b;
@@ -49,24 +52,24 @@ public class Line implements Serializable
 
 
     /**
-     * Returns the point A of the line.
+     * Returns the vertex index of point A of the line.
      * 
-     * @return The point A of the line
+     * @return The vertex index of point A of the line
      */
 
-    public Vector3d getA()
+    public int getA()
     {
         return this.a;
     }
 
 
     /**
-     * Returns the point B of the line.
+     * Returns the vertex index of point B of the line.
      * 
-     * @return The point B of the line
+     * @return The vertex index of point B of the line
      */
 
-    public Vector3d getB()
+    public int getB()
     {
         return this.b;
     }
@@ -119,39 +122,44 @@ public class Line implements Serializable
      * 
      * @param plane
      *            The plane to clip the line with
-     * @return The clipped line or null if the line is competely clipped away
+     * @param vertices
+     *            The vertex list referenced by the points in this line
+     * @return The clipped line or null if the line is completely clipped away
      */
 
-    public Line clip(final Plane plane)
+    public Line clip(final Plane plane, final List<Vector3d> vertices)
     {
+        final Vector3d a = vertices.get(this.a);
+        final Vector3d b = vertices.get(this.b);
         final Vector3d planeNormal = plane.getNormal();
         final double planeDistance = plane.getDistance();
-        final double distanceA = this.a.multiply(planeNormal) - planeDistance;
-        final double distanceB = this.b.multiply(planeNormal) - planeDistance;
+        final double distanceA = a.multiply(planeNormal) - planeDistance;
+        final double distanceB = b.multiply(planeNormal) - planeDistance;
 
         // If both points are on the back-side of the plane then it is
         // completely clipped away, so return null
         if (distanceA < 0 && distanceB < 0) return null;
-        
+
         // If both points are on the front-side of the plane then return the
         // line as it is
-        if (distanceA >= 0 && distanceB >=0) return this;
+        if (distanceA >= 0 && distanceB >= 0) return this;
 
         // Calculate the intersection point
         final double s = distanceA / (distanceA - distanceB);
         final Vector3d intersect =
-            new Vector3d(this.a.getX() + s * (this.b.getX() - this.a.getX()),
-                this.a.getY() + s * (this.b.getY() - this.a.getY()), this.a
-                    .getZ()
-                    + s * (this.b.getZ() - this.a.getZ()));
+            new Vector3d(a.getX() + s * (b.getX() - a.getX()), a.getY() + s
+                * (b.getY() - a.getY()), a.getZ() + s * (b.getZ() - a.getZ()));
+       
+        // Add the intersection point to the list of used vertices
+        final int c = vertices.size();
+        vertices.add(intersect);
 
         // If point A is on the back-side of the plane then return a line
         // from the intersection point to point B
-        if (distanceA < 0)
-            return new Line(intersect, this.b);
-        
+        if (distanceA < 0) return new Line(c, this.b);
+
         // Otherwise point B is on the back-side so return a line from point
         // A to the intersection point
-        return new Line(this.a, intersect);
+        return new Line(this.a, c);
     }
 }

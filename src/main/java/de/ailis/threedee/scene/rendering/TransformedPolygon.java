@@ -4,7 +4,11 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee.model;
+package de.ailis.threedee.scene.rendering;
+
+import de.ailis.threedee.model.Material;
+import de.ailis.threedee.model.Polygon;
+
 
 
 /**
