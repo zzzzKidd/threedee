@@ -208,9 +208,17 @@ public class ThreeDeeFrame extends JFrame implements Runnable, ThreeDeeOutput
         // If buffer strategy is not set yet then do nothing
         if (this.bufferStrategy == null) return;
 
-        // Get the graphics context to drawn on
-        final Graphics2D g =
-            (Graphics2D) this.bufferStrategy.getDrawGraphics();
+        // Get the graphics context to drawn on. This sometimes fails for some
+        // unknown reason. If it happens we ignore the painting of the frame
+        final Graphics2D g;
+        try
+        {
+            g = (Graphics2D) this.bufferStrategy.getDrawGraphics();
+        }
+        catch (final Exception e)
+        {
+            return;
+        }
 
         // Transform the context so the 0/0 coordinate is the left/top corner.
         // If we don't do this here then it may be outside of the screen because
@@ -316,7 +324,7 @@ public class ThreeDeeFrame extends JFrame implements Runnable, ThreeDeeOutput
     public void setPageFlip(final boolean pageFlip)
     {
         this.pageFlip = pageFlip;
-        applyScreenChanges(); 
+        applyScreenChanges();
     }
 
 
@@ -344,32 +352,32 @@ public class ThreeDeeFrame extends JFrame implements Runnable, ThreeDeeOutput
         if (fullScreen != this.fullScreen)
         {
             this.fullScreen = fullScreen;
-            applyScreenChanges(); 
+            applyScreenChanges();
         }
     }
-    
-    
+
+
     /**
      * Checks if full screen mode is enabled or not.
      * 
      * @return True if full screen mode is enabled, false if not
      */
-    
+
     public boolean isFullScreen()
     {
         return this.fullScreen;
     }
 
-    
+
     /**
-     * Applies screen changes by hiding and showing the window again if it
-     * is currently visible. This is needed because some screen settings can
-     * only be applied when the window is not currently visible.
+     * Applies screen changes by hiding and showing the window again if it is
+     * currently visible. This is needed because some screen settings can only
+     * be applied when the window is not currently visible.
      */
-    
+
     private void applyScreenChanges()
     {
-        if (isVisible())           
+        if (isVisible())
         {
             setVisible(false);
             setVisible(true);
