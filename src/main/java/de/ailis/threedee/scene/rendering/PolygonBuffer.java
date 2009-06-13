@@ -9,11 +9,13 @@ package de.ailis.threedee.scene.rendering;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.ailis.threedee.RenderOptions;
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.math.Vector3d;
 import de.ailis.threedee.model.Material;
@@ -52,6 +54,9 @@ public class PolygonBuffer
     /** The global ambient color */
     private Color globalAmbient = Color.DARK_GRAY;
 
+    /** The render options */
+    private RenderOptions renderOptions;
+
 
     /**
      * Clears the buffer so it can be reused.
@@ -76,6 +81,19 @@ public class PolygonBuffer
     public void setGlobalAmbient(final Color globalAmbient)
     {
         this.globalAmbient = globalAmbient;
+    }
+
+
+    /**
+     * Sets the render options.
+     * 
+     * @param renderOptions
+     *            The render options to set
+     */
+
+    public void setRenderOptions(final RenderOptions renderOptions)
+    {
+        this.renderOptions = renderOptions;
     }
 
 
@@ -114,6 +132,9 @@ public class PolygonBuffer
 
     public void add(final Model model, final Matrix4d transform)
     {
+        // Pull render options into local variables
+        final boolean backfaceCulling = this.renderOptions.isBackfaceCulling();
+        
         // Get the transformed vertices
         final List<Vector3d> transformedVertices =
             getTransformedVertices(model, transform);
@@ -126,7 +147,7 @@ public class PolygonBuffer
             final Polygon polygon = model.getPolygon(i);
 
             // Perform back-face culling
-            if (true)
+            if (backfaceCulling)
             {
                 if (polygon.getNormal(transformedVertices).multiply(
                     transformedVertices.get(polygon.getVertex(0))) > 0)
@@ -189,6 +210,12 @@ public class PolygonBuffer
 
     public void render(final Graphics2D g, final int width, final int height)
     {
+        // Pull render options in local variables
+        final boolean displayNormals = this.renderOptions.isDisplayNormals();
+        final boolean lighting = this.renderOptions.isLighting();
+        final boolean solid = this.renderOptions.isSolid();
+        final boolean antiAliasing = this.renderOptions.isAntiAliasing();
+
         final int[] x = new int[this.maxPolySize + 5];
         final int[] y = new int[this.maxPolySize + 5];
 
@@ -212,6 +239,10 @@ public class PolygonBuffer
         g.translate(width / 2, height / 2);
         g.scale(1.0 / precisionFactor, 1.0 / precisionFactor);
         g.setStroke(new BasicStroke(precisionFactor));
+        g.setColor(Color.WHITE);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing
+            ? RenderingHints.VALUE_ANTIALIAS_ON
+            : RenderingHints.VALUE_ANTIALIAS_OFF);
 
         // Generate the view frustum for clipping the polygons
         final Frustum frustum =
@@ -244,15 +275,20 @@ public class PolygonBuffer
                 y[v] = (int) Math.round(-dy * factor / dz);
             }
 
-            final Vector3d normal = polygon.getNormal(this.vertices);
-            final Color color = calcPolygonColor(polygon);
-
-            g.setColor(color);
-            g.fillPolygon(x, y, vertexCount);
-
-            // display normals
-            if (false)
+            if (solid)
             {
+                g.setColor(lighting ? calcPolygonColor(polygon) : polygon
+                    .getMaterial().getDiffuse());
+                g.fillPolygon(x, y, vertexCount);
+            }
+            else
+                g.drawPolygon(x, y, vertexCount);
+
+            // Display normals if needed
+            if (displayNormals)
+            {
+                final Vector3d normal = polygon.getNormal(this.vertices);
+                final Color oldColor = g.getColor();
                 g.setColor(Color.YELLOW);
                 final Vector3d center = polygon.getCenter(this.vertices);
                 final Vector3d normalEnd = normal.add(center);
@@ -263,6 +299,7 @@ public class PolygonBuffer
                 final int cy2 =
                     (int) (-normalEnd.getY() * factor / normalEnd.getZ());
                 g.drawLine(cx, cy, cx2, cy2);
+                g.setColor(oldColor);
             }
         }
 
@@ -299,7 +336,7 @@ public class PolygonBuffer
         final float[] ambient =
             material.getAmbient().getRGBColorComponents(new float[3]);
         final float[] diffuse =
-            material.getAmbient().getRGBColorComponents(new float[3]);
+            material.getDiffuse().getRGBColorComponents(new float[3]);
         final float[] emissive =
             material.getEmissive().getRGBColorComponents(new float[3]);
 

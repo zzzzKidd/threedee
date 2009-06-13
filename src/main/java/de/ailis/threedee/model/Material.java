@@ -31,17 +31,21 @@ public class Material implements Serializable
     /** The emissive color */
     private Color emissive;
 
+    /** The diffuse color */
+    private Color diffuse;
+
 
     /**
-     * Constructs a new material with the specified properties.
+     * Constructs a new material with a single color which is used for all
+     * color parts except the emissive color (Which is set to black).
      * 
-     * @param ambient
-     *            The ambient color
+     * @param color
+     *            The general color
      */
 
-    public Material(final Color ambient)
+    public Material(final Color color)
     {
-        this(ambient, Color.BLACK);
+        this(color, color, Color.BLACK);
     }
 
 
@@ -50,13 +54,16 @@ public class Material implements Serializable
      * 
      * @param ambient
      *            The ambient color
+     * @param diffuse
+     *            The diffuse color
      * @param emissive
      *            The emissive color
      */
 
-    public Material(final Color ambient, final Color emissive)
+    public Material(final Color ambient, final Color diffuse, final Color emissive)
     {
         setAmbient(ambient);
+        setDiffuse(diffuse);
         setEmissive(emissive);
     }
 
@@ -122,5 +129,33 @@ public class Material implements Serializable
         if (emissive == null)
             throw new IllegalArgumentException("emissive must not be null");
         this.emissive = emissive;
+    }
+
+
+    
+    /**
+     * Returns the diffuse color.
+     * 
+     * @return The diffuse color
+     */
+    
+    public Color getDiffuse()
+    {
+        return this.diffuse;
+    }
+
+
+    /**
+     * Sets the diffuse color.
+     * 
+     * @param diffuse
+     *            The diffuse color to set
+     */
+
+    public void setDiffuse(final Color diffuse)
+    {
+        if (diffuse == null)
+            throw new IllegalArgumentException("diffuse must not be null");
+        this.diffuse = diffuse;
     }
 }

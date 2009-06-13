@@ -9,6 +9,7 @@ package de.ailis.threedee.scene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import de.ailis.threedee.RenderOptions;
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.scene.rendering.PolygonBuffer;
 
@@ -30,7 +31,7 @@ public class Scene
 
     /** The global ambient color */
     private Color globalAmbient = Color.DARK_GRAY;
-    
+
 
     /**
      * Updates the scene with the specified time delta (Nanoseconds)
@@ -55,13 +56,15 @@ public class Scene
      *            The output width in pixels
      * @param height
      *            The output height in pixels
+     * @param renderOptions
+     *            The render options
      * @param camera
      *            The camera node to use. If it is null then a fixed default
      *            camera at position 0,0,0 looking in direction 0,0,1 is used
      */
 
     public void render(final Graphics2D g, final int width, final int height,
-        final CameraNode camera)
+        final RenderOptions renderOptions, final CameraNode camera)
     {
         // If no root node is set yet then do nothing
         if (this.rootNode == null) return;
@@ -70,12 +73,14 @@ public class Scene
         Matrix4d rootTransform = this.rootNode.getTransform();
         if (camera != null)
             rootTransform =
-                camera.getEffectiveTransform().invert().multiply(rootTransform);
+                camera.getEffectiveTransform().invert()
+                    .multiply(rootTransform);
 
         // Initialize the polygon buffer and recursively render the scene
         // nodes into it
         this.buffer.clear();
         this.buffer.setGlobalAmbient(this.globalAmbient);
+        this.buffer.setRenderOptions(renderOptions);
         this.rootNode.render(this.buffer, rootTransform);
 
         // Render the polygon buffer onto the screen
@@ -95,8 +100,8 @@ public class Scene
     {
         this.rootNode = node;
     }
-    
-    
+
+
     /**
      * Sets the global ambient color.
      * 
@@ -109,13 +114,13 @@ public class Scene
         this.globalAmbient = globalAmbient;
     }
 
-    
+
     /**
      * Returns the global ambient color.
      * 
      * @return The global ambient color
      */
-    
+
     public Color getGlobalAmbient()
     {
         return this.globalAmbient;

@@ -17,5 +17,5 @@ package de.ailis.threedee.scene;
 
 public class CameraNode extends SceneNode
 {
-    // Emtpy (for now)
+    // Empty
 }

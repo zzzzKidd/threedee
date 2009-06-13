@@ -9,7 +9,6 @@ package de.ailis.threedee;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -54,6 +53,9 @@ public class ThreeDeePanel extends JPanel implements Runnable
     /** The last game update (Nanoseconds) */
     private long lastUpdate = System.nanoTime();
 
+    /** The render options */
+    private final RenderOptions renderOptions = new RenderOptions();
+
 
     /**
      * Constructs a new ThreeDee panel without a scene and camera. You must at
@@ -89,7 +91,7 @@ public class ThreeDeePanel extends JPanel implements Runnable
      * @param camera
      *            The camera node
      */
-    
+
     public ThreeDeePanel(final Scene scene, final CameraNode camera)
     {
         this.scene = scene;
@@ -191,16 +193,14 @@ public class ThreeDeePanel extends JPanel implements Runnable
                     BufferedImage.TYPE_INT_RGB);
             this.context = this.buffer.createGraphics();
         }
-        
-        this.context.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //this.context.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
 
         this.context.setColor(Color.BLACK);
         this.context.fillRect(0, 0, width, height);
 
         // Render the scene if one is set
         if (this.scene != null)
-            this.scene.render(this.context, width, height, this.camera);
+            this.scene.render(this.context, width, height, this.renderOptions,
+                this.camera);
     }
 
 
@@ -267,5 +267,17 @@ public class ThreeDeePanel extends JPanel implements Runnable
     public CameraNode getCamera()
     {
         return this.camera;
+    }
+
+
+    /**
+     * Returns the render options of this 3D panel.
+     * 
+     * @return The render options
+     */
+
+    public RenderOptions getRenderOptions()
+    {
+        return this.renderOptions;
     }
 }
