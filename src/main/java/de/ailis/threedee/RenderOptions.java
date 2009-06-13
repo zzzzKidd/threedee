@@ -27,10 +27,13 @@ public class RenderOptions
 
     /** If anti-aliasing should be used */
     private boolean antiAliasing = true;
-    
+
     /** If backface culling should be performed */
     private boolean backfaceCulling = true;
-    
+
+    /** If debug info should be printed */
+    private boolean debugInfo = true;
+
 
     /**
      * Enables or disables the display of normals.
@@ -83,11 +86,11 @@ public class RenderOptions
 
     /**
      * Enables or disables the lighting. Default: enabled.
-     *
+     * 
      * @param lighting
      *            True to enable lighting, false to disable it
      */
-    
+
     public void setLighting(final boolean lighting)
     {
         this.lighting = lighting;
@@ -96,11 +99,11 @@ public class RenderOptions
 
     /**
      * Enables or disables solid drawing of polygons. Default: enabled.
-     *
+     * 
      * @param solid
      *            True to draw solid polygons, false to draw only the edges
      */
-    
+
     public void setSolid(final boolean solid)
     {
         this.solid = solid;
@@ -109,10 +112,10 @@ public class RenderOptions
 
     /**
      * Checks if anti-aliasing is enabled or not.
-     *
+     * 
      * @return True if anti-aliasing is enabled, false of not
      */
-    
+
     public boolean isAntiAliasing()
     {
         return this.antiAliasing;
@@ -121,11 +124,11 @@ public class RenderOptions
 
     /**
      * Enables or disables anti-aliasing. Default: enabled.
-     *
+     * 
      * @param antiAliasing
      *            True to enable anti-aliasing, false to disable it
      */
-    
+
     public void setAntiAliasing(final boolean antiAliasing)
     {
         this.antiAliasing = antiAliasing;
@@ -134,10 +137,10 @@ public class RenderOptions
 
     /**
      * Checks if backface culling is enabled or not.
-     *
+     * 
      * @return True if backface culling is enabled, false if not
      */
-    
+
     public boolean isBackfaceCulling()
     {
         return this.backfaceCulling;
@@ -146,13 +149,38 @@ public class RenderOptions
 
     /**
      * Enables or disables backface culling. Default: enabled.
-     *
+     * 
      * @param backfaceCulling
      *            True to enable backface culling, false to disable it.
      */
-    
+
     public void setBackfaceCulling(final boolean backfaceCulling)
     {
         this.backfaceCulling = backfaceCulling;
+    }
+
+
+    /**
+     * Checks if display of debug info is enabled or disabled.
+     * 
+     * @return True if display of debug info is enabled, false if not
+     */
+
+    public boolean isDebugInfo()
+    {
+        return this.debugInfo;
+    }
+
+
+    /**
+     * Enables or disables the display of debug info.
+     * 
+     * @param debugInfo
+     *            True to enable debug info display, false to disable it
+     */
+
+    public void setDebugInfo(final boolean debugInfo)
+    {
+        this.debugInfo = debugInfo;
     }
 }

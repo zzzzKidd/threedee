@@ -127,7 +127,7 @@ public class Demo
                             .isLighting());
                         break;
                         
-                    case KeyEvent.VK_I:
+                    case KeyEvent.VK_J:
                         renderOptions.setAntiAliasing(!renderOptions
                             .isAntiAliasing());
                         break;
@@ -135,6 +135,11 @@ public class Demo
                     case KeyEvent.VK_B:
                         renderOptions.setBackfaceCulling(!renderOptions
                             .isBackfaceCulling());
+                        break;
+
+                    case KeyEvent.VK_I:
+                        renderOptions.setDebugInfo(!renderOptions
+                            .isDebugInfo());
                         break;
                 }
             }

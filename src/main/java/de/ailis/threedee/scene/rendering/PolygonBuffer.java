@@ -8,6 +8,7 @@ package de.ailis.threedee.scene.rendering;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -56,6 +57,9 @@ public class PolygonBuffer
 
     /** The render options */
     private RenderOptions renderOptions;
+    
+    /** Counts frames per second */
+    private final FpsCounter fpsCounter = new FpsCounter();    
 
 
     /**
@@ -134,7 +138,7 @@ public class PolygonBuffer
     {
         // Pull render options into local variables
         final boolean backfaceCulling = this.renderOptions.isBackfaceCulling();
-        
+
         // Get the transformed vertices
         final List<Vector3d> transformedVertices =
             getTransformedVertices(model, transform);
@@ -215,6 +219,7 @@ public class PolygonBuffer
         final boolean lighting = this.renderOptions.isLighting();
         final boolean solid = this.renderOptions.isSolid();
         final boolean antiAliasing = this.renderOptions.isAntiAliasing();
+        final boolean debugInfo = this.renderOptions.isDebugInfo();
 
         final int[] x = new int[this.maxPolySize + 5];
         final int[] y = new int[this.maxPolySize + 5];
@@ -237,8 +242,11 @@ public class PolygonBuffer
         // draw with integer values instead of floats.
         final AffineTransform oldTransform = g.getTransform();
         g.translate(width / 2, height / 2);
-        g.scale(1.0 / precisionFactor, 1.0 / precisionFactor);
+        if (precisionFactor > 1)
+            g.scale(1.0 / precisionFactor, 1.0 / precisionFactor);
         g.setStroke(new BasicStroke(precisionFactor));
+
+        // Set the default color and enable anti-aliasing if needed
         g.setColor(Color.WHITE);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing
             ? RenderingHints.VALUE_ANTIALIAS_ON
@@ -303,7 +311,34 @@ public class PolygonBuffer
             }
         }
 
+        // Restore the original transformation
         g.setTransform(oldTransform);
+
+        // Draw debug info if needed
+        if (debugInfo) drawDebugInfo(g, width, height);
+    }
+
+
+    /**
+     * Draws debug info to the screen.
+     * 
+     * @param g
+     *            The graphics context to draw to
+     * @param width
+     *            The screen width
+     * @param height
+     *            The screen height
+     */
+
+    private void drawDebugInfo(final Graphics2D g, final int width, final int height)
+    {
+        this.fpsCounter.frame();
+
+        final String text = "Frames/s: " + this.fpsCounter.getFps();
+        
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString(text, 5, 15);
     }
 
 

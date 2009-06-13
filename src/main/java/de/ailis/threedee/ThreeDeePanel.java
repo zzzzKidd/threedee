@@ -7,9 +7,9 @@
 package de.ailis.threedee;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
+import java.awt.image.VolatileImage;
 
 import javax.swing.JPanel;
 
@@ -36,7 +36,7 @@ public class ThreeDeePanel extends JPanel implements Runnable
     private volatile boolean running = false;
 
     /** The image for double-buffering */
-    private BufferedImage buffer;
+    private VolatileImage buffer;
 
     /** The graphics context for drawing on the buffer image */
     private Graphics2D context;
@@ -96,6 +96,9 @@ public class ThreeDeePanel extends JPanel implements Runnable
     {
         this.scene = scene;
         this.camera = camera;
+
+        // We ignore repaints because we do active painting
+        setIgnoreRepaint(true);
     }
 
 
@@ -147,15 +150,11 @@ public class ThreeDeePanel extends JPanel implements Runnable
         {
             gameUpdate();
             gameRender();
-            repaint();
-            try
-            {
-                Thread.sleep(20);
-            }
-            catch (final InterruptedException e)
-            {
-                // Ignored
-            }
+            paintScreen();
+            /*
+             * try { Thread.sleep(10); } catch (final InterruptedException e) {
+             * // Ignored }
+             */
         }
     }
 
@@ -184,16 +183,20 @@ public class ThreeDeePanel extends JPanel implements Runnable
         final int width = getWidth();
         final int height = getHeight();
 
+        // If window size is 0 then do nothing
         if (width == 0 || height == 0) return;
-        if (this.buffer == null || this.buffer.getWidth() != width
+
+        // Create/Re-create the buffer if needed
+        if (this.buffer == null
+            || this.buffer.validate(getGraphicsConfiguration()) == VolatileImage.IMAGE_INCOMPATIBLE
+            || this.buffer.getWidth() != width
             || this.buffer.getHeight() != height)
         {
-            this.buffer =
-                new BufferedImage(getWidth(), getHeight(),
-                    BufferedImage.TYPE_INT_RGB);
+            this.buffer = createVolatileImage(width, height);
             this.context = this.buffer.createGraphics();
         }
 
+        // Clear the buffer
         this.context.setColor(Color.BLACK);
         this.context.fillRect(0, 0, width, height);
 
@@ -205,14 +208,24 @@ public class ThreeDeePanel extends JPanel implements Runnable
 
 
     /**
-     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     * Actively paints the screen.
      */
 
-    @Override
-    public void paintComponent(final Graphics g)
+    public void paintScreen()
     {
-        super.paintComponent(g);
-        if (this.buffer != null) g.drawImage(this.buffer, 0, 0, null);
+        // If buffer is not yet created then do nothing
+        if (this.buffer == null) return;
+
+        // If buffer is no longer valid then do nothing
+        final int validate = this.buffer.validate(getGraphicsConfiguration());
+        if (validate == VolatileImage.IMAGE_RESTORED
+            || validate == VolatileImage.IMAGE_INCOMPATIBLE) return;
+
+        // Draw the buffer to the screen
+        this.getGraphics().drawImage(this.buffer, 0, 0, this);
+        
+        // Sync the display (needed on some systems)
+        Toolkit.getDefaultToolkit().sync();
     }
 
 
