@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.ailis.threedee.RenderOptions;
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.math.Vector3d;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.Polygon;
+import de.ailis.threedee.output.RenderOptions;
 import de.ailis.threedee.scene.light.Light;
 import de.ailis.threedee.scene.light.PointLight;
 import de.ailis.threedee.scene.light.TransformedLight;
@@ -334,11 +334,12 @@ public class PolygonBuffer
     {
         this.fpsCounter.frame();
 
+
         final String text = "Frames/s: " + this.fpsCounter.getFps();
         
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 12));
-        g.drawString(text, 5, 15);
+        g.drawString(text, 0, 15);
     }
 
 

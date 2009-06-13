@@ -4,11 +4,11 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee;
+package de.ailis.threedee.output;
 
 
 /**
- * This class defines how rendering is performed in a ThreeDeePanel.
+ * This class defines how rendering is performed in a ThreeDee output.
  * 
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision$

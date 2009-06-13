@@ -4,7 +4,7 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee;
+package de.ailis.threedee.output.swing;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -13,6 +13,8 @@ import java.awt.image.VolatileImage;
 
 import javax.swing.JPanel;
 
+import de.ailis.threedee.output.RenderOptions;
+import de.ailis.threedee.output.ThreeDeeOutput;
 import de.ailis.threedee.scene.CameraNode;
 import de.ailis.threedee.scene.Scene;
 
@@ -24,7 +26,7 @@ import de.ailis.threedee.scene.Scene;
  * @version $Revision$
  */
 
-public class ThreeDeePanel extends JPanel implements Runnable
+public class ThreeDeePanel extends JPanel implements Runnable, ThreeDeeOutput
 {
     /** Serial version UID */
     private static final long serialVersionUID = 4634446551768489838L;
@@ -58,45 +60,13 @@ public class ThreeDeePanel extends JPanel implements Runnable
 
 
     /**
-     * Constructs a new ThreeDee panel without a scene and camera. You must at
-     * least specify a scene with setScene() to see anything.
+     * Constructs a new ThreeDee panel.
      */
 
     public ThreeDeePanel()
     {
-        this(null, null);
-    }
-
-
-    /**
-     * Constructs a new ThreeDee panel using the specified scene and a fixed
-     * default camera at position 0,0,0 looking in direction 0,0,1.
-     * 
-     * @param scene
-     *            The scene
-     */
-
-    public ThreeDeePanel(final Scene scene)
-    {
-        this(scene, null);
-    }
-
-
-    /**
-     * Constructs a new ThreeDee panel using the specified scene and camera
-     * node.
-     * 
-     * @param scene
-     *            The scene
-     * @param camera
-     *            The camera node
-     */
-
-    public ThreeDeePanel(final Scene scene, final CameraNode camera)
-    {
-        this.scene = scene;
-        this.camera = camera;
-
+        super();
+        
         // We ignore repaints because we do active painting
         setIgnoreRepaint(true);
     }
@@ -148,22 +118,18 @@ public class ThreeDeePanel extends JPanel implements Runnable
         this.running = true;
         while (this.running)
         {
-            gameUpdate();
-            gameRender();
+            update();
+            render();
             paintScreen();
-            /*
-             * try { Thread.sleep(10); } catch (final InterruptedException e) {
-             * // Ignored }
-             */
+            Thread.yield();
         }
     }
-
 
     /**
      * Updates the game state
      */
 
-    private void gameUpdate()
+    private void update()
     {
         // If no scene is set then do nothing
         if (this.scene == null) return;
@@ -178,7 +144,7 @@ public class ThreeDeePanel extends JPanel implements Runnable
      * Renders the game
      */
 
-    private void gameRender()
+    private void render()
     {
         final int width = getWidth();
         final int height = getHeight();
@@ -223,7 +189,7 @@ public class ThreeDeePanel extends JPanel implements Runnable
 
         // Draw the buffer to the screen
         this.getGraphics().drawImage(this.buffer, 0, 0, this);
-        
+
         // Sync the display (needed on some systems)
         Toolkit.getDefaultToolkit().sync();
     }

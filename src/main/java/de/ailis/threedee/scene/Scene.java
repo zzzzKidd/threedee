@@ -9,8 +9,8 @@ package de.ailis.threedee.scene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import de.ailis.threedee.RenderOptions;
 import de.ailis.threedee.math.Matrix4d;
+import de.ailis.threedee.output.RenderOptions;
 import de.ailis.threedee.scene.rendering.PolygonBuffer;
 
 

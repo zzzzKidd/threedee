@@ -17,6 +17,9 @@ import javax.swing.JFrame;
 
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.reader.TDOReader;
+import de.ailis.threedee.output.RenderOptions;
+import de.ailis.threedee.output.ThreeDeeOutput;
+import de.ailis.threedee.output.swing.ThreeDeePanel;
 import de.ailis.threedee.scene.CameraNode;
 import de.ailis.threedee.scene.LightNode;
 import de.ailis.threedee.scene.ModelNode;
@@ -45,10 +48,6 @@ public class Demo
 
     public static void main(final String[] args) throws IOException
     {
-        final JFrame frame = new JFrame("ThreeDee Demo");
-        frame.setSize(new Dimension(800, 600));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         final Scene scene = new Scene();
         // final Cube cube = new Cube(1.25, 1.25, 1.25);
         // final ModelNode node = new ModelNode(cube);
@@ -82,7 +81,8 @@ public class Demo
 
 
         final CameraNode camera = new CameraNode();
-        camera.translate(0, 0, -35);
+        camera.translate(0, 35, 0);
+        camera.rotateX(Math.toRadians(90));
         root.appendChild(camera);
 
         final PointLight light1 = new PointLight(Color.GRAY);
@@ -92,19 +92,26 @@ public class Demo
 
         final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
         shipNode.addUpdater(keyboardUpdater);
-        frame.addKeyListener(keyboardUpdater);
 
-
-        /*
-         * final PointLight light2 = new PointLight(Color.GREEN); final
-         * LightNode lightNode2 = new LightNode(light2);
-         * lightNode2.translate(-5, 5, 0); root.appendChild(lightNode2);
-         */
-        final ThreeDeePanel panel = new ThreeDeePanel(scene, camera);
+        final ThreeDeePanel panel = new ThreeDeePanel();
+        final ThreeDeeOutput output = panel;
+        output.setScene(scene);
+        output.setCamera(camera);
+        final JFrame frame = new JFrame("ThreeDee Demo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(new Dimension(800, 600));
         frame.add(panel, BorderLayout.CENTER);
 
+        // final ThreeDeeFrame frame = new ThreeDeeFrame("ThreeDee Demo");
+        //final ThreeDeeOutput output = frame;
+        // output.setFullScreen(true);
+        // output.setPageFlip(false);
+        //output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        final RenderOptions renderOptions = panel.getRenderOptions();
+        output.setScene(scene);
+        output.setCamera(camera);
+
+        final RenderOptions renderOptions = output.getRenderOptions();
         frame.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -116,17 +123,15 @@ public class Demo
                         renderOptions.setDisplayNormals(!renderOptions
                             .isDisplayNormals());
                         break;
-                        
+
                     case KeyEvent.VK_O:
-                        renderOptions.setSolid(!renderOptions
-                            .isSolid());
+                        renderOptions.setSolid(!renderOptions.isSolid());
                         break;
-                        
+
                     case KeyEvent.VK_L:
-                        renderOptions.setLighting(!renderOptions
-                            .isLighting());
+                        renderOptions.setLighting(!renderOptions.isLighting());
                         break;
-                        
+
                     case KeyEvent.VK_J:
                         renderOptions.setAntiAliasing(!renderOptions
                             .isAntiAliasing());
@@ -144,6 +149,8 @@ public class Demo
                 }
             }
         });
+
+        frame.addKeyListener(keyboardUpdater);
 
         frame.setVisible(true);
     }
