@@ -7,6 +7,7 @@
 package de.ailis.threedee;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -96,12 +97,11 @@ public class Demo
         // output.setScene(scene);
         // output.setCamera(camera);
         // final JFrame frame = new JFrame("ThreeDee Demo");
-        // frame.setSize(new Dimension(800, 600));
         // frame.add(panel, BorderLayout.CENTER);
 
         final ThreeDeeFrame frame = new ThreeDeeFrame("ThreeDee Demo");
         final ThreeDeeOutput output = frame;
-        frame.setFullScreen(true);
+        frame.setFullScreen(false);
         frame.setPageFlip(false);
 
         output.setScene(scene);
@@ -149,6 +149,7 @@ public class Demo
         frame.addKeyListener(keyboardUpdater);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(new Dimension(800, 600));
         frame.setVisible(true);
     }
 }
