@@ -6,9 +6,7 @@
 
 package de.ailis.threedee;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -19,7 +17,7 @@ import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.reader.TDOReader;
 import de.ailis.threedee.output.RenderOptions;
 import de.ailis.threedee.output.ThreeDeeOutput;
-import de.ailis.threedee.output.swing.ThreeDeePanel;
+import de.ailis.threedee.output.swing.ThreeDeeFrame;
 import de.ailis.threedee.scene.CameraNode;
 import de.ailis.threedee.scene.LightNode;
 import de.ailis.threedee.scene.ModelNode;
@@ -93,20 +91,18 @@ public class Demo
         final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
         shipNode.addUpdater(keyboardUpdater);
 
-        final ThreeDeePanel panel = new ThreeDeePanel();
-        final ThreeDeeOutput output = panel;
-        output.setScene(scene);
-        output.setCamera(camera);
-        final JFrame frame = new JFrame("ThreeDee Demo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(800, 600));
-        frame.add(panel, BorderLayout.CENTER);
+        // final ThreeDeePanel panel = new ThreeDeePanel();
+        // final ThreeDeeOutput output = panel;
+        // output.setScene(scene);
+        // output.setCamera(camera);
+        // final JFrame frame = new JFrame("ThreeDee Demo");
+        // frame.setSize(new Dimension(800, 600));
+        // frame.add(panel, BorderLayout.CENTER);
 
-        // final ThreeDeeFrame frame = new ThreeDeeFrame("ThreeDee Demo");
-        //final ThreeDeeOutput output = frame;
-        // output.setFullScreen(true);
-        // output.setPageFlip(false);
-        //output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        final ThreeDeeFrame frame = new ThreeDeeFrame("ThreeDee Demo");
+        final ThreeDeeOutput output = frame;
+        frame.setFullScreen(true);
+        frame.setPageFlip(false);
 
         output.setScene(scene);
         output.setCamera(camera);
@@ -152,6 +148,7 @@ public class Demo
 
         frame.addKeyListener(keyboardUpdater);
 
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }
