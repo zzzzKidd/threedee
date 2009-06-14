@@ -77,7 +77,7 @@ public class Sphere implements Model
      *            The number of sub divisions
      */
 
-    private void build(final int subDivisions)
+    protected void build(final int subDivisions)
     {
         // Calculate the size of the vertices and polygon arrays and create
         // them
@@ -117,12 +117,11 @@ public class Sphere implements Model
             // Process each polygon which was created so far
             for (int i = 0, max = numP; i < max; i++)
             {
-                final Polygon oldTriangle = this.polygons[i];
-
                 // Get the three vertex indexes of the triangle
-                final int a = oldTriangle.getVertex(0);
-                final int b = oldTriangle.getVertex(1);
-                final int c = oldTriangle.getVertex(2);
+                final Polygon polygon = this.polygons[i];
+                final int a = polygon.getVertex(0);
+                final int b = polygon.getVertex(1);
+                final int c = polygon.getVertex(2);
 
                 // Calculate the three mid point vertexes in the triangle
                 final int d = getMidPoint(a, c, cache, numV);
@@ -260,5 +259,17 @@ public class Sphere implements Model
         final Material material = polygon.getMaterial();
         if (material != null) return material;
         return this.material;
+    }
+    
+    
+    /**
+     * Returns the radius of the sphere.
+     * 
+     * @return The radius of the sphere
+     */
+    
+    public double getRadius()
+    {
+        return this.radius;
     }
 }

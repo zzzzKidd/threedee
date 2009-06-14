@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import de.ailis.threedee.model.LoDSphere;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.Sphere;
@@ -82,7 +83,7 @@ public class Demo
         shipNode.appendChild(modelNode);
         //root.appendChild(shipNode);
 
-        final Sphere sphere = new Sphere(10);
+        final Sphere sphere = new LoDSphere(10, 1, 5, 1);
         sphere.setMaterial(new Material(Color.WHITE));
         final ModelNode sphereNode = new ModelNode(sphere);
         sphereNode.translate(0, 0, 50);

@@ -18,6 +18,7 @@ import java.util.List;
 
 import de.ailis.threedee.math.Matrix4d;
 import de.ailis.threedee.math.Vector3d;
+import de.ailis.threedee.model.LoDModel;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.Polygon;
@@ -104,12 +105,10 @@ public class PolygonBuffer
         final double screenInMeters = 0.38;
         final double screenInPixels = Math.min(this.width, this.height);
         final double dpm = screenInPixels / screenInMeters;
-        this.factor = eyeDistance * dpm * this.precisionFactor;
+        this.factor = eyeDistance * dpm;
 
         // Generate the view frustum for clipping the polygons
-        this.frustum =
-            new Frustum(this.width, this.height, this.factor
-                / this.precisionFactor);
+        this.frustum = new Frustum(this.width, this.height, this.factor);
 
     }
 
@@ -153,6 +152,10 @@ public class PolygonBuffer
     {
         // Pull render options into local variables
         final boolean backfaceCulling = this.renderOptions.isBackfaceCulling();
+
+        // Inform the model about the transformation if it is a LoD model
+        if (model instanceof LoDModel)
+            ((LoDModel) model).prepareLoD(transform, this.factor);
 
         // Get the vertex offset
         final int vertexOffset = this.vertices.size();
@@ -246,6 +249,9 @@ public class PolygonBuffer
             g.scale(1.0 / this.precisionFactor, 1.0 / this.precisionFactor);
         g.setStroke(new BasicStroke(this.precisionFactor));
 
+        // Apply precision factor to the perspective scale factor
+        final double factor = this.factor * this.precisionFactor;
+
         // Set the default color and enable anti-aliasing if needed
         g.setColor(Color.WHITE);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing
@@ -268,8 +274,8 @@ public class PolygonBuffer
                 final double dy = vertex.getY();
                 final double dz = vertex.getZ();
 
-                x[v] = (int) Math.round(dx * this.factor / dz);
-                y[v] = (int) Math.round(-dy * this.factor / dz);
+                x[v] = (int) Math.round(dx * factor / dz);
+                y[v] = (int) Math.round(-dy * factor / dz);
             }
 
             if (solid)
@@ -289,14 +295,12 @@ public class PolygonBuffer
                 g.setColor(Color.YELLOW);
                 final Vector3d center = polygon.getCenter(this.vertices);
                 final Vector3d normalEnd = normal.add(center);
-                final int cx =
-                    (int) (center.getX() * this.factor / center.getZ());
-                final int cy =
-                    (int) (-center.getY() * this.factor / center.getZ());
+                final int cx = (int) (center.getX() * factor / center.getZ());
+                final int cy = (int) (-center.getY() * factor / center.getZ());
                 final int cx2 =
-                    (int) (normalEnd.getX() * this.factor / normalEnd.getZ());
+                    (int) (normalEnd.getX() * factor / normalEnd.getZ());
                 final int cy2 =
-                    (int) (-normalEnd.getY() * this.factor / normalEnd.getZ());
+                    (int) (-normalEnd.getY() * factor / normalEnd.getZ());
                 g.drawLine(cx, cy, cx2, cy2);
                 g.setColor(oldColor);
             }

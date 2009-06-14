@@ -24,7 +24,9 @@ public interface LoDModel extends Model
      * @param transform
      *            The transformation which is going to be applied to the model
      *            to display it
+     * @param factor
+     *            The perspective scale factor
      */
 
-    public void prepareLoD(final Matrix4d transform);
+    public void prepareLoD(final Matrix4d transform, double factor);
 }
