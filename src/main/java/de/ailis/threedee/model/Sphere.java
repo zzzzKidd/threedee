@@ -135,12 +135,10 @@ public class Sphere implements Model
                 // Generate the four new polygons. The first one replaces the
                 // one we currently processed. The other three are appended
                 // at the end of the polygon list
-                this.polygons[i] = new Polygon(oldTriangle.getVertex(0), e, d);
-                this.polygons[numP++] =
-                    new Polygon(e, oldTriangle.getVertex(1), f);
+                this.polygons[i] = new Polygon(a, e, d);
+                this.polygons[numP++] = new Polygon(e, b, f);
                 this.polygons[numP++] = new Polygon(d, e, f);
-                this.polygons[numP++] =
-                    new Polygon(d, f, oldTriangle.getVertex(2));
+                this.polygons[numP++] = new Polygon(d, f, c);
             }
         }
     }
@@ -181,7 +179,7 @@ public class Sphere implements Model
         return c;
     }
 
-    
+
     /**
      * @see de.ailis.threedee.model.Model#countPolygons()
      */
