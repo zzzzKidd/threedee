@@ -26,16 +26,16 @@ public interface Transformable
 
     public void setTransform(final Matrix4d transform);
 
-    
+
     /**
      * Returns the current transformation matrix.
      * 
      * @return The current transformation matrix
      */
-     
+
     public Matrix4d getTransform();
-    
-    
+
+
     /**
      * Adds the specified transformation to the current transformation.
      * 
@@ -52,8 +52,8 @@ public interface Transformable
      * This is the same as adding the inverse of the transformation matrix.
      * 
      * @param transform
-     *            The transformation matrix to divide the current
-     *            transformation matrix with
+     *            The transformation matrix to divide the current transformation
+     *            matrix with
      */
 
     public void subTransform(final Matrix4d transform);
@@ -72,7 +72,7 @@ public interface Transformable
 
     public void translate(final double tx, final double ty, final double tz);
 
-    
+
     /**
      * Translates the current transformation matrix by the specified X delta.
      * 
@@ -82,7 +82,7 @@ public interface Transformable
 
     public void translateX(final double t);
 
-    
+
     /**
      * Translates the current transformation matrix by the specified Y delta.
      * 
@@ -92,7 +92,7 @@ public interface Transformable
 
     public void translateY(final double t);
 
-    
+
     /**
      * Translates the current transformation matrix by the specified Z delta.
      * 
@@ -116,7 +116,18 @@ public interface Transformable
 
     public void scale(final double sx, final double sy, final double sz);
 
-    
+
+    /**
+     * Scales the current transformation by the specified factor on all three
+     * axis.
+     * 
+     * @param s
+     *            The scale factor
+     */
+
+    public void scale(final double s);
+
+
     /**
      * Scales the current transformation matrix by the specified X factor.
      * 
@@ -126,7 +137,7 @@ public interface Transformable
 
     public void scaleX(final double s);
 
-    
+
     /**
      * Scales the current transformation matrix by the specified Y factor.
      * 
@@ -136,7 +147,7 @@ public interface Transformable
 
     public void scaleY(final double s);
 
-    
+
     /**
      * Scales the current transformation matrix by the specified Z factor.
      * 
@@ -157,7 +168,7 @@ public interface Transformable
 
     public void rotateX(final double r);
 
-    
+
     /**
      * Rotates the current transformation matrix by the specified angle around
      * the Y axis.
@@ -168,7 +179,7 @@ public interface Transformable
 
     public void rotateY(final double r);
 
-    
+
     /**
      * Rotates the current transformation matrix by the specified angle around
      * the Z axis.

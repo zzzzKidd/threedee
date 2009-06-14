@@ -152,4 +152,23 @@ public class Frustum
         if (clippedPolygon == null) return null;
         return clippedPolygon;
     }
+    
+    
+    /**
+     * Clips the specified vertex. Returns true if the vertex is visible, false
+     * if not.
+     * 
+     * @param vertex
+     *            The vertex to clip
+     * @return True if vertex is visible, false if not
+     */
+    
+    public boolean clip(final Vector3d vertex)
+    {
+        if (!this.left.clip(vertex)) return false;
+        if (!this.right.clip(vertex)) return false;
+        if (!this.top.clip(vertex)) return false;
+        if (!this.bottom.clip(vertex)) return false;
+        return this.near.clip(vertex);
+    }
 }

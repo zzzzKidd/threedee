@@ -113,4 +113,20 @@ public class Plane implements Serializable
         return new ToStringBuilder(this).append("normal", this.normal).append(
             "distance", this.distance).toString();
     }
+
+    
+    /**
+     * Checks if the specified vertex is below or above the plane. If it is
+     * below then false is returned. If it is above then true is returned. This
+     * method can be used to clip vertices by a view frustum for example.
+     * 
+     * @param vertex
+     *            The vertex to clip
+     * @return True if vertex is above the plane, false if not
+     */
+
+    public boolean clip(final Vector3d vertex)
+    {
+        return vertex.multiply(this.normal) - this.distance >= 0;
+    }
 }

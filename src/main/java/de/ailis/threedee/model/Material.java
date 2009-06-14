@@ -36,8 +36,8 @@ public class Material implements Serializable
 
 
     /**
-     * Constructs a new material with a single color which is used for all
-     * color parts except the emissive color (Which is set to black).
+     * Constructs a new material with a single color which is used for all color
+     * parts except the emissive color (Which is set to black).
      * 
      * @param color
      *            The general color
@@ -60,11 +60,28 @@ public class Material implements Serializable
      *            The emissive color
      */
 
-    public Material(final Color ambient, final Color diffuse, final Color emissive)
+    public Material(final Color ambient, final Color diffuse,
+        final Color emissive)
     {
         setAmbient(ambient);
         setDiffuse(diffuse);
         setEmissive(emissive);
+    }
+
+    
+    /**
+     * Constructs a new material by copying the data from the specified
+     * material.
+     * 
+     * @param material
+     *            The material from which data is copied
+     */
+    
+    public Material(final Material material)
+    {
+        this.ambient = material.ambient;
+        this.diffuse = material.diffuse;
+        this.emissive = material.emissive;
     }
 
 
@@ -132,13 +149,12 @@ public class Material implements Serializable
     }
 
 
-    
     /**
      * Returns the diffuse color.
      * 
      * @return The diffuse color
      */
-    
+
     public Color getDiffuse()
     {
         return this.diffuse;

@@ -78,13 +78,13 @@ public class Scene
 
         // Initialize the polygon buffer and recursively render the scene
         // nodes into it
-        this.buffer.clear();
+        this.buffer.prepare(width, height);
         this.buffer.setGlobalAmbient(this.globalAmbient);
         this.buffer.setRenderOptions(renderOptions);
         this.rootNode.render(this.buffer, rootTransform);
 
         // Render the polygon buffer onto the screen
-        this.buffer.render(g, width, height);
+        this.buffer.render(g);
     }
 
 

@@ -7,6 +7,7 @@
 package de.ailis.threedee.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import de.ailis.threedee.scene.rendering.Plane;
  * @version $Revision$
  */
 
-public class Polygon implements Serializable
+public class Polygon implements Serializable, Comparable<Polygon>
 {
     /** Serial version UID */
     private static final long serialVersionUID = 8001755230510072089L;
@@ -31,29 +32,17 @@ public class Polygon implements Serializable
     private final int[] vertices;
 
     /** The material used by this polygon */
-    private Material material;
+    private Material material = null;
+
+    /**
+     * The average Z position of the polygon. This has only a valid value when
+     * the updateAverageZ() method was called before
+     */
+    private double averageZ;
 
 
     /**
      * Constructs a new polygon with a polygon-specific material.
-     * 
-     * @param material
-     *            The material used by this polygon. Can be null to specify that
-     *            this polygon has no special material and should use the
-     *            material of the model
-     * @param vertices
-     *            The referenced vertices
-     */
-
-    public Polygon(final Material material, final int... vertices)
-    {
-        this.material = material;
-        this.vertices = vertices;
-    }
-
-
-    /**
-     * Constructs a new polygon without a polygon-specific material.
      * 
      * @param vertices
      *            The referenced vertices
@@ -61,7 +50,7 @@ public class Polygon implements Serializable
 
     public Polygon(final int... vertices)
     {
-        this(null, vertices);
+        this.vertices = vertices;
     }
 
 
@@ -208,11 +197,90 @@ public class Polygon implements Serializable
             final int c = line.getB();
             if (c != b) newVertices[j++] = c;
         }
-        
+
         // Return null if the polygon is clipped away completely
         if (j == 0) return null;
 
         // Return the clipped polygon
-        return new Polygon(this.material, Arrays.copyOf(newVertices, j));
+        final Polygon result = new Polygon(Arrays.copyOf(newVertices, j));
+        result.setMaterial(this.material);
+        return result;
+    }
+
+
+    /**
+     * Updates the average Z value.
+     * 
+     * @param vertices
+     *            The vertices referenced by this polygon
+     */
+
+    public void updateAverageZ(final List<Vector3d> vertices)
+    {
+        double averageZ = 0;
+        final int vertexCount = countVertices();
+        for (int v = 0; v < vertexCount; v++)
+        {
+            averageZ += vertices.get(getVertex(v)).getZ();
+        }
+        averageZ /= vertexCount;
+        this.averageZ = averageZ;
+    }
+
+
+    /**
+     * Converts this polygon into a list of triangles.
+     * 
+     * @return The list with triangles
+     */
+
+    public List<Polygon> triangulize()
+    {
+        final int max = this.vertices.length - 2;
+        final List<Polygon> triangles = new ArrayList<Polygon>(max);
+        for (int i = 0; i < max; i++)
+        {
+            final Polygon triangle =
+                new Polygon(this.vertices[0], this.vertices[i + 1],
+                    this.vertices[i + 2]);
+            triangle.material = this.material;
+            triangle.averageZ = this.averageZ;
+            triangles.add(triangle);
+        }
+        return triangles;
+    }
+
+
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+
+    @Override
+    public int compareTo(final Polygon o)
+    {
+        return Double.compare(o.averageZ, this.averageZ);
+    }
+
+
+    /**
+     * Returns a clone of this polygon with the vertex indices translated by the
+     * specified offset. This is needed if multiple vertex lists are appended to
+     * a single list so multiple polygons reference the same vertex list.
+     * 
+     * @param offset
+     *            The offset to add to all vertex indices
+     * @return The polygon with added vertex offset
+     */
+
+    public Polygon addVertexOffset(final int offset)
+    {
+        final int vertices[] = new int[this.vertices.length];
+        for (int i = this.vertices.length - 1; i >= 0; i--)
+        {
+            vertices[i] = this.vertices[i] + offset;
+        }
+        final Polygon polygon = new Polygon(vertices);
+        polygon.setMaterial(this.material);
+        return polygon;
     }
 }

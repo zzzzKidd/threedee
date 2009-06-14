@@ -42,8 +42,7 @@ public class PolygonBuffer
     private final List<Vector3d> vertices = new ArrayList<Vector3d>();
 
     /** The polygons in the buffer (Sorted by Z coordinate) */
-    private final List<TransformedPolygon> polygons =
-        new ArrayList<TransformedPolygon>();
+    private final List<Polygon> polygons = new ArrayList<Polygon>();
 
     /** The polygons in the buffer (Sorted by Z coordinate) */
     private final List<TransformedLight> lights =
@@ -57,21 +56,61 @@ public class PolygonBuffer
 
     /** The render options */
     private RenderOptions renderOptions;
-    
+
     /** Counts frames per second */
-    private final FpsCounter fpsCounter = new FpsCounter();    
+    private final FpsCounter fpsCounter = new FpsCounter();
+
+    /** The screen width */
+    private int width;
+
+    /** The screen height */
+    private int height;
+
+    /**
+     * Precision factor to smooth out rounding errors when converting double
+     * coordinates to integer screen coordinates
+     */
+    private final int precisionFactor = 10;
+
+    /** The factor used for scaling the perspective view transformation */
+    private double factor;
+
+    /** The view frustum */
+    private Frustum frustum;
 
 
     /**
-     * Clears the buffer so it can be reused.
+     * Prepares the polygon buffer for the next use.
+     * 
+     * @param width
+     *            The output width in pixels
+     * @param height
+     *            The output height in pixels
      */
 
-    public void clear()
+    public void prepare(final int width, final int height)
     {
+        // Reset the buffer
         this.vertices.clear();
         this.polygons.clear();
         this.lights.clear();
         this.maxPolySize = 0;
+
+        // Remember output size
+        this.width = width;
+        this.height = height;
+
+        final double eyeDistance = 0.5; // Eye is 0.5 meters from screen
+        final double screenInMeters = 0.38;
+        final double screenInPixels = Math.min(this.width, this.height);
+        final double dpm = screenInPixels / screenInMeters;
+        this.factor = eyeDistance * dpm * this.precisionFactor;
+
+        // Generate the view frustum for clipping the polygons
+        this.frustum =
+            new Frustum(this.width, this.height, this.factor
+                / this.precisionFactor);
+
     }
 
 
@@ -102,30 +141,6 @@ public class PolygonBuffer
 
 
     /**
-     * Transforms the vertices of the specified model with the specified
-     * transformation matrix and returns the list with transformed vertices.
-     * 
-     * @param model
-     *            The model to add
-     * @param transform
-     *            The transformation matrix to use
-     * @return The list with transformed vertices
-     */
-
-    private List<Vector3d> getTransformedVertices(final Model model,
-        final Matrix4d transform)
-    {
-        final int max = model.countVertices();
-        final List<Vector3d> vertices = new ArrayList<Vector3d>(max);
-
-        // Transform the vertices and return them
-        for (int i = 0; i < max; i++)
-            vertices.add(model.getVertex(i).multiply(transform));
-        return vertices;
-    }
-
-
-    /**
      * Adds the specified model to the polygon buffer.
      * 
      * @param model
@@ -139,49 +154,47 @@ public class PolygonBuffer
         // Pull render options into local variables
         final boolean backfaceCulling = this.renderOptions.isBackfaceCulling();
 
-        // Get the transformed vertices
-        final List<Vector3d> transformedVertices =
-            getTransformedVertices(model, transform);
+        // Get the vertex offset
+        final int vertexOffset = this.vertices.size();
+
+        // Transform the vertices and add them to the buffer
+        for (int i = 0, max = model.countVertices(); i < max; i++)
+            this.vertices.add(model.getVertex(i).multiply(transform));
 
         // Create the transformed polygons and add them to the buffer
-        boolean added = false;
-        final int vertexOffset = this.vertices.size();
         for (int i = 0, max = model.countPolygons(); i < max; i++)
         {
-            final Polygon polygon = model.getPolygon(i);
+            final Polygon polygon =
+                model.getPolygon(i).addVertexOffset(vertexOffset);
 
             // Perform back-face culling
             if (backfaceCulling)
             {
-                if (polygon.getNormal(transformedVertices).multiply(
-                    transformedVertices.get(polygon.getVertex(0))) > 0)
-                    continue;
+                if (polygon.getNormal(this.vertices).multiply(
+                    this.vertices.get(polygon.getVertex(0))) > 0) continue;
             }
 
-            // So we use at least one polygon. So add the transformed vertices
-            // to the buffer
-            if (!added)
-            {
-                added = true;
-                this.vertices.addAll(transformedVertices);
-            }
+            // Clip the polygon with the frustum
+            final Polygon clippedPolygon =
+                this.frustum.clip(polygon, this.vertices);
 
-            final int vertexCount = polygon.countVertices();
-            if (vertexCount > this.maxPolySize)
-                this.maxPolySize = vertexCount;
-            final int[] vertices = new int[vertexCount];
+            // If polygon was clipped completely away then skip it
+            if (clippedPolygon == null) continue;
 
-            double averageZ = 0;
-            for (int v = 0; v < vertexCount; v++)
-            {
-                final int vertex = polygon.getVertex(v);
-                final int newVertex = vertex + vertexOffset;
-                vertices[v] = newVertex;
-                averageZ += this.vertices.get(newVertex).getZ();
-            }
-            averageZ /= vertexCount;
-            this.polygons.add(new TransformedPolygon(model
-                .getMaterial(polygon), averageZ, vertices));
+            // Flatten the material (Because we loose the connection to the
+            // model here)
+            clippedPolygon.setMaterial(model.getMaterial(clippedPolygon));
+
+            // Calculate the average Z position of the polygon so it can be
+            // z-sorted later
+            clippedPolygon.updateAverageZ(this.vertices);
+
+            // Update the maximum polygon size
+            this.maxPolySize =
+                Math.max(this.maxPolySize, clippedPolygon.countVertices());
+
+            // Add the polygon to the buffer
+            this.polygons.add(clippedPolygon);
         }
     }
 
@@ -206,13 +219,9 @@ public class PolygonBuffer
      * 
      * @param g
      *            The graphics context
-     * @param width
-     *            The output width in pixels
-     * @param height
-     *            The output height in pixels
      */
 
-    public void render(final Graphics2D g, final int width, final int height)
+    public void render(final Graphics2D g)
     {
         // Pull render options in local variables
         final boolean displayNormals = this.renderOptions.isDisplayNormals();
@@ -224,15 +233,6 @@ public class PolygonBuffer
         final int[] x = new int[this.maxPolySize + 5];
         final int[] y = new int[this.maxPolySize + 5];
 
-        // Precision factor to smooth out rounding errors when converting double
-        // coordinates to integer screen coordinates
-        final int precisionFactor = 10;
-        final double eyeDistance = 0.5; // Eye is 0.5 meters from screen
-        final double screenInMeters = 0.38;
-        final double screenInPixels = Math.min(width, height);
-        final double dpm = screenInPixels / screenInMeters;
-        final double factor = eyeDistance * dpm * precisionFactor;
-
         // Do Z-sorting
         Collections.sort(this.polygons);
 
@@ -241,10 +241,10 @@ public class PolygonBuffer
         // smoothes out rounding errors which occur because Java2D can only
         // draw with integer values instead of floats.
         final AffineTransform oldTransform = g.getTransform();
-        g.translate(width / 2, height / 2);
-        if (precisionFactor > 1)
-            g.scale(1.0 / precisionFactor, 1.0 / precisionFactor);
-        g.setStroke(new BasicStroke(precisionFactor));
+        g.translate(this.width / 2, this.height / 2);
+        if (this.precisionFactor > 1)
+            g.scale(1.0 / this.precisionFactor, 1.0 / this.precisionFactor);
+        g.setStroke(new BasicStroke(this.precisionFactor));
 
         // Set the default color and enable anti-aliasing if needed
         g.setColor(Color.WHITE);
@@ -252,35 +252,24 @@ public class PolygonBuffer
             ? RenderingHints.VALUE_ANTIALIAS_ON
             : RenderingHints.VALUE_ANTIALIAS_OFF);
 
-        // Generate the view frustum for clipping the polygons
-        final Frustum frustum =
-            new Frustum(width, height, factor / precisionFactor);
-
         // Draw the polygons
         for (final Polygon polygon: this.polygons)
         {
-            // Clip the polygon with the frustum
-            final Polygon clippedPolygon =
-                frustum.clip(polygon, this.vertices);
-
-            // If polygon was clipped completely away then skip it
-            if (clippedPolygon == null) continue;
-
-            // Project the 3D vertices into 2D coordinates and fill the x and y
-            // arrays with them which will be used by the fillPolygon() method
-            // to draw it
-            final int vertexCount = clippedPolygon.countVertices();
+            // Project the 3D vertices into 2D coordinates and fill the x
+            // and y arrays with them which will be used by the fillPolygon()
+            // method to draw it
+            final int vertexCount = polygon.countVertices();
             for (int v = 0; v < vertexCount; v++)
             {
                 final Vector3d vertex =
-                    this.vertices.get(clippedPolygon.getVertex(v));
+                    this.vertices.get(polygon.getVertex(v));
 
                 final double dx = vertex.getX();
                 final double dy = vertex.getY();
                 final double dz = vertex.getZ();
 
-                x[v] = (int) Math.round(dx * factor / dz);
-                y[v] = (int) Math.round(-dy * factor / dz);
+                x[v] = (int) Math.round(dx * this.factor / dz);
+                y[v] = (int) Math.round(-dy * this.factor / dz);
             }
 
             if (solid)
@@ -300,12 +289,14 @@ public class PolygonBuffer
                 g.setColor(Color.YELLOW);
                 final Vector3d center = polygon.getCenter(this.vertices);
                 final Vector3d normalEnd = normal.add(center);
-                final int cx = (int) (center.getX() * factor / center.getZ());
-                final int cy = (int) (-center.getY() * factor / center.getZ());
+                final int cx =
+                    (int) (center.getX() * this.factor / center.getZ());
+                final int cy =
+                    (int) (-center.getY() * this.factor / center.getZ());
                 final int cx2 =
-                    (int) (normalEnd.getX() * factor / normalEnd.getZ());
+                    (int) (normalEnd.getX() * this.factor / normalEnd.getZ());
                 final int cy2 =
-                    (int) (-normalEnd.getY() * factor / normalEnd.getZ());
+                    (int) (-normalEnd.getY() * this.factor / normalEnd.getZ());
                 g.drawLine(cx, cy, cx2, cy2);
                 g.setColor(oldColor);
             }
@@ -315,7 +306,7 @@ public class PolygonBuffer
         g.setTransform(oldTransform);
 
         // Draw debug info if needed
-        if (debugInfo) drawDebugInfo(g, width, height);
+        if (debugInfo) drawDebugInfo(g, this.width, this.height);
     }
 
 
@@ -330,13 +321,14 @@ public class PolygonBuffer
      *            The screen height
      */
 
-    private void drawDebugInfo(final Graphics2D g, final int width, final int height)
+    private void drawDebugInfo(final Graphics2D g, final int width,
+        final int height)
     {
         this.fpsCounter.frame();
 
 
         final String text = "Frames/s: " + this.fpsCounter.getFps();
-        
+
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.drawString(text, 0, 15);

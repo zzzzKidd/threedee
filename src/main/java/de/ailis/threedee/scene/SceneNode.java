@@ -383,6 +383,17 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
     {
         this.transform = this.transform.scale(sx, sy, sz);
     }
+    
+    
+    /**
+     * @see de.ailis.threedee.math.Transformable#scale(double)
+     */
+    
+    @Override
+    public void scale(final double s)
+    {
+        this.transform = this.transform.scale(s);
+    }
 
 
     /**

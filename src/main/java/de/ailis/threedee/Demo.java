@@ -14,7 +14,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
+import de.ailis.threedee.model.Sphere;
 import de.ailis.threedee.model.reader.TDOReader;
 import de.ailis.threedee.output.RenderOptions;
 import de.ailis.threedee.output.ThreeDeeOutput;
@@ -71,17 +73,25 @@ public class Demo
 
         final Model model =
             TDOReader.read(Demo.class.getResourceAsStream("/worcem.tdo"));
+
         final SceneNode shipNode = new SceneNode();
         final ModelNode modelNode = new ModelNode(model);
+        // modelNode.scale(15);
         modelNode.rotateY(Math.toRadians(180));
         // modelNode.addUpdater(new YawUpdater(Math.toRadians(22.5)));
         shipNode.appendChild(modelNode);
-        root.appendChild(shipNode);
+        //root.appendChild(shipNode);
+
+        final Sphere sphere = new Sphere(10);
+        sphere.setMaterial(new Material(Color.WHITE));
+        final ModelNode sphereNode = new ModelNode(sphere);
+        sphereNode.translate(0, 0, 50);
+        root.appendChild(sphereNode);
 
 
         final CameraNode camera = new CameraNode();
-        camera.translate(0, 35, 0);
-        camera.rotateX(Math.toRadians(90));
+        camera.translate(0, 0, -35);
+        camera.rotateX(Math.toRadians(0));
         root.appendChild(camera);
 
         final PointLight light1 = new PointLight(Color.GRAY);
@@ -90,7 +100,7 @@ public class Demo
         root.appendChild(lightNode1);
 
         final KeyboardUpdater keyboardUpdater = new KeyboardUpdater();
-        shipNode.addUpdater(keyboardUpdater);
+        camera.addUpdater(keyboardUpdater);
 
         // final ThreeDeePanel panel = new ThreeDeePanel();
         // final ThreeDeeOutput output = panel;
@@ -108,6 +118,9 @@ public class Demo
         output.setCamera(camera);
 
         final RenderOptions renderOptions = output.getRenderOptions();
+        // renderOptions.setBackfaceCulling(false);
+        //renderOptions.setSolid(false);
+        renderOptions.setAntiAliasing(false);
         frame.addKeyListener(new KeyAdapter()
         {
             @Override

@@ -237,6 +237,21 @@ public class Vector3d implements Serializable
     {
         return new Vector3d(this.x / f, this.y / f, this.z / f);
     }
+    
+    
+    /**
+     * Divides this vector with the specified matrix and returns the
+     * resulting vector.
+     * 
+     * @param m
+     *            The matrix to divide this vector with
+     * @return The resulting vector
+     */
+
+    public Vector3d divide(final Matrix4d m)
+    {
+        return m.divide(this);
+    }
 
 
     /**
@@ -285,5 +300,21 @@ public class Vector3d implements Serializable
     public double getAngle(final Vector3d v)
     {
         return Math.acos(toUnit().multiply(v.toUnit()));
+    }
+
+
+    /**
+     * Calculates and returns the vector in the middle of this vector and the
+     * specified one.
+     * 
+     * @param v
+     *            The other vector
+     * @return The vector in the middle
+     */
+
+    public Vector3d midPoint(final Vector3d v)
+    {
+        return new Vector3d(this.x - (this.x - v.x) / 2, this.y - (this.y - v.y) / 2,
+            this.z - (this.z - v.z) / 2);
     }
 }

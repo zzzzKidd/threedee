@@ -76,7 +76,18 @@ public class TDOReader
                         {
                             vertices[i] = vertexNames.indexOf(parts3[i].trim());
                         }
-                        model.addPolygon(new Polygon(new Material(matColor, matColor, emissive), vertices));
+                        
+                        final Polygon polygon = new Polygon(vertices);
+                      polygon.setMaterial(new Material(matColor, matColor, emissive));
+                      model.addPolygon(polygon);
+                        
+//                        for (int i = 0; i < vertices.length - 2; i++)
+//                        {
+//                            final Polygon polygon = new Polygon(vertices[0], vertices[i + 1], vertices[i + 2]);
+//                            polygon.setMaterial(new Material(matColor, matColor, emissive));
+//                            model.addPolygon(polygon);
+//                        }
+
                         break;
                 }
             }

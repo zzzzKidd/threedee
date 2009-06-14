@@ -699,6 +699,20 @@ public class Matrix4d implements Serializable
             this.m20 * x + this.m21 * y + this.m22 * z + this.m23);
     }
 
+    /**
+     * Divides the specified vector with this matrix and returns the
+     * resulting vector.
+     * 
+     * @param v
+     *            The vector to divide by this matrix
+     * @return The resulting vector
+     */
+
+    public Vector3d divide(final Vector3d v)
+    {
+        return invert().multiply(v);
+    }
+
 
     /**
      * Translates the current matrix by the specified deltas and returns the
@@ -827,7 +841,21 @@ public class Matrix4d implements Serializable
         return multiply(Matrix4d.scaling(sx, sy, sz));
     }
 
+    
+    /**
+     * Scales the current matrix by the specified factor.
+     * 
+     * @param s
+     *            The scale factor
+     * @return The resulting matrix
+     */
 
+    public Matrix4d scale(final double s)
+    {
+        return multiply(Matrix4d.scaling(s));
+    }
+    
+    
     /**
      * Scales the current matrix by the specified X factor and returns the
      * resulting matrix.
