@@ -11,75 +11,19 @@
   <artifactId>threedee-demo</artifactId>
   <packaging>jar</packaging>
   <name>ThreeDee Demos</name>
-  <version>1.0.0-SNAPSHOT</version>
-  <url>http://www.ailis.de/~k/projects/threedee-demo</url>
   <description>
     Provides some ThreeDee demos.
   </description>
-  <inceptionYear>2010</inceptionYear>
-  <organization>
-    <name>Klaus Reimer</name>
-    <url>http://www.ailis.de/~k/</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>LICENSE.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-    
-  <developers>
-    <developer>
-      <id>k</id>
-      <name>Klaus Reimer</name>
-      <email>k@ailis.de</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-      <timezone>+1</timezone>
-      <url>http://www.ailis.de/~k/</url>
-    </developer>        
-  </developers>
-   
-  <scm>
-    <url>http://www.ailis.de/~k/hg/java/threedee-demo</url>
-    <connection>scm:hg:http://www.ailis.de/~k/hg/java/threedee-demo</connection>
-    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/threedee-demo</developerConnection>
-  </scm>  
-   
-  <repositories> 
-    <repository>
-      <id>ailis-releases</id>
-      <name>Ailis Maven Releases</name>
-      <url>http://www.ailis.de/nexus/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>ailis-snapshots</id>
-      <name>Ailis Maven Snapshots</name>
-      <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
-      <snapshots />
-    </repository>
-  </repositories>
-  
-  <distributionManagement>
-    <site>
-      <id>project-website</id>
-      <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee-demo/</url>
-    </site>
-  </distributionManagement>  
   
   <dependencies>
     <dependency>
-      <groupId>de.ailis.threedee</groupId>
-      <artifactId>threedee-jogl</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency> 
     <dependency>
       <groupId>de.ailis.threedee</groupId>
-      <artifactId>threedee-lwjgl</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <artifactId>threedee-jogl</artifactId>
     </dependency>
   </dependencies>  
 
