@@ -2,70 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <artifactId>maven-java</artifactId>
+    <groupId>de.ailis.maven</groupId>
+    <version>2</version>
+  </parent>
+    
   <groupId>de.ailis.threedee</groupId>
   <artifactId>threedee</artifactId>
+  <packaging>pom</packaging>
   <name>ThreeDee</name>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <version>1.0.0-SNAPSHOT</version>
   <url>http://www.ailis.de/~k/projects/threedee</url>
   <description>
-    A simple 3D engine for Java.
+    A scene-graph based 3D engine for Java based on OpenGL.
   </description>
-  <inceptionYear>2009</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
   <organization>
     <name>Klaus Reimer</name>
     <url>http://www.ailis.de/~k/</url>
   </organization>
-  
-  <scm>
-    <url>https://scm.ailis.de/viewvc/java/threedee/trunk/?root=svn</url>
-    <connection>scm:svn:https://scm.ailis.de/svn/java/threedee/trunk</connection>
-  </scm>
-  
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <configuration>
-            <archive>
-              <manifest>
-                <mainClass>de.ailis.threedee.Demo
-                </mainClass>
-                <packageName>de.ailis.threedee</packageName>
-                <addClasspath>true</addClasspath>
-              </manifest>
-            </archive>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-        <plugin> 
-          <artifactId>maven-assembly-plugin</artifactId>
-          <configuration>
-            <descriptors>
-              <descriptor>src/main/assembly/windows.xml</descriptor>
-              <descriptor>src/main/assembly/unix.xml</descriptor>
-              <descriptor>src/main/assembly/macosx.xml</descriptor>
-              <descriptor>src/main/assembly/src.xml</descriptor>
-            </descriptors>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-report-plugin</artifactId>
-          <groupId>org.apache.maven.plugins</groupId>
-        </plugin>   
-      </plugins>
-    </pluginManagement>
-  </build>
   
   <licenses>
     <license>
@@ -75,122 +32,56 @@
     </license>
   </licenses>
     
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>taglist-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <links>
-            <link>http://java.sun.com/javase/6/docs/api/</link>
-          </links>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-         <reportSets>
-           <reportSet>
-             <reports>
-               <report>dependencies</report>
-               <report>project-team</report>
-               <report>license</report>
-               <report>scm</report>
-             </reports>
-           </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-pmd-plugin</artifactId>
-         <configuration>
-            <targetJdk>1.6</targetJdk>
-            <rulesets>
-               <ruleset>/rulesets/basic.xml</ruleset>
-            </rulesets>
-            <format>xml</format>
-            <linkXref>true</linkXref>
-            <sourceEncoding>UTF-8</sourceEncoding>
-            <minimumTokens>100</minimumTokens>
-         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>2.0-beta-6</version>
-        <configuration>
-          <locales>en</locales>
-          <inputEncoding>UTF-8</inputEncoding>
-          <outputEncoding>UTF-8</outputEncoding>
-        </configuration>
-      </plugin>      
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changes-maven-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
-  
-  <ciManagement>
-    <system>Hudson</system>
-    <url>https://hudson.scm.ailis.de/job/threedee/</url>
-  </ciManagement>
-  
   <developers>
     <developer>
       <id>k</id>
       <name>Klaus Reimer</name>
       <email>k@ailis.de</email>
       <roles>
-        <role>Architect</role>
+        <role>Developer</role>
       </roles>
-      <timezone>+2</timezone>
+      <timezone>+1</timezone>
       <url>http://www.ailis.de/~k/</url>
     </developer>        
   </developers>
-
-  <distributionManagement>
+   
+  <scm>
+    <url>http://www.ailis.de/~k/hg/java/threedee</url>
+    <connection>scm:hg:http://www.ailis.de/~k/hg/java/threedee</connection>
+    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/threedee</developerConnection>
+  </scm>  
+  
+  <repositories>  
     <repository>
-      <id>ailis-ssh</id>
-      <name>Ailis Maven Repository</name>
-      <url>scpexe://k@ailis.de/home/k/public_html/maven2/</url>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://www.ailis.de/nexus/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
+      <snapshots />
+    </repository>
+  </repositories>
+   
+  <distributionManagement>
     <site>
-      <id>ailis-ssh</id>
+      <id>project-website</id>
       <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee/</url>
     </site>
   </distributionManagement>
-    
+       
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.4</version>
-    </dependency>
   </dependencies>
+  <modules>
+  	<module>threedee-collada</module>
+  </modules>
   
 </project>

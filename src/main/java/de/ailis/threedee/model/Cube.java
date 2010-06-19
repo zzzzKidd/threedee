@@ -1,158 +1,66 @@
 /*
- * $Id$
- * Copyright (C) 2009 Klaus Reimer <k@ailis.de>
- * See LICENSE.txt file for licensing information.
+ * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
+ * See LICENSE.txt for licensing information.
  */
 
 package de.ailis.threedee.model;
 
-import de.ailis.threedee.math.Vector3d;
+import de.ailis.threedee.model.builder.ModelBuilder;
+import de.ailis.threedee.opengl.GL;
 
 
 /**
- * A cube model.
- * 
+ * A simple cube model.
+ *
  * @author Klaus Reimer (k@ailis.de)
- * @version $Revision$
+ * @version $Revision: 84727 $
  */
 
-public class Cube implements Model
+public class Cube
 {
-    /** Serial version UID */
-    private static final long serialVersionUID = 9047361878812248430L;
-
-    /** The vertices */
-    private final Vector3d[] vertices;
-
-    /** The polygons */
-    private final Polygon[] polygons;
-
-    /** The material */
-    private Material material = Material.DEFAULT;
-
-
     /**
-     * Constructs a new cube with the specified sizes.
-     * 
+     * Builds the model objects and returns them.
+     *
      * @param xRadius
      *            The X radius
      * @param yRadius
      *            The Y radius
      * @param zRadius
      *            The Z radius
+     * @return The model objects
      */
 
-    public Cube(final double xRadius, final double yRadius,
-        final double zRadius)
+    public static Model buildCube(final float xRadius,
+            final float yRadius, final float zRadius)
     {
-        this.vertices =
-            new Vector3d[] { new Vector3d(-xRadius, yRadius, zRadius),
-                new Vector3d(-xRadius, yRadius, -zRadius),
-                new Vector3d(xRadius, yRadius, -zRadius),
-                new Vector3d(xRadius, yRadius, zRadius),
-                new Vector3d(-xRadius, -yRadius, zRadius),
-                new Vector3d(-xRadius, -yRadius, -zRadius),
-                new Vector3d(xRadius, -yRadius, -zRadius),
-                new Vector3d(xRadius, -yRadius, zRadius) };
-        this.polygons =
-            new Polygon[] { new Polygon(0, 1, 2, 3), new Polygon(7, 3, 2, 6),
-                new Polygon(4, 7, 6, 5), new Polygon(1, 0, 4, 5),
-                new Polygon(0, 3, 7, 4), new Polygon(6, 2, 1, 5) };
-    }
+        final ModelBuilder builder = new ModelBuilder();
+        builder.addVertex(-xRadius, yRadius, -zRadius);
+        builder.addVertex(-xRadius, yRadius, zRadius);
+        builder.addVertex(xRadius, yRadius, zRadius);
+        builder.addVertex(xRadius, yRadius, -zRadius);
+        builder.addVertex(-xRadius, -yRadius, -zRadius);
+        builder.addVertex(-xRadius, -yRadius, zRadius);
+        builder.addVertex(xRadius, -yRadius, zRadius);
+        builder.addVertex(xRadius, -yRadius, -zRadius);
 
+        builder.addElement(GL.GL_TRIANGLES, 0, 1, 2);
+        builder.addElement(GL.GL_TRIANGLES, 2, 3, 0);
 
-    /**
-     * Constructs a new cube with the specified size.
-     * 
-     * @param radius
-     *            The radius
-     */
+        builder.addElement(GL.GL_TRIANGLES, 0, 4, 5);
+        builder.addElement(GL.GL_TRIANGLES, 5, 1, 0);
 
-    public Cube(final double radius)
-    {
-        this(radius, radius, radius);
-    }
+        builder.addElement(GL.GL_TRIANGLES, 1, 5, 6);
+        builder.addElement(GL.GL_TRIANGLES, 6, 2, 1);
 
+        builder.addElement(GL.GL_TRIANGLES, 2, 6, 7);
+        builder.addElement(GL.GL_TRIANGLES, 7, 3, 2);
 
-    /**
-     * @see de.ailis.threedee.model.Model#countPolygons()
-     */
+        builder.addElement(GL.GL_TRIANGLES, 0, 3, 7);
+        builder.addElement(GL.GL_TRIANGLES, 7, 4, 0);
 
-    @Override
-    public int countPolygons()
-    {
-        return this.polygons.length;
-    }
+        builder.addElement(GL.GL_TRIANGLES, 5, 4, 7);
+        builder.addElement(GL.GL_TRIANGLES, 7, 6, 5);
 
-
-    /**
-     * @see de.ailis.threedee.model.Model#countVertices()
-     */
-
-    @Override
-    public int countVertices()
-    {
-        return this.vertices.length;
-    }
-
-
-    /**
-     * @see de.ailis.threedee.model.Model#getPolygon(int)
-     */
-
-    @Override
-    public Polygon getPolygon(final int index)
-    {
-        return this.polygons[index];
-    }
-
-
-    /**
-     * @see de.ailis.threedee.model.Model#getVertex(int)
-     */
-
-    @Override
-    public Vector3d getVertex(final int index)
-    {
-        return this.vertices[index];
-    }
-
-
-    /**
-     * Sets the material.
-     * 
-     * @param material
-     *            The material to set
-     */
-
-    public void setMaterial(final Material material)
-    {
-        if (material == null)
-            throw new IllegalArgumentException("material must not be null");
-        this.material = material;
-    }
-
-
-    /**
-     * @see de.ailis.threedee.model.Model#getMaterial()
-     */
-
-    @Override
-    public Material getMaterial()
-    {
-        return this.material;
-    }
-
-
-    /**
-     * @see Model#getMaterial(Polygon)
-     */
-
-    @Override
-    public Material getMaterial(final Polygon polygon)
-    {
-        final Material material = polygon.getMaterial();
-        if (material != null) return material;
-        return this.material;
+        return builder.build();
     }
 }

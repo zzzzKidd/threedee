@@ -1,0 +1,5 @@
+
+syntax: regexp
+^threedee-collada/target$
+syntax: regexp
+^target$

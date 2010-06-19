@@ -1,7 +1,6 @@
 /*
- * $Id$
- * Copyright (C) 2009 Klaus Reimer <k@ailis.de>
- * See LICENSE.txt file for licensing information.
+ * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
+ * See LICENSE.txt for licensing information.
  */
 
 package de.ailis.threedee.scene;
@@ -9,10 +8,12 @@ package de.ailis.threedee.scene;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import de.ailis.threedee.entities.SceneNode;
+
 
 /**
  * A scene node iterator.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision$
  */
@@ -25,7 +26,7 @@ public class SceneNodeIterator implements Iterator<SceneNode>
 
     /**
      * Constructs a new node iterator starting with the specified node.
-     * 
+     *
      * @param node
      *            The starting node of the iterator
      */
@@ -40,7 +41,6 @@ public class SceneNodeIterator implements Iterator<SceneNode>
      * @see java.util.Iterator#hasNext()
      */
 
-    @Override
     public boolean hasNext()
     {
         return this.node != null;
@@ -51,7 +51,6 @@ public class SceneNodeIterator implements Iterator<SceneNode>
      * @see java.util.Iterator#next()
      */
 
-    @Override
     public SceneNode next()
     {
         final SceneNode node = this.node;
@@ -65,7 +64,6 @@ public class SceneNodeIterator implements Iterator<SceneNode>
      * @see java.util.Iterator#remove()
      */
 
-    @Override
     public void remove()
     {
         throw new UnsupportedOperationException();

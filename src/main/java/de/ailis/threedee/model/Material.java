@@ -1,177 +1,227 @@
 /*
- * $Id$
- * Copyright (C) 2009 Klaus Reimer <k@ailis.de>
- * See LICENSE.txt file for licensing information.
+ * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
+ * See LICENSE.txt for licensing information.
  */
 
 package de.ailis.threedee.model;
 
-import java.awt.Color;
-import java.io.Serializable;
+import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.textures.Texture;
+import de.ailis.threedee.textures.TextureCache;
 
 
 /**
- * A material
- * 
+ * A material.
+ *
  * @author Klaus Reimer (k@ailis.de)
- * @version $Revision$
+ * @version $Revision: 37 $
  */
 
-public class Material implements Serializable
+public class Material
 {
-    /** Serial version UID */
-    private static final long serialVersionUID = -8995477823163477454L;
-
     /** The default material */
-    public static final Material DEFAULT = new Material(Color.WHITE);
+    public static final Material DEFAULT = new Material();
 
-    /** The material color */
-    private Color ambient;
+    /** The material id */
+    private final String id;
 
-    /** The emissive color */
-    private Color emissive;
+    /** The ambient color */
+    private final Color ambientColor;
 
     /** The diffuse color */
-    private Color diffuse;
+    private final Color diffuseColor;
+
+    /** The texture filename */
+    private final String textureName;
+
+    /** The texture */
+    private Texture texture;
+
+    /** The specular color */
+    private final Color specularColor;
+
+    /** The emission color */
+    private final Color emissionColor;
+
+    /** The shininess */
+    private final float shininess;
 
 
     /**
-     * Constructs a new material with a single color which is used for all color
-     * parts except the emissive color (Which is set to black).
-     * 
-     * @param color
-     *            The general color
+     * Constructs the default material.
      */
 
-    public Material(final Color color)
+    private Material()
     {
-        this(color, color, Color.BLACK);
+        this("DEFAULT", new Color(0.2f, 0.2f, 0.2f),
+                new Color(0.8f, 0.8f, 0.8f), Color.BLACK, Color.BLACK, 0, null);
     }
 
 
     /**
-     * Constructs a new material with the specified properties.
-     * 
-     * @param ambient
+     * Constructs a material
+     *
+     * @param id
+     *            The material name
+     * @param ambientColor
      *            The ambient color
-     * @param diffuse
+     * @param diffuseColor
      *            The diffuse color
-     * @param emissive
-     *            The emissive color
+     * @param specularColor
+     *            The specular color
+     * @param emissionColor
+     *            The emission color
+     * @param shininess
+     *            The shininess
+     * @param texture
+     *            The diffuse texture
      */
 
-    public Material(final Color ambient, final Color diffuse,
-        final Color emissive)
+    public Material(final String id, final Color ambientColor,
+            final Color diffuseColor, final Color specularColor,
+            final Color emissionColor, final float shininess,
+            final String texture)
     {
-        setAmbient(ambient);
-        setDiffuse(diffuse);
-        setEmissive(emissive);
-    }
-
-    
-    /**
-     * Constructs a new material by copying the data from the specified
-     * material.
-     * 
-     * @param material
-     *            The material from which data is copied
-     */
-    
-    public Material(final Material material)
-    {
-        this.ambient = material.ambient;
-        this.diffuse = material.diffuse;
-        this.emissive = material.emissive;
-    }
-
-
-    /**
-     * Constructs a new material with default properties.
-     */
-
-    public Material()
-    {
-        this(Color.WHITE);
+        this.id = id;
+        this.ambientColor = ambientColor;
+        this.diffuseColor = diffuseColor;
+        this.textureName = texture;
+        this.specularColor = specularColor;
+        this.emissionColor = emissionColor;
+        this.shininess = shininess;
     }
 
 
     /**
      * Returns the ambient color.
-     * 
+     *
      * @return The ambient color
      */
 
-    public Color getAmbient()
+    public Color getAmbientColor()
     {
-        return this.ambient;
-    }
-
-
-    /**
-     * Sets the ambient color.
-     * 
-     * @param ambient
-     *            The ambient color to set
-     */
-
-    public void setAmbient(final Color ambient)
-    {
-        if (ambient == null)
-            throw new IllegalArgumentException("ambient must not be null");
-        this.ambient = ambient;
-    }
-
-
-    /**
-     * Returns the emissive color.
-     * 
-     * @return The emissive color
-     */
-
-    public Color getEmissive()
-    {
-        return this.emissive;
-    }
-
-
-    /**
-     * Sets the emissive color.
-     * 
-     * @param emissive
-     *            The emissive color to set
-     */
-
-    public void setEmissive(final Color emissive)
-    {
-        if (emissive == null)
-            throw new IllegalArgumentException("emissive must not be null");
-        this.emissive = emissive;
+        return this.ambientColor;
     }
 
 
     /**
      * Returns the diffuse color.
-     * 
+     *
      * @return The diffuse color
      */
 
-    public Color getDiffuse()
+    public Color getDiffuseColor()
     {
-        return this.diffuse;
+        return this.diffuseColor;
     }
 
 
     /**
-     * Sets the diffuse color.
-     * 
-     * @param diffuse
-     *            The diffuse color to set
+     * Returns the emission color.
+     *
+     * @return The emission color
      */
 
-    public void setDiffuse(final Color diffuse)
+    public Color getEmissionColor()
     {
-        if (diffuse == null)
-            throw new IllegalArgumentException("diffuse must not be null");
-        this.diffuse = diffuse;
+        return this.emissionColor;
+    }
+
+    /**
+     * Returns the shininess.
+     *
+     * @return The shininess
+     */
+
+    public float getShininess()
+    {
+        return this.shininess;
+    }
+
+
+    /**
+     * Returns the specular color.
+     *
+     * @return The specular color
+     */
+
+    public Color getSpecularColor()
+    {
+        return this.specularColor;
+    }
+
+
+    /**
+     * Returns the material id.
+     *
+     * @return The material id
+     */
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+
+    /**
+     * Returns the diffuse texture.
+     *
+     * @return The diffuse texture
+     */
+
+    public String getTextureName()
+    {
+        return this.textureName;
+    }
+
+
+    /**
+     * Checks if model has a texture.
+     *
+     * @return True if model has a texture, false if not
+     */
+
+    public boolean hasTexture()
+    {
+        return this.textureName != null;
+    }
+
+
+    /**
+     * Renders the material to the specified GL context.
+     *
+     * @param gl
+     *            The GL context
+     */
+
+    public void apply(final GL gl)
+    {
+        if (this.textureName != null)
+        {
+            if (this.texture == null || this.texture.isReleased()) this.texture = TextureCache.getInstance().getTexture(this.textureName);
+            this.texture.bind(gl);
+        }
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_SPECULAR, this.specularColor
+                .getBuffer());
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, this.diffuseColor
+                .getBuffer());
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT, this.ambientColor
+                .getBuffer());
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_EMISSION, this.emissionColor
+                .getBuffer());
+        gl.glMaterialf(GL.GL_FRONT_AND_BACK, GL.GL_SHININESS, this.shininess);
+    }
+
+
+    /**
+     * Removes the material from the specified GL context.
+     *
+     * @param gl
+     *            The GL context
+     */
+
+    public void remove(final GL gl)
+    {
+        if (this.texture != null) this.texture.unbind(gl);
     }
 }
