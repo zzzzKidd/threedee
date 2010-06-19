@@ -8,7 +8,7 @@
   </parent>
     
   <groupId>de.ailis.threedee</groupId>
-  <artifactId>threedee-demo</artifactId>
+  <artifactId>threedee-demos</artifactId>
   <packaging>jar</packaging>
   <name>ThreeDee Demos</name>
   <description>

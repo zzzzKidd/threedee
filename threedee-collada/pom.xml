@@ -8,10 +8,10 @@
   </parent>
     
   <groupId>de.ailis.threedee</groupId>
-  <artifactId>threedee-core</artifactId>
+  <artifactId>threedee-collada</artifactId>
   <packaging>jar</packaging>
-  <name>ThreeDee Core</name>
-  <description>The core of ThreeDee</description>
+  <name>ThreeDee Collada support</name>
+  <description>Provides Collada support for ThreeDee</description>
   
   <dependencies>
     <dependency>
