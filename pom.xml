@@ -84,6 +84,7 @@
   	<module>threedee-collada</module>
   	<module>threedee-core</module>
   	<module>threedee-jogl</module>
+  	<module>threedee-demos</module>
   </modules>
   
 </project>

@@ -7,3 +7,5 @@ syntax: regexp
 ^threedee-core/target$
 syntax: regexp
 ^threedee-jogl/target$
+syntax: regexp
+^threedee-demos/target$
