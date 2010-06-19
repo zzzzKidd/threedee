@@ -82,6 +82,7 @@
   </dependencies>
   <modules>
   	<module>threedee-collada</module>
+  	<module>threedee-core</module>
   </modules>
   
 </project>
