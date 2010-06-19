@@ -1,29 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
-    <artifactId>maven-java</artifactId>
-    <groupId>de.ailis.maven</groupId>
-    <version>2</version>
+    <artifactId>threedee</artifactId>
+    <groupId>de.ailis.threedee</groupId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
     
   <groupId>de.ailis.threedee</groupId>
-  <artifactId>threedee</artifactId>
-  <packaging>pom</packaging>
-  <name>ThreeDee</name>
+  <artifactId>threedee-jogl</artifactId>
+  <packaging>jar</packaging>
+  <name>ThreeDee JOGL Support</name>
+  <description>Provides JOGL support for ThreeDee</description>
   <version>1.0.0-SNAPSHOT</version>
-  <url>http://www.ailis.de/~k/projects/threedee</url>
-  <description>
-    A scene-graph based 3D engine for Java based on OpenGL.
-  </description>
+  <url>http://www.ailis.de/~k/projects/threedee-jogl</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
     <name>Klaus Reimer</name>
     <url>http://www.ailis.de/~k/</url>
   </organization>
-  
+
   <licenses>
     <license>
       <name>MIT License</name>
@@ -46,12 +42,12 @@
   </developers>
    
   <scm>
-    <url>http://www.ailis.de/~k/hg/java/threedee</url>
-    <connection>scm:hg:http://www.ailis.de/~k/hg/java/threedee</connection>
-    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/threedee</developerConnection>
+    <url>http://www.ailis.de/~k/hg/java/threedee-jogl</url>
+    <connection>scm:hg:http://www.ailis.de/~k/hg/java/threedee-jogl</connection>
+    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/threedee-jogl</developerConnection>
   </scm>  
-  
-  <repositories>  
+   
+  <repositories> 
     <repository>
       <id>ailis-releases</id>
       <name>Ailis Maven Releases</name>
@@ -64,26 +60,36 @@
       <snapshots />
     </repository>
   </repositories>
-   
+  
   <distributionManagement>
     <site>
       <id>project-website</id>
-      <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee/</url>
+      <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee-jogl/</url>
     </site>
-  </distributionManagement>
-       
+  </distributionManagement>  
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
       <scope>test</scope>
+    </dependency>  
+    <dependency>
+      <groupId>de.ailis.threedee</groupId>
+      <artifactId>threedee-core</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.jogl</groupId>
+      <artifactId>jogl</artifactId>
+      <version>1.1.1a</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.gluegen</groupId>
+      <artifactId>gluegen-rt</artifactId>
+      <version>1.0b06</version>
     </dependency>
   </dependencies>
-  <modules>
-  	<module>threedee-collada</module>
-  	<module>threedee-core</module>
-  	<module>threedee-jogl</module>
-  </modules>
-  
+
 </project>

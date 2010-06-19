@@ -5,3 +5,5 @@ syntax: regexp
 ^target$
 syntax: regexp
 ^threedee-core/target$
+syntax: regexp
+^threedee-jogl/target$
