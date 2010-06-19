@@ -18,6 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import de.ailis.threedee.collada.entities.AmbientLight;
 import de.ailis.threedee.collada.entities.COLLADA;
 import de.ailis.threedee.collada.entities.Camera;
+import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.Color;
 import de.ailis.threedee.collada.entities.ColorOrTexture;
 import de.ailis.threedee.collada.entities.CommonProfile;
@@ -43,7 +44,6 @@ import de.ailis.threedee.collada.entities.PerspectiveOptic;
 import de.ailis.threedee.collada.entities.Phong;
 import de.ailis.threedee.collada.entities.PointLight;
 import de.ailis.threedee.collada.entities.Polygons;
-import de.ailis.threedee.collada.entities.Scene;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
 import de.ailis.threedee.collada.entities.SharedInput;
@@ -51,9 +51,9 @@ import de.ailis.threedee.collada.entities.Texture;
 import de.ailis.threedee.collada.entities.UnsharedInput;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
-import de.ailis.threedee.collada.exceptions.ParserException;
 import de.ailis.threedee.collada.support.ChunkFloatReader;
 import de.ailis.threedee.collada.support.ChunkIntReader;
+import de.ailis.threedee.exceptions.ParserException;
 
 
 /**
@@ -176,7 +176,7 @@ public class ColladaHandler extends DefaultHandler
     private InstanceCamera instanceCamera;
 
     /** The current scene */
-    private Scene scene;
+    private ColladaScene scene;
 
 
     /**
@@ -1783,7 +1783,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterScene()
     {
-        this.scene = new Scene();
+        this.scene = new ColladaScene();
         enterElement(ParserMode.SCENE);
     }
 

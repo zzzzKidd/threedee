@@ -15,7 +15,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import de.ailis.threedee.collada.entities.COLLADA;
-import de.ailis.threedee.collada.exceptions.ParserException;
+import de.ailis.threedee.exceptions.ParserException;
 
 
 /**

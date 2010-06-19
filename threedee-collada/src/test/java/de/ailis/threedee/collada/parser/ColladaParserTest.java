@@ -62,7 +62,7 @@ import de.ailis.threedee.collada.entities.PrimitiveGroups;
 import de.ailis.threedee.collada.entities.Primitives;
 import de.ailis.threedee.collada.entities.PrimitivesType;
 import de.ailis.threedee.collada.entities.Profiles;
-import de.ailis.threedee.collada.entities.Scene;
+import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
@@ -460,7 +460,7 @@ public class ColladaParserTest
     @Test
     public void testScene()
     {
-        final Scene scene = collada.getScene();
+        final ColladaScene scene = collada.getScene();
         assertNotNull(scene);
         final InstanceVisualScene instance = scene.getInstanceVisualScene();
         assertNotNull(instance);

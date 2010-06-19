@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Scene implements Serializable
+public class ColladaScene implements Serializable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1;

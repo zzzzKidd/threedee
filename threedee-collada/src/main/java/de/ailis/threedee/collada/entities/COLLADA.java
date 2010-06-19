@@ -41,7 +41,7 @@ public class COLLADA implements Serializable
     private final LibraryVisualScenes visualScenes = new LibraryVisualScenes();
 
     /** The scene */
-    private Scene scene;
+    private ColladaScene scene;
 
 
     /**
@@ -134,7 +134,7 @@ public class COLLADA implements Serializable
      * @return The scene
      */
 
-    public Scene getScene()
+    public ColladaScene getScene()
     {
         return this.scene;
     }
@@ -147,7 +147,7 @@ public class COLLADA implements Serializable
      *            The scene to set
      */
 
-    public void setScene(final Scene scene)
+    public void setScene(final ColladaScene scene)
     {
         this.scene = scene;
     }

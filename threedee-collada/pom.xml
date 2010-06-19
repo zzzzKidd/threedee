@@ -19,6 +19,10 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>de.ailis.threedee</groupId>
+      <artifactId>threedee-core</artifactId>
+    </dependency>
   </dependencies> 
 
 </project>
