@@ -35,8 +35,20 @@ public class Color
     /** Color constant for black */
     public final static Color BLACK = new Color(0, 0, 0);
 
+    /** Color constant for purple */
+    public final static Color PURPLE = new Color(1, 0, 1);
+
     /** Color constant for yellow */
     public final static Color YELLOW = new Color(1, 1, 0);
+
+    /** Color constant for gray */
+    public final static Color LIGHT_GRAY = new Color(0.75f, 0.75f, 0.75f);
+
+    /** Color constant for gray */
+    public final static Color GRAY = new Color(0.5f, 0.5f, 0.5f);
+
+    /** Color constant for dark gray */
+    public final static Color DARK_GRAY = new Color(0.25f, 0.25f, 0.25f);
 
     /** The color buffer */
     private final FloatBuffer buffer;
