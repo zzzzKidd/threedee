@@ -89,11 +89,11 @@ public class GLRenderer implements Renderer
 
 
     /**
-     * @see de.ailis.threedee.rendering.Renderer#initScene(de.ailis.threedee.entities.Scene)
+     * @see de.ailis.threedee.rendering.Renderer#init(de.ailis.threedee.entities.Scene)
      */
 
     @Override
-    public void initScene(final Scene scene)
+    public void init(final Scene scene)
     {
         // Create some shortcuts
         final GL gl = this.gl;
@@ -166,7 +166,7 @@ public class GLRenderer implements Renderer
         final SceneNode rootNode = scene.getRootNode();
 
         // Initialize the scene if needed
-        if (this.reinit) initScene(scene);
+        if (this.reinit) init(scene);
 
         // Clear the color and depth buffer
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);

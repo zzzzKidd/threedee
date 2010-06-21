@@ -23,7 +23,7 @@ public interface Renderer
      *            The scene to initialize
      */
 
-    public void initScene(final Scene scene);
+    public void init(final Scene scene);
 
 
     /**

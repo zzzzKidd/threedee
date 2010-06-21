@@ -95,7 +95,7 @@ public class SceneCanvas extends JComponent
             @Override
             public void init(final GLAutoDrawable drawable)
             {
-                renderer.initScene(scene);
+                renderer.init(scene);
             }
 
             @Override
