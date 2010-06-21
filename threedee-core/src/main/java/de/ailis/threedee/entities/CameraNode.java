@@ -6,6 +6,7 @@
 package de.ailis.threedee.entities;
 
 import de.ailis.threedee.math.Matrix4f;
+import de.ailis.threedee.rendering.Renderer;
 
 
 /**
@@ -16,11 +17,8 @@ import de.ailis.threedee.math.Matrix4f;
 
 public class CameraNode extends SceneNode
 {
-    /** Serial version UID */
-    private static final long serialVersionUID = 1L;
-
     /** The camera */
-    private final Camera camera;
+    private Camera camera;
 
     /** Cached camera transformation */
     private final Matrix4f cameraTransform = Matrix4f.identity();
@@ -28,29 +26,56 @@ public class CameraNode extends SceneNode
     /** If cached camera transformation is valid */
     private final boolean cameraTransformValid = false;
 
+    /** If camera data is invalid */
+    boolean invalid = true;
+
+    /** The previous output width */
+    private int oldWidth = 0;
+
+    /** The previous output height */
+    private int oldHeight = 0;
+
+    /** The previous camera settings */
+    private final Camera oldCamera = new Camera();
+
 
     /**
      * Constructor
      *
      * @param camera
-     *            The camera to instance
+     *            The camera to instance. Must not be null
      */
 
     public CameraNode(final Camera camera)
     {
-        this.camera = camera;
+        setCamera(camera);
     }
 
 
     /**
      * Returns the camera.
      *
-     * @return The camera
+     * @return The camera. Never null
      */
 
     public Camera getCamera()
     {
         return this.camera;
+    }
+
+
+    /**
+     * Sets the camera.
+     *
+     * @param camera
+     *            The camera to set. Must not be null
+     */
+
+    public void setCamera(final Camera camera)
+    {
+        if (camera == null)
+            throw new IllegalArgumentException("camera must be set");
+        this.camera = camera;
     }
 
 
@@ -66,5 +91,27 @@ public class CameraNode extends SceneNode
         if (this.cameraTransformValid) return this.cameraTransform;
 
         return this.cameraTransform.set(getSceneTransform()).invert();
+    }
+
+    public void preRender(final Renderer renderer)
+    {
+        final int newWidth = renderer.getWidth();
+        final int newHeight = renderer.getHeight();
+
+        // Check if camera settings has changed
+        if (!this.camera.equals(this.oldCamera)
+                || (this.camera.getAspectRatio() != null && (newWidth != this.oldWidth || newHeight != this.oldHeight)))
+        {
+            this.oldWidth = newWidth;
+            this.oldHeight = newHeight;
+            this.oldCamera.copyFrom(this.camera);
+            this.invalid = true;
+        }
+
+        if (this.invalid)
+        {
+            renderer.renderCamera(this.camera);
+            this.invalid = false;
+        }
     }
 }

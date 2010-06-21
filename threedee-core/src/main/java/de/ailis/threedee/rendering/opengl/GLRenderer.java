@@ -10,6 +10,7 @@ import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.List;
 
+import de.ailis.threedee.entities.Camera;
 import de.ailis.threedee.entities.CameraNode;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
@@ -134,20 +135,6 @@ public class GLRenderer implements Renderer
     @Override
     public void setSize(final int width, final int height)
     {
-        // Create some shortcuts
-        final GL gl = this.gl;
-
-        // Setup the coordinate system
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
-        gl.gluPerspective(45.0f, (float) width / (float) height, 0.1f, 100000f);
-
-        // Set the viewport
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
-        gl.glViewport(0, 0, width, height);
-
-        // Remember the scene size
         this.width = width;
         this.height = height;
     }
@@ -167,6 +154,8 @@ public class GLRenderer implements Renderer
 
         // Initialize the scene if needed
         if (this.reinit) init(scene);
+
+        if (cameraNode != null) renderCamera(cameraNode.getCamera());
 
         // Clear the color and depth buffer
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -537,5 +526,27 @@ public class GLRenderer implements Renderer
         this.gl.glDisable(light.getLightId());
         light.setLightId(-1);
         this.nextIndex--;
+    }
+
+
+    /**
+     * @see Renderer#renderCamera(Camera)
+     */
+
+    public void renderCamera(final Camera camera)
+    {
+        // Create some shortcuts
+        final GL gl = this.gl;
+
+        // Setup the coordinate system
+        gl.glMatrixMode(GL.GL_PROJECTION);
+        gl.glLoadIdentity();
+        gl.gluPerspective(camera.getFovY(), camera.getAspectRatio(this.width,
+                this.height), camera.getZNear(), camera.getZFar());
+
+        // Set the viewport
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        gl.glViewport(0, 0, this.width, this.height);
     }
 }

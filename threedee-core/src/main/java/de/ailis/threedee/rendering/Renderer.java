@@ -5,6 +5,7 @@
 
 package de.ailis.threedee.rendering;
 
+import de.ailis.threedee.entities.Camera;
 import de.ailis.threedee.entities.Scene;
 
 
@@ -48,7 +49,31 @@ public interface Renderer
 
     public void render(final Scene scene);
 
+
+    /**
+     * Returns the viewport width.
+     *
+     * @return The viewport width
+     */
+
     public int getWidth();
 
+
+    /**
+     * Returns the viewport height.
+     *
+     * @return The viewport height
+     */
+
     public int getHeight();
+
+
+    /**
+     * Renders the specified camera.
+     *
+     * @param camera
+     *            The camera to render
+     */
+
+    public void renderCamera(Camera camera);
 }
