@@ -552,4 +552,15 @@ public class GL implements de.ailis.threedee.opengl.GL
     {
         this.gl.glTranslatef(x, y, z);
     }
+
+
+    /**
+     * @see de.ailis.threedee.opengl.GL#glColorMaterial(int, int)
+     */
+
+    @Override
+    public void glColorMaterial(final int face, final int mode)
+    {
+        this.gl.glColorMaterial(face, mode);
+    }
 }
