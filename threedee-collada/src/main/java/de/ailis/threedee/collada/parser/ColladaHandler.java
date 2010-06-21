@@ -17,15 +17,20 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import de.ailis.threedee.collada.entities.AmbientLight;
 import de.ailis.threedee.collada.entities.COLLADA;
-import de.ailis.threedee.collada.entities.Camera;
+import de.ailis.threedee.collada.entities.ColladaCamera;
+import de.ailis.threedee.collada.entities.ColladaColor;
+import de.ailis.threedee.collada.entities.ColladaDirectionalLight;
+import de.ailis.threedee.collada.entities.ColladaLight;
+import de.ailis.threedee.collada.entities.ColladaMaterial;
+import de.ailis.threedee.collada.entities.ColladaMesh;
+import de.ailis.threedee.collada.entities.ColladaPointLight;
 import de.ailis.threedee.collada.entities.ColladaScene;
-import de.ailis.threedee.collada.entities.Color;
+import de.ailis.threedee.collada.entities.ColladaSpotLight;
 import de.ailis.threedee.collada.entities.ColorOrTexture;
 import de.ailis.threedee.collada.entities.CommonProfile;
 import de.ailis.threedee.collada.entities.CommonTechnique;
 import de.ailis.threedee.collada.entities.DataArray;
 import de.ailis.threedee.collada.entities.DataSource;
-import de.ailis.threedee.collada.entities.DirectionalLight;
 import de.ailis.threedee.collada.entities.Effect;
 import de.ailis.threedee.collada.entities.Geometry;
 import de.ailis.threedee.collada.entities.Image;
@@ -34,15 +39,11 @@ import de.ailis.threedee.collada.entities.InstanceGeometry;
 import de.ailis.threedee.collada.entities.InstanceLight;
 import de.ailis.threedee.collada.entities.InstanceMaterial;
 import de.ailis.threedee.collada.entities.InstanceVisualScene;
-import de.ailis.threedee.collada.entities.Light;
-import de.ailis.threedee.collada.entities.Material;
 import de.ailis.threedee.collada.entities.MatrixTransformation;
-import de.ailis.threedee.collada.entities.Mesh;
 import de.ailis.threedee.collada.entities.Node;
 import de.ailis.threedee.collada.entities.Optic;
 import de.ailis.threedee.collada.entities.PerspectiveOptic;
 import de.ailis.threedee.collada.entities.Phong;
-import de.ailis.threedee.collada.entities.PointLight;
 import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
@@ -80,7 +81,7 @@ public class ColladaHandler extends DefaultHandler
     private Image image;
 
     /** The current material */
-    private Material material;
+    private ColladaMaterial material;
 
     /** The current effect */
     private Effect effect;
@@ -104,7 +105,7 @@ public class ColladaHandler extends DefaultHandler
     private String geometryId;
 
     /** The current mesh */
-    private Mesh mesh;
+    private ColladaMesh mesh;
 
     /** The current geometry */
     private Geometry geometry;
@@ -140,10 +141,10 @@ public class ColladaHandler extends DefaultHandler
     private String lightId;
 
     /** The current light */
-    private Light light;
+    private ColladaLight light;
 
     /** The current camera */
-    private Camera camera;
+    private ColladaCamera camera;
 
     /** The current optic */
     private Optic optic;
@@ -343,12 +344,18 @@ public class ColladaHandler extends DefaultHandler
                 else if (qName.equals("point"))
                     enterPoint();
                 else if (qName.equals("ambient")) enterAmbient();
+                else if (qName.equals("spot")) enterSpot();
                 break;
 
             case LIGHT_AMBIENT:
             case LIGHT_POINT:
             case LIGHT_DIRECTIONAL:
                 if (qName.equals("color")) enterLightColor();
+                break;
+
+            case LIGHT_SPOT:
+                if (qName.equals("color")) enterLightColor();
+                else if (qName.equals("falloff_angle")) enterFalloffAngle();
                 break;
 
             case LIBRARY_CAMERAS:
@@ -521,6 +528,10 @@ public class ColladaHandler extends DefaultHandler
                 leaveLightColor();
                 break;
 
+            case FALLOFF_ANGLE:
+                leaveFalloffAngle();
+                break;
+
             case LIGHT:
                 leaveLight();
                 break;
@@ -614,6 +625,7 @@ public class ColladaHandler extends DefaultHandler
             case SHADING_COLOR:
             case FLOAT:
             case IMAGE_INIT_FROM:
+            case FALLOFF_ANGLE:
                 this.stringBuilder.append(ch, start, length);
                 break;
 
@@ -740,7 +752,7 @@ public class ColladaHandler extends DefaultHandler
     public void enterMaterial(final Attributes attributes)
     {
         final String id = attributes.getValue("id");
-        this.material = new Material(id);
+        this.material = new ColladaMaterial(id);
         enterElement(ParserMode.MATERIAL);
     }
 
@@ -851,7 +863,7 @@ public class ColladaHandler extends DefaultHandler
     {
         final String[] parts = this.stringBuilder.toString().trim().split(
                 "\\s+");
-        final Color color = new Color(Float.parseFloat(parts[0]), Float
+        final ColladaColor color = new ColladaColor(Float.parseFloat(parts[0]), Float
                 .parseFloat(parts[1]), Float.parseFloat(parts[2]), Float
                 .parseFloat(parts[3]));
         this.colorOrTexture = new ColorOrTexture(color);
@@ -1032,7 +1044,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterMesh()
     {
-        this.mesh = new Mesh();
+        this.mesh = new ColladaMesh();
         enterElement(ParserMode.MESH);
     }
 
@@ -1308,7 +1320,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterDirectional()
     {
-        this.light = new DirectionalLight(this.lightId);
+        this.light = new ColladaDirectionalLight(this.lightId);
         enterElement(ParserMode.LIGHT_DIRECTIONAL);
     }
 
@@ -1330,8 +1342,19 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterPoint()
     {
-        this.light = new PointLight(this.lightId);
+        this.light = new ColladaPointLight(this.lightId);
         enterElement(ParserMode.LIGHT_POINT);
+    }
+
+
+    /**
+     * Enters a spot light element.
+     */
+
+    private void enterSpot()
+    {
+        this.light = new ColladaSpotLight(this.lightId);
+        enterElement(ParserMode.LIGHT_SPOT);
     }
 
 
@@ -1346,6 +1369,7 @@ public class ColladaHandler extends DefaultHandler
     }
 
 
+
     /**
      * Leaves a light color element.
      */
@@ -1354,10 +1378,34 @@ public class ColladaHandler extends DefaultHandler
     {
         final String[] parts = this.stringBuilder.toString().trim().split(
                 "\\s+");
-        final Color color = this.light.getColor();
+        final ColladaColor color = this.light.getColor();
         color.setRed(Float.parseFloat(parts[0]));
         color.setGreen(Float.parseFloat(parts[1]));
         color.setBlue(Float.parseFloat(parts[2]));
+        this.stringBuilder = null;
+        leaveElement();
+    }
+
+
+    /**
+     * Enters a falloff_angle element.
+     */
+
+    private void enterFalloffAngle()
+    {
+        this.stringBuilder = new StringBuilder();
+        enterElement(ParserMode.FALLOFF_ANGLE);
+    }
+
+
+    /**
+     * Leaves a falloff_angle element.
+     */
+
+    private void leaveFalloffAngle()
+    {
+        final float angle = Float.parseFloat(this.stringBuilder.toString());
+        ((ColladaSpotLight) this.light).setFalloffAngle(angle);
         this.stringBuilder = null;
         leaveElement();
     }
@@ -1388,7 +1436,7 @@ public class ColladaHandler extends DefaultHandler
     private void enterCamera(final Attributes attributes)
     {
         final String id = attributes.getValue("id");
-        this.camera = new Camera(id);
+        this.camera = new ColladaCamera(id);
         enterElement(ParserMode.CAMERA);
     }
 

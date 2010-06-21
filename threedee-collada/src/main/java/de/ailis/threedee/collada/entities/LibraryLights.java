@@ -14,7 +14,7 @@ import de.ailis.threedee.collada.support.Library;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class LibraryLights extends Library<Light>
+public class LibraryLights extends Library<ColladaLight>
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

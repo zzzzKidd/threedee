@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Color implements Serializable
+public class ColladaColor implements Serializable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -36,7 +36,7 @@ public class Color implements Serializable
      * Constructs a new color which is initially black
      */
 
-    public Color()
+    public ColladaColor()
     {
         this(0, 0, 0);
     }
@@ -53,7 +53,7 @@ public class Color implements Serializable
      *            The blue component
      */
 
-    public Color(final float red, final float green, final float blue)
+    public ColladaColor(final float red, final float green, final float blue)
     {
         this(red, green, blue, 1);
     }
@@ -72,7 +72,7 @@ public class Color implements Serializable
      *            The alpha component
      */
 
-    public Color(final float red, final float green, final float blue,
+    public ColladaColor(final float red, final float green, final float blue,
             final float alpha)
     {
         this.red = red;

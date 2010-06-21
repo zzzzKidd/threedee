@@ -115,7 +115,7 @@ public class Geometry implements Identifiable
 
     public boolean isMesh()
     {
-        return this.geometricElement instanceof Mesh;
+        return this.geometricElement instanceof ColladaMesh;
     }
 
 
@@ -127,10 +127,10 @@ public class Geometry implements Identifiable
      *             When geometric element is not a mesh
      */
 
-    public Mesh getMesh()
+    public ColladaMesh getMesh()
     {
         if (!isMesh())
             throw new IllegalStateException("Geometric element is not a mesh");
-        return (Mesh) this.geometricElement;
+        return (ColladaMesh) this.geometricElement;
     }
 }

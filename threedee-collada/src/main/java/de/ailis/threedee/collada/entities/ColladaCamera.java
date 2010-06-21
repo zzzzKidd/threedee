@@ -9,50 +9,50 @@ import de.ailis.threedee.collada.support.Identifiable;
 
 
 /**
- * A light.
+ * A camera.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Light implements Identifiable
+public class ColladaCamera implements Identifiable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
-    /** The effect id */
+    /** The camera id */
     private String id;
 
-    /** The light color */
-    private final Color color = new Color(1f, 1f, 1f, 1f);
+    /** The optic */
+    private Optic optic;
 
 
     /**
-     * Constructs a light without an id.
+     * Constructs an camera without an id
      */
 
-    public Light()
+    public ColladaCamera()
     {
         this(null);
     }
 
 
     /**
-     * Constructs a light with the given id.
+     * Constructs an camera with the given id.
      *
      * @param id
      *            The id
      */
 
-    public Light(final String id)
+    public ColladaCamera(final String id)
     {
         this.id = id;
     }
 
 
     /**
-     * Returns the light id.
+     * Returns the camera id.
      *
-     * @return The light id
+     * @return The camera id
      */
 
     public String getId()
@@ -62,7 +62,7 @@ public class Light implements Identifiable
 
 
     /**
-     * Sets the light id
+     * Sets the camera id
      *
      * @param id
      *            The id to set
@@ -75,13 +75,26 @@ public class Light implements Identifiable
 
 
     /**
-     * Returns the light color.
+     * Returns the optic.
      *
-     * @return The light color
+     * @return The optic
      */
 
-    public Color getColor()
+    public Optic getOptic()
     {
-        return this.color;
+        return this.optic;
+    }
+
+
+    /**
+     * Sets the optic.
+     *
+     * @param optic
+     *            The optic to set
+     */
+
+    public void setOptic(final Optic optic)
+    {
+        this.optic = optic;
     }
 }

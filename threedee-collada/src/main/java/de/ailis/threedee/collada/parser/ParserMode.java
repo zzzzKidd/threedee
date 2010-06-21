@@ -133,14 +133,20 @@ enum ParserMode {
     /** Parser is in directional light element */
     LIGHT_DIRECTIONAL("directional"),
 
-    /** Parser is in directional light element */
+    /** Parser is in ambient light element */
     LIGHT_AMBIENT("ambient"),
 
-    /** Parser is in directional light element */
+    /** Parser is in point light element */
     LIGHT_POINT("point"),
+
+    /** Parser is in spot light element */
+    LIGHT_SPOT("spot"),
 
     /** Parser is in light color element */
     LIGHT_COLOR("color"),
+
+    /** Parser is in falloff angle element */
+    FALLOFF_ANGLE("falloff_angle"),
 
     /** Parser is in library cameras element */
     LIBRARY_CAMERAS("library_cameras"),

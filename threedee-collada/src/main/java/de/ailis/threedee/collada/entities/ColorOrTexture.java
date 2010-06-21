@@ -23,7 +23,7 @@ public class ColorOrTexture implements Serializable
     private Opaque opaque;
 
     /** The color */
-    private Color color;
+    private ColladaColor color;
 
     /** The texture */
     private Texture texture;
@@ -61,7 +61,7 @@ public class ColorOrTexture implements Serializable
      *            The color
      */
 
-    public ColorOrTexture(final Color color)
+    public ColorOrTexture(final ColladaColor color)
     {
         setColor(color);
     }
@@ -87,7 +87,7 @@ public class ColorOrTexture implements Serializable
      *            The color to set. Must not be null
      */
 
-    public void setColor(final Color color)
+    public void setColor(final ColladaColor color)
     {
         if (color == null)
             throw new IllegalArgumentException("color must be set");
@@ -103,7 +103,7 @@ public class ColorOrTexture implements Serializable
      * @return The color or null if no color is set.
      */
 
-    public Color getColor()
+    public ColladaColor getColor()
     {
         return this.color;
     }

@@ -19,8 +19,14 @@ import org.junit.Test;
 
 import de.ailis.threedee.collada.entities.AmbientLight;
 import de.ailis.threedee.collada.entities.COLLADA;
-import de.ailis.threedee.collada.entities.Camera;
-import de.ailis.threedee.collada.entities.Color;
+import de.ailis.threedee.collada.entities.ColladaCamera;
+import de.ailis.threedee.collada.entities.ColladaColor;
+import de.ailis.threedee.collada.entities.ColladaDirectionalLight;
+import de.ailis.threedee.collada.entities.ColladaLight;
+import de.ailis.threedee.collada.entities.ColladaMaterial;
+import de.ailis.threedee.collada.entities.ColladaMesh;
+import de.ailis.threedee.collada.entities.ColladaScene;
+import de.ailis.threedee.collada.entities.ColladaSpotLight;
 import de.ailis.threedee.collada.entities.ColorOrTexture;
 import de.ailis.threedee.collada.entities.CommonProfile;
 import de.ailis.threedee.collada.entities.CommonTechnique;
@@ -28,7 +34,6 @@ import de.ailis.threedee.collada.entities.CommonTechniques;
 import de.ailis.threedee.collada.entities.DataArray;
 import de.ailis.threedee.collada.entities.DataSource;
 import de.ailis.threedee.collada.entities.DataSources;
-import de.ailis.threedee.collada.entities.DirectionalLight;
 import de.ailis.threedee.collada.entities.Effect;
 import de.ailis.threedee.collada.entities.Geometry;
 import de.ailis.threedee.collada.entities.Image;
@@ -48,10 +53,7 @@ import de.ailis.threedee.collada.entities.LibraryImages;
 import de.ailis.threedee.collada.entities.LibraryLights;
 import de.ailis.threedee.collada.entities.LibraryMaterials;
 import de.ailis.threedee.collada.entities.LibraryVisualScenes;
-import de.ailis.threedee.collada.entities.Light;
-import de.ailis.threedee.collada.entities.Material;
 import de.ailis.threedee.collada.entities.MatrixTransformation;
-import de.ailis.threedee.collada.entities.Mesh;
 import de.ailis.threedee.collada.entities.Node;
 import de.ailis.threedee.collada.entities.Nodes;
 import de.ailis.threedee.collada.entities.Optic;
@@ -62,7 +64,6 @@ import de.ailis.threedee.collada.entities.PrimitiveGroups;
 import de.ailis.threedee.collada.entities.Primitives;
 import de.ailis.threedee.collada.entities.PrimitivesType;
 import de.ailis.threedee.collada.entities.Profiles;
-import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
@@ -148,7 +149,7 @@ public class ColladaParserTest
         final LibraryMaterials materials = collada.getLibraryMaterials();
         assertEquals(4, materials.size());
 
-        Material material = materials.get("invalid");
+        ColladaMaterial material = materials.get("invalid");
         assertNull(material);
 
         material = materials.get("photo");
@@ -198,7 +199,7 @@ public class ColladaParserTest
         ColorOrTexture colorOrTexture = phong.getEmission();
         assertTrue(colorOrTexture.isColor());
         assertFalse(colorOrTexture.isTexture());
-        Color color = colorOrTexture.getColor();
+        ColladaColor color = colorOrTexture.getColor();
         assertNotNull(color);
         assertEquals(0, color.getRed(), 0.001f);
         assertEquals(0, color.getGreen(), 0.001f);
@@ -268,7 +269,7 @@ public class ColladaParserTest
         geometry = geometries.get("cup_3500_polys_photo_and_ground-lib");
         assertNotNull(geometry);
         assertTrue(geometry.isMesh());
-        final Mesh mesh = geometry.getMesh();
+        final ColladaMesh mesh = geometry.getMesh();
         assertNotNull(mesh);
         final DataSources sources = mesh.getSources();
         assertEquals(3, sources.size());
@@ -329,15 +330,26 @@ public class ColladaParserTest
     public void testLibraryLights()
     {
         final LibraryLights lights = collada.getLibraryLights();
-        assertEquals(2, lights.size());
+        assertEquals(3, lights.size());
 
-        Light light = lights.get("invalid");
+        ColladaLight light = lights.get("invalid");
         assertNull(light);
+
+        light = lights.get("spotLight");
+        assertNotNull(light);
+        assertTrue(light instanceof ColladaSpotLight);
+        final ColladaSpotLight spotLight = (ColladaSpotLight) light;
+        assertEquals(Float.valueOf(45f), spotLight.getFalloffAngle());
+        ColladaColor color = light.getColor();
+        assertEquals(1f, color.getRed(), 0.001);
+        assertEquals(0.5f, color.getGreen(), 0.001);
+        assertEquals(0.25f, color.getBlue(), 0.001);
+        assertEquals(1f, color.getAlpha(), 0.001);
 
         light = lights.get("Light-lib");
         assertNotNull(light);
-        assertTrue(light instanceof DirectionalLight);
-        Color color = light.getColor();
+        assertTrue(light instanceof ColladaDirectionalLight);
+        color = light.getColor();
         assertEquals(1f, color.getRed(), 0.001);
         assertEquals(1f, color.getGreen(), 0.001);
         assertEquals(1f, color.getBlue(), 0.001);
@@ -364,7 +376,7 @@ public class ColladaParserTest
         final LibraryCameras cameras = collada.getLibraryCameras();
         assertEquals(1, cameras.size());
 
-        Camera camera = cameras.get("invalid");
+        ColladaCamera camera = cameras.get("invalid");
         assertNull(camera);
 
         camera = cameras.get("Camera-lib");

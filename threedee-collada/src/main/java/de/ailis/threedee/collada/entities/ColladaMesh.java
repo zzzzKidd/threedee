@@ -14,7 +14,7 @@ package de.ailis.threedee.collada.entities;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Mesh implements GeometricElement
+public class ColladaMesh implements GeometricElement
 {
     /** Serial version UID */
     private static final long serialVersionUID = 3726911679563958092L;

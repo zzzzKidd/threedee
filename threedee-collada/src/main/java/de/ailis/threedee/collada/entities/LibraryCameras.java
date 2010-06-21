@@ -14,7 +14,7 @@ import de.ailis.threedee.collada.support.Library;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class LibraryCameras extends Library<Camera>
+public class LibraryCameras extends Library<ColladaCamera>
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;

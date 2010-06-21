@@ -16,7 +16,7 @@ import de.ailis.threedee.collada.support.Identifiable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Material implements Identifiable
+public class ColladaMaterial implements Identifiable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -32,7 +32,7 @@ public class Material implements Identifiable
      * Constructs a material without an id
      */
 
-    public Material()
+    public ColladaMaterial()
     {
         this(null);
     }
@@ -45,7 +45,7 @@ public class Material implements Identifiable
      *            The id
      */
 
-    public Material(final String id)
+    public ColladaMaterial(final String id)
     {
         this.id = id;
     }

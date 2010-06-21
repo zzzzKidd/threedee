@@ -18936,6 +18936,17 @@
     </animation>
   </library_animations>
   <library_lights>
+    <light id="spotLight" name="Spot Light">
+      <technique_common>
+        <spot>
+          <color sid="color">1.000000 0.500000 0.250000</color>
+          <falloff_angle sid="angle">45.000000</falloff_angle>
+        </spot>
+      </technique_common>
+      <technique profile="MAYA">
+        <intensity sid="intensity">1.200000</intensity>
+      </technique>
+    </light>
     <light id="Light-lib" name="LightMesh">
       <technique_common>
         <directional>

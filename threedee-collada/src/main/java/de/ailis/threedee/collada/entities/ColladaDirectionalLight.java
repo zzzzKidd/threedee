@@ -13,7 +13,7 @@ package de.ailis.threedee.collada.entities;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class DirectionalLight extends Light
+public class ColladaDirectionalLight extends ColladaLight
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class DirectionalLight extends Light
      * Constructs a directional light without an id.
      */
 
-    public DirectionalLight()
+    public ColladaDirectionalLight()
     {
         this(null);
     }
@@ -36,7 +36,7 @@ public class DirectionalLight extends Light
      *            The id
      */
 
-    public DirectionalLight(final String id)
+    public ColladaDirectionalLight(final String id)
     {
         super(id);
     }
