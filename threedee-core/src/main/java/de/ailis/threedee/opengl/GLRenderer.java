@@ -19,6 +19,7 @@ import de.ailis.threedee.entities.MeshInstance;
 import de.ailis.threedee.entities.MeshPolygons;
 import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.entities.SceneNode;
+import de.ailis.threedee.entities.SpotLight;
 import de.ailis.threedee.exceptions.LightException;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.model.Color;
@@ -68,6 +69,10 @@ public class GLRenderer
     private final FloatBuffer pointLightPosition = (FloatBuffer) BufferUtils
             .createDirectFloatBuffer(4).put(0).put(0).put(0).put(1).rewind();
 
+    /** Direction for a spot light */
+    private final FloatBuffer spotLightDirection = (FloatBuffer) BufferUtils
+            .createDirectFloatBuffer(4).put(0).put(0).put(-1).put(1).rewind();
+
 
     /**
      * Constructs a new GL renderer.
@@ -108,12 +113,15 @@ public class GLRenderer
         gl.glEnable(GL.GL_BLEND);
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
+       //gl.glEnable(GL.GL_COLOR_MATERIAL);
+        //gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
+
         // gl.glDisable(GL.GL_POINT_SMOOTH);
-        // gl.glEnable(GL.GL_MULTISAMPLE);
+       // gl.glEnable(GL.GL_MULTISAMPLE);
 
         // Enable Anisotropic filtering if available
-        // gl.glTexParameteri(GL.GL_TEXTURE_2D,
-        // GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
+        //gl.glTexParameteri(GL.GL_TEXTURE_2D,
+        //GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
 
         // Remember that initialization is done
         this.reinit = false;
@@ -392,7 +400,6 @@ public class GLRenderer
 
         if (diffuseTexture != null)
         {
-            System.out.println(diffuseTexture);
             final Texture texture = this.diffuseTexture = TextureCache
                     .getInstance().getTexture(diffuseTexture);
             texture.bind(gl);
@@ -503,12 +510,22 @@ public class GLRenderer
     private void applyLight(final LightInstance lightInstance)
     {
         final GL gl = this.gl;
+
         final Light light = lightInstance.getLight();
         final int index = getLightIndex(lightInstance);
         if (light instanceof DirectionalLight)
             gl.glLight(index, GL.GL_POSITION, this.directionalLightPosition);
         else
             gl.glLight(index, GL.GL_POSITION, this.pointLightPosition);
+        if (light instanceof SpotLight)
+        {
+            gl.glLight(index, GL.GL_SPOT_DIRECTION, this.spotLightDirection);
+            gl.glLightf(index, GL.GL_SPOT_CUTOFF, 90f);
+        }
+        else
+        {
+            gl.glLightf(index, GL.GL_SPOT_CUTOFF, 180f);
+        }
         gl.glLight(index, GL.GL_AMBIENT, light.getAmbientColor().getBuffer());
         gl.glLight(index, GL.GL_DIFFUSE, light.getDiffuseColor().getBuffer());
         gl.glLight(index, GL.GL_SPECULAR, light.getSpecularColor().getBuffer());

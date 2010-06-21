@@ -80,6 +80,12 @@ public class Matrix4f
         return this;
     }
 
+    public Matrix4f setValue(final int column, final int row, final float value)
+    {
+        this.m[column * 4 + row] = value;
+        return this;
+    }
+
 
     /**
      * Copies the values of the specified matrix into this matrix.

@@ -336,7 +336,8 @@ public class MeshBuilder
         }
 
         // Finish current elements if mode has changed
-        if (size != this.size || useTexCoords != this.useTexCoords
+        if ((this.indexBuilder.getSize() + vertexCount) > 32768 || size != this.size
+                || useTexCoords != this.useTexCoords
                 || useNormals != this.useNormals) finishElements();
 
         // Remember new elements configuration

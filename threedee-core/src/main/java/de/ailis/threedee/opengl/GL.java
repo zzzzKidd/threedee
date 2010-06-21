@@ -104,6 +104,9 @@ public interface GL
     /** Source alpha saturate */
     public static final int GL_SRC_ALPHA_SATURATE = 0x308;
 
+    /** Front */
+    public static final int GL_FRONT = 0x0404;
+
     /** Front and back face */
     public static final int GL_FRONT_AND_BACK = 0x408;
 
@@ -133,6 +136,9 @@ public interface GL
 
     /** Light model ambient */
     public static final int GL_LIGHT_MODEL_AMBIENT = 0xb53;
+
+    /** Color material */
+    public static final int GL_COLOR_MATERIAL = 0x0B57;
 
     /** Dither */
     public static final int GL_DITHER = 0xbd0;
@@ -199,6 +205,9 @@ public interface GL
 
     /** Shininess */
     public static final int GL_SHININESS = 0x1601;
+
+    /** Ambient and diffuse */
+    public static final int GL_AMBIENT_AND_DIFFUSE = 0x1602;
 
     /** Model view */
     public static final int GL_MODELVIEW = 0x1700;
@@ -298,7 +307,6 @@ public interface GL
 
     /** Texture wrap T */
     public static final int GL_TEXTURE_WRAP_T = 0x2803;
-
 
 
     /**
@@ -1018,4 +1026,22 @@ public interface GL
      */
 
     public void glTranslate(final float x, final float y, final float z);
+
+
+    /**
+     * Cause a material color to track the current color
+     *
+     * @param face
+     *            Specifies whether front, back, or both front and back
+     *            material parameters should track the current color. Accepted
+     *            values are GL_FRONT, GL_BACK, and GL_FRONT_AND_BACK.
+     *            The initial value is GL_FRONT_AND_BACK.
+     * @param mode
+     *            Specifies which of several material parameters track the
+     *            current color. Accepted values are GL_EMISSION, GL_AMBIENT,
+     *            GL_DIFFUSE, GL_SPECULAR, and GL_AMBIENT_AND_DIFFUSE.
+     *            The initial value is GL_AMBIENT_AND_DIFFUSE.
+     */
+
+    public void glColorMaterial(int face, int mode);
 }

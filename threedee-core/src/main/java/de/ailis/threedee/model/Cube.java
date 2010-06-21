@@ -5,8 +5,8 @@
 
 package de.ailis.threedee.model;
 
-import de.ailis.threedee.model.builder.ModelBuilder;
-import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.builder.MeshBuilder;
+import de.ailis.threedee.entities.Mesh;
 
 
 /**
@@ -30,10 +30,10 @@ public class Cube
      * @return The model objects
      */
 
-    public static Model buildCube(final float xRadius,
+    public static Mesh buildCube(final float xRadius,
             final float yRadius, final float zRadius)
     {
-        final ModelBuilder builder = new ModelBuilder();
+        final MeshBuilder builder = new MeshBuilder();
         builder.addVertex(-xRadius, yRadius, -zRadius);
         builder.addVertex(-xRadius, yRadius, zRadius);
         builder.addVertex(xRadius, yRadius, zRadius);
@@ -43,24 +43,24 @@ public class Cube
         builder.addVertex(xRadius, -yRadius, zRadius);
         builder.addVertex(xRadius, -yRadius, -zRadius);
 
-        builder.addElement(GL.GL_TRIANGLES, 0, 1, 2);
-        builder.addElement(GL.GL_TRIANGLES, 2, 3, 0);
+        builder.addElement(3, 0, 1, 2);
+        builder.addElement(3, 2, 3, 0);
 
-        builder.addElement(GL.GL_TRIANGLES, 0, 4, 5);
-        builder.addElement(GL.GL_TRIANGLES, 5, 1, 0);
+        builder.addElement(3, 0, 4, 5);
+        builder.addElement(3, 5, 1, 0);
 
-        builder.addElement(GL.GL_TRIANGLES, 1, 5, 6);
-        builder.addElement(GL.GL_TRIANGLES, 6, 2, 1);
+        builder.addElement(3, 1, 5, 6);
+        builder.addElement(3, 6, 2, 1);
 
-        builder.addElement(GL.GL_TRIANGLES, 2, 6, 7);
-        builder.addElement(GL.GL_TRIANGLES, 7, 3, 2);
+        builder.addElement(3, 2, 6, 7);
+        builder.addElement(3, 7, 3, 2);
 
-        builder.addElement(GL.GL_TRIANGLES, 0, 3, 7);
-        builder.addElement(GL.GL_TRIANGLES, 7, 4, 0);
+        builder.addElement(3, 0, 3, 7);
+        builder.addElement(3, 7, 4, 0);
 
-        builder.addElement(GL.GL_TRIANGLES, 5, 4, 7);
-        builder.addElement(GL.GL_TRIANGLES, 7, 6, 5);
+        builder.addElement(3, 5, 4, 7);
+        builder.addElement(3, 7, 6, 5);
 
-        return builder.build();
+        return builder.build("test");
     }
 }
