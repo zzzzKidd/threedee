@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.model;
+package de.ailis.threedee.entities;
 
 import java.nio.FloatBuffer;
 

@@ -7,7 +7,7 @@ package de.ailis.threedee.properties;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.model.Color;
+import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.opengl.GL;
 import de.ailis.threedee.utils.BufferUtils;
 

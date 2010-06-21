@@ -10,7 +10,6 @@ import java.util.List;
 
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
-import de.ailis.threedee.model.Color;
 import de.ailis.threedee.properties.Lighting;
 
 

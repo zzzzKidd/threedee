@@ -11,6 +11,7 @@ import java.nio.ShortBuffer;
 import java.util.List;
 
 import de.ailis.threedee.entities.CameraNode;
+import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
 import de.ailis.threedee.entities.Light;
 import de.ailis.threedee.entities.LightInstance;
@@ -22,7 +23,6 @@ import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.entities.SpotLight;
 import de.ailis.threedee.exceptions.LightException;
 import de.ailis.threedee.math.Matrix4f;
-import de.ailis.threedee.model.Color;
 import de.ailis.threedee.properties.NodeProperty;
 import de.ailis.threedee.textures.Texture;
 import de.ailis.threedee.textures.TextureCache;

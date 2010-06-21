@@ -5,7 +5,6 @@
 
 package de.ailis.threedee.entities;
 
-import de.ailis.threedee.model.Color;
 
 
 /**
