@@ -61,6 +61,6 @@ public class Cube
         builder.addElement(3, 5, 4, 7);
         builder.addElement(3, 7, 6, 5);
 
-        return builder.build("test");
+        return builder.build();
     }
 }

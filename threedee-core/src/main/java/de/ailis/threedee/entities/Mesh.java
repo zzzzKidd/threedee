@@ -14,9 +14,6 @@ package de.ailis.threedee.entities;
 
 public class Mesh
 {
-    /** The mesh id */
-    private final String id;
-
     /** The mesh polygons */
     private final MeshPolygons[] polygons;
 
@@ -27,32 +24,16 @@ public class Mesh
     /**
      * Constructor
      *
-     * @param id
-     *            The mesh id
      * @param polygons
      *            The mesh polygons
      * @param materials
      *            The material mapping
      */
 
-    public Mesh(final String id, final MeshPolygons[] polygons,
-            final String[] materials)
+    public Mesh(final MeshPolygons[] polygons, final String[] materials)
     {
-        this.id = id;
         this.polygons = polygons;
         this.materials = materials;
-    }
-
-
-    /**
-     * Returns the id of the mesh.
-     *
-     * @return The mesh id
-     */
-
-    public String getId()
-    {
-        return this.id;
     }
 
 

@@ -386,15 +386,13 @@ public class MeshBuilder
     /**
      * Builds the mesh.
      *
-     * @param id
-     *            The id for the new mesh
      * @return The mesh
      */
 
-    public Mesh build(final String id)
+    public Mesh build()
     {
         finishElements();
-        final Mesh model = new Mesh(id, this.elements
+        final Mesh model = new Mesh(this.elements
                 .toArray(new MeshPolygons[0]), this.materials
                 .toArray(new String[0]));
         return model;
