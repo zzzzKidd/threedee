@@ -10,7 +10,7 @@ import java.nio.FloatBuffer;
 
 import de.ailis.threedee.math.Bounds;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
 

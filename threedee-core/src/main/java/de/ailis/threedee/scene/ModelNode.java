@@ -8,7 +8,7 @@ package de.ailis.threedee.scene;
 import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.model.Model;
-import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.rendering.opengl.GL;
 
 
 /**

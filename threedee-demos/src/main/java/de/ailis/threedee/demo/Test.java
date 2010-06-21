@@ -59,6 +59,8 @@ public class Test
 //        root.appendChild(camera);
 //        scene.setCameraNode(camera);
 
+
+
         // Display the frame
         frame.pack();
         frame.setVisible(true);

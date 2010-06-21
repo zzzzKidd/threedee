@@ -19,7 +19,8 @@ import com.sun.opengl.util.FPSAnimator;
 
 import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.jogl.opengl.GL;
-import de.ailis.threedee.opengl.GLRenderer;
+import de.ailis.threedee.rendering.Renderer;
+import de.ailis.threedee.rendering.opengl.GLRenderer;
 
 
 /**
@@ -45,8 +46,8 @@ public class SceneCanvas extends JComponent
     /** The GL interface */
     GL gl;
 
-    /** The OpenGL renderer */
-    GLRenderer renderer;
+    /** The renderer */
+    Renderer renderer;
 
 
     /**
@@ -77,8 +78,8 @@ public class SceneCanvas extends JComponent
         capabilities.setSampleBuffers(true);
         capabilities.setNumSamples(4);
         this.canvas = new GLCanvas(capabilities);
-        this.gl = new GL(this.canvas.getGL(), new GLU());
-        final GLRenderer renderer = this.renderer = new GLRenderer(this.gl);
+        final Renderer renderer = this.renderer = new GLRenderer(new GL(
+                this.canvas.getGL(), new GLU()));
         this.animator = new FPSAnimator(this.canvas, 75);
         add(this.canvas);
 
@@ -122,7 +123,6 @@ public class SceneCanvas extends JComponent
         this.canvas.addMouseListener(touchAdapter);
         this.canvas.addMouseMotionListener(touchAdapter);
     }
-
 
     /**
      * Returns the scene displayed in this canvas.

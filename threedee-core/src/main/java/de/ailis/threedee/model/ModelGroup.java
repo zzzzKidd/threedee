@@ -13,7 +13,7 @@ import java.nio.ShortBuffer;
 
 import de.ailis.threedee.math.Bounds;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.utils.BufferIterator;
 import de.ailis.threedee.utils.FloatBufferBuilder;
 import de.ailis.threedee.utils.IntBufferBuilder;

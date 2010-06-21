@@ -38,7 +38,7 @@ import de.ailis.threedee.exceptions.TextureException;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class GL implements de.ailis.threedee.opengl.GL
+public class GL implements de.ailis.threedee.rendering.opengl.GL
 {
     /** The real GL interface */
     private final javax.media.opengl.GL gl;
@@ -75,7 +75,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glColorPointer(int, int, FloatBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glColorPointer(int, int, FloatBuffer)
      */
 
     public void glColorPointer(final int size, final int stride,
@@ -86,7 +86,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glMaterial(int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glMaterial(int, int,
      *      java.nio.FloatBuffer)
      */
 
@@ -98,7 +98,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glMaterialf(int, int, float)
+     * @see de.ailis.threedee.rendering.opengl.GL#glMaterialf(int, int, float)
      */
 
     public void glMaterialf(final int face, final int pname, final float param)
@@ -108,7 +108,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glDisableClientState(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glDisableClientState(int)
      */
 
     public void glDisableClientState(final int cap)
@@ -118,7 +118,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glEnableClientState(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glEnableClientState(int)
      */
 
     public void glEnableClientState(final int cap)
@@ -128,7 +128,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glVertexPointer(int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glVertexPointer(int, int,
      *      java.nio.FloatBuffer)
      */
 
@@ -140,7 +140,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glNormalPointer(int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glNormalPointer(int,
      *      java.nio.FloatBuffer)
      */
 
@@ -151,7 +151,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTexCoordPointer(int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glTexCoordPointer(int, int,
      *      java.nio.FloatBuffer)
      */
 
@@ -163,7 +163,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glDrawElements(int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glDrawElements(int, int,
      *      java.nio.Buffer)
      */
 
@@ -175,7 +175,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glMultMatrix(java.nio.FloatBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glMultMatrix(java.nio.FloatBuffer)
      */
 
     public void glMultMatrix(final FloatBuffer m)
@@ -185,7 +185,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glPopMatrix()
+     * @see de.ailis.threedee.rendering.opengl.GL#glPopMatrix()
      */
 
     public void glPopMatrix()
@@ -195,7 +195,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glPushMatrix()
+     * @see de.ailis.threedee.rendering.opengl.GL#glPushMatrix()
      */
 
     public void glPushMatrix()
@@ -205,7 +205,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glClear(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glClear(int)
      */
 
     public void glClear(final int mask)
@@ -215,7 +215,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glFlush()
+     * @see de.ailis.threedee.rendering.opengl.GL#glFlush()
      */
 
     public void glFlush()
@@ -225,7 +225,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glLoadIdentity()
+     * @see de.ailis.threedee.rendering.opengl.GL#glLoadIdentity()
      */
 
     public void glLoadIdentity()
@@ -235,7 +235,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glMatrixMode(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glMatrixMode(int)
      */
 
     public void glMatrixMode(final int mode)
@@ -245,7 +245,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glBlendFunc(int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glBlendFunc(int, int)
      */
 
     public void glBlendFunc(final int sfactor, final int dfactor)
@@ -255,7 +255,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glClearColor(float, float, float, float)
+     * @see de.ailis.threedee.rendering.opengl.GL#glClearColor(float, float, float, float)
      */
 
     public void glClearColor(final float red, final float green,
@@ -266,7 +266,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glClearDepth(double)
+     * @see de.ailis.threedee.rendering.opengl.GL#glClearDepth(double)
      */
 
     public void glClearDepth(final double depth)
@@ -276,7 +276,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glDepthFunc(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glDepthFunc(int)
      */
 
     public void glDepthFunc(final int func)
@@ -286,7 +286,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glDisable(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glDisable(int)
      */
 
     public void glDisable(final int cap)
@@ -296,7 +296,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glEnable(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glEnable(int)
      */
 
     public void glEnable(final int cap)
@@ -306,7 +306,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glHint(int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glHint(int, int)
      */
 
     public void glHint(final int target, final int mode)
@@ -316,7 +316,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glLight(int, int, java.nio.FloatBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glLight(int, int, java.nio.FloatBuffer)
      */
 
     public void glLight(final int light, final int pname,
@@ -327,7 +327,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glShadeModel(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glShadeModel(int)
      */
 
     public void glShadeModel(final int mode)
@@ -337,7 +337,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glViewport(int, int, int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glViewport(int, int, int, int)
      */
 
     public void glViewport(final int x, final int y, final int width,
@@ -348,7 +348,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#gluPerspective(float, float, float,
+     * @see de.ailis.threedee.rendering.opengl.GL#gluPerspective(float, float, float,
      *      float)
      */
 
@@ -360,7 +360,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glBindTexture(int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glBindTexture(int, int)
      */
 
     public void glBindTexture(final int target, final int texture)
@@ -370,7 +370,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glDeleteTextures(java.nio.IntBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glDeleteTextures(java.nio.IntBuffer)
      */
 
     public void glDeleteTextures(final IntBuffer textures)
@@ -380,7 +380,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glGenTextures(java.nio.IntBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glGenTextures(java.nio.IntBuffer)
      */
 
     public void glGenTextures(final IntBuffer textures)
@@ -390,7 +390,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTexParameteri(int, int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glTexParameteri(int, int, int)
      */
 
     public void glTexParameteri(final int target, final int pname,
@@ -401,7 +401,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTexParameterf(int, int, float)
+     * @see de.ailis.threedee.rendering.opengl.GL#glTexParameterf(int, int, float)
      */
 
     public void glTexParameterf(final int target, final int pname,
@@ -412,7 +412,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTexImage2D(int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glTexImage2D(int, int,
      *      java.io.InputStream, int)
      */
 
@@ -478,7 +478,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTexImage2D(int, int, int, int, int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glTexImage2D(int, int, int, int, int,
      *      int, int, int, java.nio.ByteBuffer)
      */
 
@@ -493,7 +493,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glLightModelfv(int,
+     * @see de.ailis.threedee.rendering.opengl.GL#glLightModelfv(int,
      *      java.nio.FloatBuffer)
      */
 
@@ -504,7 +504,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glGetFloatv(int, java.nio.FloatBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glGetFloatv(int, java.nio.FloatBuffer)
      */
 
     public void glGetFloatv(final int pname, final FloatBuffer params)
@@ -514,7 +514,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glIsEnabled(int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glIsEnabled(int)
      */
 
     public boolean glIsEnabled(final int cap)
@@ -524,7 +524,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glGetIntegerv(int, java.nio.IntBuffer)
+     * @see de.ailis.threedee.rendering.opengl.GL#glGetIntegerv(int, java.nio.IntBuffer)
      */
 
     public void glGetIntegerv(final int pname, final IntBuffer params)
@@ -534,7 +534,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glLightf(int, int, float)
+     * @see de.ailis.threedee.rendering.opengl.GL#glLightf(int, int, float)
      */
 
     public void glLightf(final int light, final int pname, final float param)
@@ -544,7 +544,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glTranslate(float, float, float)
+     * @see de.ailis.threedee.rendering.opengl.GL#glTranslate(float, float, float)
      */
 
     @Override
@@ -555,7 +555,7 @@ public class GL implements de.ailis.threedee.opengl.GL
 
 
     /**
-     * @see de.ailis.threedee.opengl.GL#glColorMaterial(int, int)
+     * @see de.ailis.threedee.rendering.opengl.GL#glColorMaterial(int, int)
      */
 
     @Override

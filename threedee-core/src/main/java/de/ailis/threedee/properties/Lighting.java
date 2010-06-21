@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.properties;
 
-import de.ailis.threedee.opengl.GL;
+import de.ailis.threedee.rendering.opengl.GL;
 
 
 /**

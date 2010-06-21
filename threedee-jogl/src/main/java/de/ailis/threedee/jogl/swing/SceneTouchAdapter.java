@@ -11,7 +11,7 @@ import java.awt.event.MouseMotionListener;
 
 import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.events.TouchEvent;
-import de.ailis.threedee.opengl.GLRenderer;
+import de.ailis.threedee.rendering.Renderer;
 
 
 /**
@@ -26,7 +26,7 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     private final Scene scene;
 
     /** The renderer */
-    private final GLRenderer renderer;
+    private final Renderer renderer;
 
 
     /**
@@ -38,7 +38,7 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
      *            The renderer
      */
 
-    public SceneTouchAdapter(final Scene scene, final GLRenderer renderer)
+    public SceneTouchAdapter(final Scene scene, final Renderer renderer)
     {
         this.scene = scene;
         this.renderer = renderer;

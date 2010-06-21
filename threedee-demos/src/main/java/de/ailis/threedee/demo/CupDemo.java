@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 
 import de.ailis.threedee.entities.Asset;
+import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.events.TouchEvent;
@@ -20,7 +21,6 @@ import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.io.resources.ClasspathResourceProvider;
 import de.ailis.threedee.jogl.swing.SceneCanvas;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.model.Color;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.reader.ModelReader;
 import de.ailis.threedee.physics.Physics;

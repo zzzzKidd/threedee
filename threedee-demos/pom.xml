@@ -23,6 +23,10 @@
     </dependency> 
     <dependency>
       <groupId>de.ailis.threedee</groupId>
+      <artifactId>threedee-collada</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.ailis.threedee</groupId>
       <artifactId>threedee-jogl</artifactId>
     </dependency>
   </dependencies>  
