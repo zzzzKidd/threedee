@@ -80,10 +80,39 @@ public class Matrix4f
         return this;
     }
 
+
+    /**
+     * Sets a value at a specific column and row.
+     *
+     * @param column
+     *            The column index
+     * @param row
+     *            The row index
+     * @param value
+     *            The value to set
+     * @return This matrix for chaining
+     */
+
     public Matrix4f setValue(final int column, final int row, final float value)
     {
         this.m[column * 4 + row] = value;
         return this;
+    }
+
+
+    /**
+     * Returns the value at the specified column and row.
+     *
+     * @param column
+     *            The column index
+     * @param row
+     *            The row index
+     * @return The value
+     */
+
+    public float getValue(final int column, final int row)
+    {
+        return this.m[column * 4 + row];
     }
 
 
@@ -417,9 +446,8 @@ public class Matrix4f
         final float sZ = s * z;
         final float sY = s * y;
         final float sX = s * x;
-        return set(t * x2 + c, tXY + sZ, t * x * z - sY, 0, tXY - sZ, t
-                * y2 + c, tYZ + sX, 0, tXY + sY, tYZ - sX, t * z2 + c, 0, 0, 0,
-                0, 1);
+        return set(t * x2 + c, tXY + sZ, t * x * z - sY, 0, tXY - sZ, t * y2
+                + c, tYZ + sX, 0, tXY + sY, tYZ - sX, t * z2 + c, 0, 0, 0, 0, 1);
     }
 
 
