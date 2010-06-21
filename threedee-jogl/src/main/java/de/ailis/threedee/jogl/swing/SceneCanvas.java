@@ -108,7 +108,7 @@ public class SceneCanvas extends JComponent
             @Override
             public void display(final GLAutoDrawable drawable)
             {
-                renderer.renderScene(scene);
+                renderer.render(scene);
                 final boolean animate = scene.update();
                 if (animate && !SceneCanvas.this.animator.isAnimating())
                     SceneCanvas.this.animator.start();

@@ -154,11 +154,11 @@ public class GLRenderer implements Renderer
 
 
     /**
-     * @see de.ailis.threedee.rendering.Renderer#renderScene(de.ailis.threedee.entities.Scene)
+     * @see de.ailis.threedee.rendering.Renderer#render(de.ailis.threedee.entities.Scene)
      */
 
     @Override
-    public void renderScene(final Scene scene)
+    public void render(final Scene scene)
     {
         // Create some shortcuts
         final GL gl = this.gl;

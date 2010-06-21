@@ -46,7 +46,7 @@ public interface Renderer
      *            The scene to render
      */
 
-    public void renderScene(final Scene scene);
+    public void render(final Scene scene);
 
     public int getWidth();
 
