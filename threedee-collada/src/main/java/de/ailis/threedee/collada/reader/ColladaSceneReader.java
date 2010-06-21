@@ -50,6 +50,7 @@ import de.ailis.threedee.collada.entities.VisualScene;
 import de.ailis.threedee.collada.parser.ColladaParser;
 import de.ailis.threedee.entities.Camera;
 import de.ailis.threedee.entities.CameraNode;
+import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
 import de.ailis.threedee.entities.Light;
 import de.ailis.threedee.entities.LightInstance;
@@ -62,7 +63,6 @@ import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.entities.SpotLight;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.model.Color;
 import de.ailis.threedee.reader.SceneReader;
 
 
@@ -427,7 +427,7 @@ public class ColladaSceneReader extends SceneReader
         if (mesh != null) return mesh;
 
         // Build the mesh
-        mesh = buildMesh(id, geometry.getGeometricElement());
+        mesh = buildMesh(geometry.getGeometricElement());
 
         // Put mesh into cache and return it
         this.meshes.put(id, mesh);
@@ -438,17 +438,15 @@ public class ColladaSceneReader extends SceneReader
     /**
      * Builds a ThreeDee mesh from the specified Collada geometric element.
      *
-     * @param id
-     *            The mesh id
      * @param element
      *            The Collada geometric element
      * @return The ThreeDee mesh
      */
 
-    private Mesh buildMesh(final String id, final GeometricElement element)
+    private Mesh buildMesh(final GeometricElement element)
     {
         if (element instanceof ColladaMesh)
-            return buildMesh(id, (ColladaMesh) element);
+            return buildMesh((ColladaMesh) element);
 
         throw new ReaderException("Unknown geometric element type: "
                 + element.getClass());
@@ -458,14 +456,12 @@ public class ColladaSceneReader extends SceneReader
     /**
      * Builds a ThreeDee mesh from the specified Collada mesh.
      *
-     * @param id
-     *            The mesh id
      * @param mesh
      *            The Collada mesh
      * @return The ThreeDee mesh
      */
 
-    private Mesh buildMesh(final String id, final ColladaMesh mesh)
+    private Mesh buildMesh(final ColladaMesh mesh)
     {
         final MeshBuilder builder = new MeshBuilder();
         for (final Primitives primitives : mesh.getPrimitiveGroups())
@@ -473,7 +469,7 @@ public class ColladaSceneReader extends SceneReader
             processPrimitives(builder, mesh, primitives);
         }
 
-        return builder.build(id);
+        return builder.build();
     }
 
 
