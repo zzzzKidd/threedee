@@ -12,8 +12,6 @@ import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.model.Color;
 import de.ailis.threedee.properties.Lighting;
-import de.ailis.threedee.support.IdChangeListener;
-import de.ailis.threedee.support.Identifiable;
 
 
 /**
@@ -23,11 +21,8 @@ import de.ailis.threedee.support.Identifiable;
  * @version $Revision: 84727 $
  */
 
-public class Scene implements Identifiable<Scene>
+public class Scene
 {
-    /** The scene id */
-    private String id;
-
     /** The root scene node */
     private SceneNode rootNode;
 
@@ -40,25 +35,8 @@ public class Scene implements Identifiable<Scene>
     /** The color used to clear the screen */
     private Color clearColor = Color.BLACK;
 
-    /** The id change listeners */
-    private final List<IdChangeListener<Scene>> idChangeListener = new ArrayList<IdChangeListener<Scene>>();
-
     /** The list of touch listeners */
     private final List<TouchListener> touchListeners = new ArrayList<TouchListener>();
-
-
-    /**
-     * Constructs a new scene.
-     *
-     * @param id
-     *            The scene id
-     */
-
-    public Scene(final String id)
-    {
-        this();
-        this.id = id;
-    }
 
 
     /**
@@ -69,33 +47,6 @@ public class Scene implements Identifiable<Scene>
     {
         this.lastUpdate = System.nanoTime();
         this.rootNode = createDefaultRootNode();
-    }
-
-
-    /**
-     * Sets the id.
-     *
-     * @param id
-     *            The id to set. Specify null to remove id
-     */
-
-    public void setId(final String id)
-    {
-        final String oldId = this.id;
-        this.id = id;
-        idChanged(oldId);
-    }
-
-
-    /**
-     * Returns the id. May return null if no ID is set.
-     *
-     * @return The id or null if none set
-     */
-
-    public String getId()
-    {
-        return this.id;
     }
 
 
@@ -281,44 +232,6 @@ public class Scene implements Identifiable<Scene>
         for (final TouchListener touchListener : this.touchListeners)
         {
             touchListener.touchRelease(event);
-        }
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#addIdChangeListener(de.ailis.threedee.support.IdChangeListener)
-     */
-
-    @Override
-    public void addIdChangeListener(final IdChangeListener<Scene> listener)
-    {
-        this.idChangeListener.add(listener);
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#removeIdChangeListener(de.ailis.threedee.support.IdChangeListener)
-     */
-
-    @Override
-    public void removeIdChangeListener(final IdChangeListener<Scene> listener)
-    {
-        this.idChangeListener.remove(listener);
-    }
-
-
-    /**
-     * Informs listeners about a changed id.
-     *
-     * @param oldId
-     *            The old id
-     */
-
-    private void idChanged(final String oldId)
-    {
-        for (final IdChangeListener<Scene> listener : this.idChangeListener)
-        {
-            listener.idChanged(this, oldId);
         }
     }
 }

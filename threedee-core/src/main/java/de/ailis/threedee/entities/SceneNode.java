@@ -16,8 +16,6 @@ import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.physics.Physics;
 import de.ailis.threedee.properties.NodeProperty;
 import de.ailis.threedee.scene.SceneNodeIterator;
-import de.ailis.threedee.support.IdChangeListener;
-import de.ailis.threedee.support.Identifiable;
 
 
 /**
@@ -29,13 +27,10 @@ import de.ailis.threedee.support.Identifiable;
  */
 
 public class SceneNode implements Iterable<SceneNode>, Transformable,
-        Serializable, Identifiable<SceneNode>
+        Serializable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 9012949353237550980L;
-
-    /** The node id */
-    private String id;
 
     /** The parent node. Can be null if there is none. */
     private SceneNode parentNode;
@@ -76,9 +71,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable,
     /** Connected meshes */
     private List<MeshInstance> meshes;
 
-    /** The id change listeners */
-    private final List<IdChangeListener<SceneNode>> idChangeListener = new ArrayList<IdChangeListener<SceneNode>>();
-
 
     /**
      * Constructs a new scene node.
@@ -87,20 +79,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable,
     public SceneNode()
     {
         // Empty
-    }
-
-
-    /**
-     * Constructs a new scene node with the specified id.
-     *
-     * @param id
-     *            The id of the scene node
-     */
-
-    public SceneNode(final String id)
-    {
-        this();
-        this.id = id;
     }
 
 
@@ -743,69 +721,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable,
     public List<MeshInstance> getMeshes()
     {
         return this.meshes;
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#getId()
-     */
-
-    @Override
-    public String getId()
-    {
-        return this.id;
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#setId(java.lang.String)
-     */
-
-    @Override
-    public void setId(final String id)
-    {
-        final String oldId = this.id;
-        this.id = id;
-        idChanged(oldId);
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#addIdChangeListener(de.ailis.threedee.support.IdChangeListener)
-     */
-
-    @Override
-    public void addIdChangeListener(final IdChangeListener<SceneNode> listener)
-    {
-        this.idChangeListener.add(listener);
-    }
-
-
-    /**
-     * @see de.ailis.threedee.support.Identifiable#removeIdChangeListener(de.ailis.threedee.support.IdChangeListener)
-     */
-
-    @Override
-    public void removeIdChangeListener(
-            final IdChangeListener<SceneNode> listener)
-    {
-        this.idChangeListener.remove(listener);
-    }
-
-
-    /**
-     * Informs listeners about a changed id.
-     *
-     * @param oldId
-     *            The old id
-     */
-
-    private void idChanged(final String oldId)
-    {
-        for (final IdChangeListener<SceneNode> listener : this.idChangeListener)
-        {
-            listener.idChanged(this, oldId);
-        }
     }
 
 
