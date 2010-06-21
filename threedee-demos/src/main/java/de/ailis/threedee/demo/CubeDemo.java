@@ -58,13 +58,13 @@ public class CubeDemo
         final SceneNode root = scene.getRootNode();
 
         // Create a light
-        final Light light = new DirectionalLight(Color.WHITE);
+        final Light light = new DirectionalLight(Color.DARK_GRAY, Color.WHITE,
+                Color.WHITE);
         final SceneNode lightNode = new SceneNode();
         final LightInstance lightInstance = new LightInstance(light);
         lightNode.addLight(lightInstance);
         root.enableLight(lightInstance);
         root.appendChild(lightNode);
-        lightNode.rotateY((float) Math.PI / 2);
 
         // Build the cube mesh
         final MeshBuilder builder = new MeshBuilder();
@@ -90,12 +90,28 @@ public class CubeDemo
         builder.addElement(4, 0, 3, 7, 4);
         final Mesh cubeMesh = builder.build("cube");
 
-        final Material frontMaterial = new MaterialBuilder().setId("frontMaterial").setDiffuseColor(Color.RED).build();
+        // Create materials for all cube planes.
+        final Material frontMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.RED).build();
+        final Material topMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.BLUE).build();
+        final Material bottomMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.GREEN).build();
+        final Material backMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.WHITE).build();
+        final Material leftMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.YELLOW).build();
+        final Material rightMaterial = new MaterialBuilder().setDiffuseColor(
+                Color.PURPLE).build();
 
         // Create the cube mesh instance
         final MeshInstance cube = new MeshInstance(cubeMesh);
-        //cube.bindMaterial("front", frontMaterial);
-        //cube.bindMaterial("top", frontMaterial);
+        cube.bindMaterial("front", frontMaterial);
+        cube.bindMaterial("top", topMaterial);
+        cube.bindMaterial("bottom", bottomMaterial);
+        cube.bindMaterial("back", backMaterial);
+        cube.bindMaterial("left", leftMaterial);
+        cube.bindMaterial("right", rightMaterial);
 
         // Create the cube scene node
         final SceneNode cubeNode = new SceneNode();
