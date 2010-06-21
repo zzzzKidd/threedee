@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 
 import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
+import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
 import de.ailis.threedee.entities.Light;
 import de.ailis.threedee.entities.LightInstance;
@@ -21,7 +22,6 @@ import de.ailis.threedee.entities.MeshInstance;
 import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.jogl.swing.SceneCanvas;
-import de.ailis.threedee.model.Color;
 
 
 /**
@@ -88,7 +88,7 @@ public class CubeDemo
         builder.addElement(4, 1, 5, 6, 2);
         builder.useMaterial("right");
         builder.addElement(4, 0, 3, 7, 4);
-        final Mesh cubeMesh = builder.build("cube");
+        final Mesh cubeMesh = builder.build();
 
         // Create materials for all cube planes.
         final Material frontMaterial = new MaterialBuilder().setDiffuseColor(
