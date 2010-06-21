@@ -5,7 +5,6 @@
 
 package de.ailis.threedee.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,12 +25,8 @@ import de.ailis.threedee.scene.SceneNodeIterator;
  * @version $Revision$
  */
 
-public class SceneNode implements Iterable<SceneNode>, Transformable,
-        Serializable
+public class SceneNode implements Iterable<SceneNode>, Transformable
 {
-    /** Serial version UID */
-    private static final long serialVersionUID = 9012949353237550980L;
-
     /** The parent node. Can be null if there is none. */
     private SceneNode parentNode;
 

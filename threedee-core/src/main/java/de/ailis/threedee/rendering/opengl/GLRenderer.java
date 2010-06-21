@@ -98,13 +98,10 @@ public class GLRenderer implements Renderer
     {
         // Create some shortcuts
         final GL gl = this.gl;
-        final Color clearColor = scene.getClearColor();
 
         // Set the color used for clearing the screen before rendering a frame
         gl.glEnable(GL.GL_TEXTURE_2D);
         gl.glShadeModel(GL.GL_SMOOTH);
-        gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
-                .getBlue(), clearColor.getAlpha());
         gl.glClearDepth(1f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
@@ -155,7 +152,13 @@ public class GLRenderer implements Renderer
         // Initialize the scene if needed
         if (this.reinit) init(scene);
 
+        // If a camera is set then render it
         if (cameraNode != null) renderCamera(cameraNode.getCamera());
+
+        // Set the clear color
+        final Color clearColor = scene.getClearColor();
+        gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
+                .getBlue(), clearColor.getAlpha());
 
         // Clear the color and depth buffer
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
