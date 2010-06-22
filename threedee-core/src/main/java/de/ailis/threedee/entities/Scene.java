@@ -11,6 +11,7 @@ import java.util.List;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.properties.Lighting;
+import de.ailis.threedee.rendering.opengl.GL;
 
 
 /**
@@ -232,5 +233,42 @@ public class Scene
         {
             touchListener.touchRelease(event);
         }
+    }
+
+
+    /**
+     * Renders the scene.
+     *
+     * @param viewport
+     *            The viewport
+     */
+
+    public void render(final Viewport viewport)
+    {
+        // Create some shortcuts
+        final GL gl = viewport.getGL();
+        final SceneNode rootNode = this.rootNode;
+        final Color clearColor = this.clearColor;
+
+        // Clear the viewport
+        gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
+                .getBlue(), clearColor.getAlpha());
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+        // Only perform camera and nodes when a root node is set
+        if (rootNode != null)
+        {
+            // Apply camera transformation if camera is present
+            if (this.cameraNode != null) this.cameraNode.apply(viewport);
+
+            // Render root node
+            rootNode.renderAll(viewport);
+
+            // Remove camera transformation if camera is present
+            if (this.cameraNode != null) this.cameraNode.remove(viewport);
+        }
+
+        // Finish renderering
+        gl.glFlush();
     }
 }

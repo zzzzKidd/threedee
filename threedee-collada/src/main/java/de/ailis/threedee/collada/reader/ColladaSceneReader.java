@@ -53,7 +53,7 @@ import de.ailis.threedee.entities.CameraNode;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
 import de.ailis.threedee.entities.Light;
-import de.ailis.threedee.entities.LightInstance;
+import de.ailis.threedee.entities.LightNode;
 import de.ailis.threedee.entities.Material;
 import de.ailis.threedee.entities.Mesh;
 import de.ailis.threedee.entities.MeshInstance;
@@ -219,9 +219,9 @@ public class ColladaSceneReader extends SceneReader
             final ColladaLight colladaLight = this.collada.getLibraryLights()
                     .get(instanceLight.getURL().getFragment());
             final Light light = buildLight(colladaLight);
-            final LightInstance lightInstance = new LightInstance(light);
-            sceneNode.addLight(lightInstance);
-            this.scene.getRootNode().enableLight(lightInstance);
+            final LightNode lightInstance = new LightNode(light);
+            sceneNode.appendChild(lightInstance);
+            this.scene.getRootNode().addLight(lightInstance);
         }
 
         // Process the cameras

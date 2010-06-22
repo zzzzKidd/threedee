@@ -6,7 +6,7 @@
 package de.ailis.threedee.entities;
 
 import de.ailis.threedee.math.Matrix4f;
-import de.ailis.threedee.rendering.Renderer;
+import de.ailis.threedee.rendering.opengl.GL;
 
 
 /**
@@ -25,18 +25,6 @@ public class CameraNode extends SceneNode
 
     /** If cached camera transformation is valid */
     private final boolean cameraTransformValid = false;
-
-    /** If camera data is invalid */
-    boolean invalid = true;
-
-    /** The previous output width */
-    private int oldWidth = 0;
-
-    /** The previous output height */
-    private int oldHeight = 0;
-
-    /** The previous camera settings */
-    private final Camera oldCamera = new Camera();
 
 
     /**
@@ -93,25 +81,48 @@ public class CameraNode extends SceneNode
         return this.cameraTransform.set(getSceneTransform()).invert();
     }
 
-    public void preRender(final Renderer renderer)
+
+    /**
+     * Applies the camera to the specified viewport.
+     *
+     * @param viewport
+     *            The viewport
+     */
+
+    public void apply(final Viewport viewport)
     {
-        final int newWidth = renderer.getWidth();
-        final int newHeight = renderer.getHeight();
+        // Create some shortcuts
+        final GL gl = viewport.getGL();
+        final Camera camera = this.camera;
 
-        // Check if camera settings has changed
-        if (!this.camera.equals(this.oldCamera)
-                || (this.camera.getAspectRatio() != null && (newWidth != this.oldWidth || newHeight != this.oldHeight)))
-        {
-            this.oldWidth = newWidth;
-            this.oldHeight = newHeight;
-            this.oldCamera.copyFrom(this.camera);
-            this.invalid = true;
-        }
+        // Setup the coordinate system
+        gl.glMatrixMode(GL.GL_PROJECTION);
+        gl.glLoadIdentity();
+        final Float aspectRatio = camera.getAspectRatio();
+        gl.gluPerspective(camera.getFovY(), aspectRatio == null ? viewport
+                .getAspectRatio() : aspectRatio.floatValue(),
+                camera.getZNear(), camera.getZFar());
 
-        if (this.invalid)
-        {
-            renderer.renderCamera(this.camera);
-            this.invalid = false;
-        }
+        // Set the viewport
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        gl.glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
+
+        // Apply camera transformation
+        gl.glPushMatrix();
+        gl.glMultMatrix(getCameraTransform().getBuffer());
+    }
+
+
+    /**
+     * Removes the camera from the specified viewport.
+     *
+     * @param viewport
+     *            The viewport
+     */
+
+    public void remove(final Viewport viewport)
+    {
+        viewport.getGL().glPopMatrix();
     }
 }

@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.entities;
 
-import java.io.Serializable;
+
 
 
 /**
@@ -14,11 +14,8 @@ import java.io.Serializable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Camera implements Serializable
+public class Camera
 {
-    /** Serial version UID */
-    private static final long serialVersionUID = 1L;
-
     /** The field of view angle, in degrees, in the y direction. */
     private float fovY;
 
@@ -84,22 +81,6 @@ public class Camera implements Serializable
     {
         this(fovY, zNear, zFar);
         this.aspectRatio = aspectRatio;
-    }
-
-
-    /**
-     * Copies camera data from the specified camera.
-     *
-     * @param src
-     *            The camera to copy the data from
-     */
-
-    public void copyFrom(final Camera src)
-    {
-        this.fovY = src.fovY;
-        this.aspectRatio = src.aspectRatio;
-        this.zFar = src.zFar;
-        this.zNear = src.zNear;
     }
 
 
@@ -204,51 +185,6 @@ public class Camera implements Serializable
     public void setZFar(final float zFar)
     {
         this.zFar = zFar;
-    }
-
-
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime
-                * result
-                + ((this.aspectRatio == null) ? 0 : this.aspectRatio.hashCode());
-        result = prime * result + Float.floatToIntBits(this.fovY);
-        result = prime * result + Float.floatToIntBits(this.zFar);
-        result = prime * result + Float.floatToIntBits(this.zNear);
-        return result;
-    }
-
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        final Camera other = (Camera) obj;
-        if (this.aspectRatio == null)
-        {
-            if (other.aspectRatio != null) return false;
-        }
-        else if (!this.aspectRatio.equals(other.aspectRatio)) return false;
-        if (Float.floatToIntBits(this.fovY) != Float.floatToIntBits(other.fovY))
-            return false;
-        if (Float.floatToIntBits(this.zFar) != Float.floatToIntBits(other.zFar))
-            return false;
-        if (Float.floatToIntBits(this.zNear) != Float
-                .floatToIntBits(other.zNear)) return false;
-        return true;
     }
 
 

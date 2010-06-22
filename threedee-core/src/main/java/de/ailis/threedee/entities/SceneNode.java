@@ -5,6 +5,8 @@
 
 package de.ailis.threedee.entities;
 
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +16,10 @@ import de.ailis.threedee.math.Transformable;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.physics.Physics;
 import de.ailis.threedee.properties.NodeProperty;
+import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.scene.SceneNodeIterator;
+import de.ailis.threedee.textures.Texture;
+import de.ailis.threedee.textures.TextureCache;
 
 
 /**
@@ -54,17 +59,17 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
     /** The physics of this node. */
     private final Physics physics = new Physics();
 
+    /** The lights which should illuminate this tree branch */
+    private List<LightNode> lights;
+
     /** The node properties */
     private List<NodeProperty> properties;
 
-    /** Connected lights */
-    private List<LightInstance> lights;
-
-    /** Enabled lights */
-    private List<LightInstance> enabledLights;
-
     /** Connected meshes */
     private List<MeshInstance> meshes;
+
+    /** The last used diffuse texture */
+    private Texture diffuseTexture;
 
 
     /**
@@ -593,92 +598,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * Adds a light. Note that this does NOT enable the light. Normally you
-     * want to call enableLight() with the same light source
-     *
-     * @param light
-     *            The light to add
-     */
-
-    public void addLight(final LightInstance light)
-    {
-        if (this.lights == null) this.lights = new ArrayList<LightInstance>();
-        final SceneNode oldNode = light.getSceneNode();
-        if (oldNode != null) oldNode.removeLight(light);
-        this.lights.add(light);
-        light.setSceneNode(this);
-    }
-
-
-    /**
-     * Removes a light.
-     *
-     * @param light
-     *            The light to remove
-     */
-
-    public void removeLight(final LightInstance light)
-    {
-        if (this.lights == null) return;
-        this.lights.remove(light);
-        light.setSceneNode(null);
-    }
-
-
-    /**
-     * Returns the lights to be applied to this scene node (and its child
-     * nodes). May be null or empty if no lights have been added.
-     *
-     * @return The lights
-     */
-
-    public List<LightInstance> getLights()
-    {
-        return this.lights;
-    }
-
-
-    /**
-     * Returns the lights which have been enabled on this node. May be null or
-     * empty if no lights have been added.
-     *
-     * @return The enabled lights
-     */
-
-    public List<LightInstance> getEnabledLights()
-    {
-        return this.enabledLights;
-    }
-
-
-    /**
-     * Enables the specified light on this node (and all its child nodes).
-     *
-     * @param light
-     *            The light to enable
-     */
-
-    public void enableLight(final LightInstance light)
-    {
-        if (this.enabledLights == null) this.enabledLights = new ArrayList<LightInstance>();
-        this.enabledLights.add(light);
-    }
-
-
-    /**
-     * Disables the specified light on this node (and all its child nodes).
-     *
-     * @param light
-     *            The light to disable
-     */
-
-    public void disableLight(final LightInstance light)
-    {
-        this.enabledLights.remove(light);
-    }
-
-
-    /**
      * Adds a mesh.
      *
      * @param mesh
@@ -738,5 +657,276 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
     public void transform(final float... m)
     {
         this.transform.multiply(m);
+    }
+
+
+    /**
+     * Recursively applies light transformation.
+     *
+     * @param gl
+     *            The GL context
+     * @param node
+     *            The scene node the light node should illuminate
+     * @param light
+     *            The light node
+     */
+
+    private void applyLightTransform(final GL gl, final SceneNode node,
+            final SceneNode light)
+    {
+        // Create some shortcuts
+        final SceneNode parentNode = light.getParentNode();
+
+        // Apply next parent transform
+        if (parentNode != null && parentNode != node)
+            applyLightTransform(gl, node, parentNode);
+
+        // Apply current transform
+        gl.glMultMatrix(light.getTransform().getBuffer());
+    }
+
+
+    /**
+     * Renders the node with all its properties and lights and child nodes.
+     *
+     * @param viewport
+     *            The viewport
+     */
+
+    public void renderAll(final Viewport viewport)
+    {
+        // Get some shortcuts
+        final GL gl = viewport.getGL();
+        final List<NodeProperty> properties = this.properties;
+        final List<MeshInstance> meshes = this.meshes;
+        final Matrix4f transform = this.transform;
+
+        boolean identity;
+
+        // Apply node properties
+        if (properties != null) for (final NodeProperty property : properties)
+            property.apply(gl);
+
+        // If transformation is used then apply it
+        identity = transform.isIdentity();
+        if (!identity)
+        {
+            gl.glPushMatrix();
+            gl.glMultMatrix(transform.getBuffer());
+        }
+
+        // Apply lights
+        if (this.lights != null)
+        {
+            for (final LightNode light : this.lights)
+            {
+                gl.glPushMatrix();
+                applyLightTransform(gl, this, light);
+                light.apply(viewport);
+                gl.glPopMatrix();
+            }
+        }
+
+        // Render meshes
+        if (meshes != null) for (final MeshInstance mesh : meshes)
+            renderMesh(viewport, mesh);
+
+        // Render the node and the child nodes
+        for (final SceneNode childNode : this)
+            childNode.renderAll(viewport);
+
+        // Remove lights
+        if (this.lights != null) for (final LightNode light : this.lights)
+            light.remove(viewport);
+
+        // If transformation is used then reset the old transformation
+        if (!identity) gl.glPopMatrix();
+
+        // Remove node properties
+        if (properties != null) for (final NodeProperty property : properties)
+            property.remove(gl);
+    }
+
+
+    /**
+     * Renders the specified mesh.
+     *
+     * @param mesh
+     *            The mesh to render
+     */
+
+    public void renderMesh(final Viewport viewport, final MeshInstance mesh)
+    {
+        for (final MeshPolygons polygons : mesh.getMesh().getPolygons())
+            renderMeshPolygon(viewport, mesh, polygons);
+    }
+
+
+    /**
+     * Renders the specified mesh polygons.
+     *
+     * @param mesh
+     *            The mesh
+     * @param polygons
+     *            The mesh polygons
+     */
+
+    private void renderMeshPolygon(final Viewport viewport,
+            final MeshInstance mesh, final MeshPolygons polygons)
+    {
+        // Create some shortcuts
+        final GL gl = viewport.getGL();
+        final FloatBuffer vertices = polygons.getVertices();
+        final FloatBuffer normals = polygons.getNormals();
+        final FloatBuffer texCoords = polygons.getTexCoords();
+        final ShortBuffer indices = polygons.getIndices();
+        final int materialIndex = polygons.getMaterial();
+        final int mode = getPolygonMode(polygons.getSize());
+
+        // Set vertex pointer
+        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
+        gl.glVertexPointer(3, 0, vertices);
+
+        // Set normal pointer (if normals are used)
+        if (normals != null)
+        {
+            gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+            gl.glNormalPointer(0, normals);
+        }
+
+        // Set texture coordinate pointer (if used)
+        if (texCoords != null)
+        {
+            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+            gl.glTexCoordPointer(2, 0, texCoords);
+        }
+
+        // Apply material
+        final Material material = (materialIndex == -1) ? Material.DEFAULT
+                : mesh.getMaterial(materialIndex);
+        applyMaterial(viewport, material);
+
+        // Draw polygons
+        gl.glDrawElements(mode, GL.GL_UNSIGNED_SHORT, indices);
+
+        // Reset GL state
+        removeMaterial(viewport, material);
+        if (texCoords != null)
+            gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+        if (normals != null) gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
+    }
+
+
+    /**
+     * Returns the polygon mode for the specified polygon size.
+     *
+     * @param size
+     *            The polygon size (1-3)
+     * @return The polygon Mode (GL_POINTS, GL_LINES, GL_TRIANGLES)
+     */
+
+    private int getPolygonMode(final int size)
+    {
+        switch (size)
+        {
+            case 1:
+                return GL.GL_POINTS;
+
+            case 2:
+                return GL.GL_LINES;
+
+            case 3:
+                return GL.GL_TRIANGLES;
+
+            default:
+                throw new IllegalArgumentException("Invalid polygon size: "
+                        + size);
+        }
+    }
+
+
+    /**
+     * Applies the material to the GL context.
+     *
+     * @param material
+     *            The material to apply
+     */
+
+    private void applyMaterial(final Viewport viewport, final Material material)
+    {
+        final GL gl = viewport.getGL();
+        final String diffuseTexture = material.getDiffuseTexture();
+
+        if (diffuseTexture != null)
+        {
+            final Texture texture = this.diffuseTexture = TextureCache
+                    .getInstance().getTexture(diffuseTexture);
+            texture.bind(gl);
+        }
+        else
+
+            this.diffuseTexture = null;
+
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_SPECULAR, material
+                .getSpecularColor().getBuffer());
+        if (this.diffuseTexture == null)
+            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, material
+                    .getDiffuseColor().getBuffer());
+        else
+            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, Color.WHITE
+                    .getBuffer());
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT, material
+                .getAmbientColor().getBuffer());
+        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_EMISSION, material
+                .getEmissionColor().getBuffer());
+        gl.glMaterialf(GL.GL_FRONT_AND_BACK, GL.GL_SHININESS, material
+                .getShininess());
+    }
+
+
+    /**
+     * Removes the material from the GL context.
+     *
+     * @param material
+     *            The material to remove
+     */
+
+    private void removeMaterial(final Viewport viewport, final Material material)
+    {
+        if (this.diffuseTexture != null)
+        {
+            this.diffuseTexture.unbind(viewport.getGL());
+            this.diffuseTexture = null;
+        }
+    }
+
+
+    /**
+     * Adds a light so it illuminates this node and all child nodes
+     * (not the parent nodes).
+     *
+     * @param light
+     *            The light to add
+     */
+
+    public void addLight(final LightNode light)
+    {
+        if (this.lights == null) this.lights = new ArrayList<LightNode>();
+        this.lights.add(light);
+    }
+
+
+    /**
+     * Removes a light so it no longer illuminates this node and its child
+     * nodes.
+     *
+     * @param light
+     *            The light to remove
+     */
+
+    public void removeLight(final LightNode light)
+    {
+        this.lights.remove(light);
     }
 }
