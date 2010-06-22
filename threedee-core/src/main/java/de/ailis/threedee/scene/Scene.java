@@ -3,17 +3,16 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ailis.threedee.entities.Color;
+import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
-import de.ailis.threedee.scene.Camera;
-import de.ailis.threedee.scene.Group;
-import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.properties.Lighting;
 
 

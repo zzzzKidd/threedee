@@ -642,7 +642,7 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
      *            The viewport
      */
 
-    public void renderAll(final Viewport viewport)
+    final void renderAll(final Viewport viewport)
     {
         // Get some shortcuts
         final GL gl = viewport.getGL();

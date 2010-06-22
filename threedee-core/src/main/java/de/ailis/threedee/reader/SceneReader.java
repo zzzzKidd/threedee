@@ -8,8 +8,8 @@ package de.ailis.threedee.reader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.scene.Scene;
 
 
 /**
