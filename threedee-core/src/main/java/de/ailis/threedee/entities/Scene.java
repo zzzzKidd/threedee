@@ -12,6 +12,9 @@ import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.properties.Lighting;
 import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.scene.Camera;
+import de.ailis.threedee.scene.Group;
+import de.ailis.threedee.scene.SceneNode;
 
 
 /**
@@ -27,7 +30,7 @@ public class Scene
     private SceneNode rootNode;
 
     /** The used camera */
-    private CameraNode cameraNode;
+    private Camera cameraNode;
 
     /** The last update time (Nanosecond timestamp) */
     private long lastUpdate;
@@ -58,7 +61,7 @@ public class Scene
 
     private SceneNode createDefaultRootNode()
     {
-        final SceneNode node = new SceneNode();
+        final SceneNode node = new Group();
         node.addProperty(new Lighting(true));
         return node;
     }
@@ -144,7 +147,7 @@ public class Scene
      *            The camera to set. Null for none.
      */
 
-    public void setCameraNode(final CameraNode cameraNode)
+    public void setCameraNode(final Camera cameraNode)
     {
         this.cameraNode = cameraNode;
     }
@@ -156,7 +159,7 @@ public class Scene
      * @return The current camera or null if none set
      */
 
-    public CameraNode getCameraNode()
+    public Camera getCameraNode()
     {
         return this.cameraNode;
     }

@@ -50,20 +50,21 @@ import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
 import de.ailis.threedee.collada.parser.ColladaParser;
-import de.ailis.threedee.entities.CameraNode;
 import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.DirectionalLight;
-import de.ailis.threedee.entities.LightNode;
 import de.ailis.threedee.entities.Material;
 import de.ailis.threedee.entities.Mesh;
-import de.ailis.threedee.entities.MeshInstance;
-import de.ailis.threedee.entities.PointLight;
 import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
-import de.ailis.threedee.entities.SpotLight;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.reader.SceneReader;
+import de.ailis.threedee.scene.Camera;
+import de.ailis.threedee.scene.Group;
+import de.ailis.threedee.scene.Light;
+import de.ailis.threedee.scene.Model;
+import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.lights.DirectionalLight;
+import de.ailis.threedee.scene.lights.PointLight;
+import de.ailis.threedee.scene.lights.SpotLight;
 
 
 /**
@@ -179,7 +180,7 @@ public class ColladaSceneReader extends SceneReader
     private void appendNode(final SceneNode parentNode, final Node node)
     {
         // Create the ThreeDee scene node and append it to the parent node
-        final SceneNode sceneNode = new SceneNode();
+        final SceneNode sceneNode = new Group();
         parentNode.appendChild(sceneNode);
 
         // Transform the scene node
@@ -202,15 +203,15 @@ public class ColladaSceneReader extends SceneReader
             final Geometry geometry = this.collada.getLibraryGeometries().get(
                     instanceGeometry.getURL().getFragment());
             final Mesh mesh = buildMesh(geometry);
-            final MeshInstance meshInstance = new MeshInstance(mesh);
+            final Model model = new Model(mesh);
             for (final InstanceMaterial instanceMaterial : instanceGeometry
                     .getInstanceMaterials())
             {
-                meshInstance.bindMaterial(instanceMaterial.getSymbol(),
+                model.bindMaterial(instanceMaterial.getSymbol(),
                         buildMaterial(instanceMaterial));
 
             }
-            sceneNode.addMesh(meshInstance);
+            sceneNode.appendChild(model);
         }
 
         // Process the lights
@@ -218,7 +219,7 @@ public class ColladaSceneReader extends SceneReader
         {
             final ColladaLight colladaLight = this.collada.getLibraryLights()
                     .get(instanceLight.getURL().getFragment());
-            final LightNode light = buildLight(colladaLight);
+            final Light light = buildLight(colladaLight);
             sceneNode.appendChild(light);
             this.scene.getRootNode().addLight(light);
         }
@@ -229,7 +230,7 @@ public class ColladaSceneReader extends SceneReader
             final ColladaCamera colladaCamera = this.collada
                     .getLibraryCameras().get(
                             instanceCamera.getURL().getFragment());
-            final CameraNode camera = buildCamera(colladaCamera);
+            final Camera camera = buildCamera(colladaCamera);
             sceneNode.appendChild(camera);
             this.scene.setCameraNode(camera);
         }
@@ -332,7 +333,7 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee camera
      */
 
-    private CameraNode buildCamera(final ColladaCamera colladaCamera)
+    private Camera buildCamera(final ColladaCamera colladaCamera)
     {
         final Optic optic = colladaCamera.getOptic();
         if (optic instanceof PerspectiveOptic)
@@ -348,7 +349,7 @@ public class ColladaSceneReader extends SceneReader
                             "Unable to calculate fovY because fovX or aspect ratio is missing");
                 fovY = fovX / ar;
             }
-            return new CameraNode(fovY, pOptic.getZnear(), pOptic.getZfar());
+            return new Camera(fovY, pOptic.getZnear(), pOptic.getZfar());
         }
         throw new ReaderException("Unsupported camera optic: "
                 + optic.getClass());
@@ -363,7 +364,7 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee light
      */
 
-    private LightNode buildLight(final ColladaLight colladaLight)
+    private Light buildLight(final ColladaLight colladaLight)
     {
         if (colladaLight instanceof ColladaPointLight)
             return buildPointLight((ColladaPointLight) colladaLight);

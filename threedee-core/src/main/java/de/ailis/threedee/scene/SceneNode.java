@@ -3,23 +3,19 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.math.Transformable;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.physics.Physics;
 import de.ailis.threedee.properties.NodeProperty;
 import de.ailis.threedee.rendering.opengl.GL;
-import de.ailis.threedee.scene.SceneNodeIterator;
-import de.ailis.threedee.textures.Texture;
-import de.ailis.threedee.textures.TextureCache;
 
 
 /**
@@ -30,7 +26,7 @@ import de.ailis.threedee.textures.TextureCache;
  * @version $Revision$
  */
 
-public class SceneNode implements Iterable<SceneNode>, Transformable
+public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 {
     /** The parent node. Can be null if there is none. */
     private SceneNode parentNode;
@@ -60,16 +56,10 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
     private final Physics physics = new Physics();
 
     /** The lights which should illuminate this tree branch */
-    private List<LightNode> lights;
+    private List<Light> lights;
 
     /** The node properties */
     private List<NodeProperty> properties;
-
-    /** Connected meshes */
-    private List<MeshInstance> meshes;
-
-    /** The last used diffuse texture */
-    private Texture diffuseTexture;
 
 
     /**
@@ -598,47 +588,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * Adds a mesh.
-     *
-     * @param mesh
-     *            The mesh to add
-     */
-
-    public void addMesh(final MeshInstance mesh)
-    {
-        if (this.meshes == null) this.meshes = new ArrayList<MeshInstance>();
-        this.meshes.add(mesh);
-    }
-
-
-    /**
-     * Removes a mesh.
-     *
-     * @param mesh
-     *            The mesh to remove
-     */
-
-    public void removeMesh(final MeshInstance mesh)
-    {
-        if (this.meshes == null) return;
-        this.meshes.remove(mesh);
-    }
-
-
-    /**
-     * Returns the meshes connected to this scene node. Maybe empty or null
-     * if no meshes have been added.
-     *
-     * @return The meshes
-     */
-
-    public List<MeshInstance> getMeshes()
-    {
-        return this.meshes;
-    }
-
-
-    /**
      * @see de.ailis.threedee.math.Transformable#transform(de.ailis.threedee.math.Matrix4f)
      */
 
@@ -698,7 +647,6 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
         // Get some shortcuts
         final GL gl = viewport.getGL();
         final List<NodeProperty> properties = this.properties;
-        final List<MeshInstance> meshes = this.meshes;
         final Matrix4f transform = this.transform;
 
         boolean identity;
@@ -718,7 +666,7 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
         // Apply lights
         if (this.lights != null)
         {
-            for (final LightNode light : this.lights)
+            for (final Light light : this.lights)
             {
                 gl.glPushMatrix();
                 applyLightTransform(gl, this, light);
@@ -727,16 +675,15 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
             }
         }
 
-        // Render meshes
-        if (meshes != null) for (final MeshInstance mesh : meshes)
-            renderMesh(viewport, mesh);
+        // Renders the node itself
+        render(viewport);
 
         // Render the node and the child nodes
         for (final SceneNode childNode : this)
             childNode.renderAll(viewport);
 
         // Remove lights
-        if (this.lights != null) for (final LightNode light : this.lights)
+        if (this.lights != null) for (final Light light : this.lights)
             light.remove(viewport);
 
         // If transformation is used then reset the old transformation
@@ -749,156 +696,15 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * Renders the specified mesh.
+     * Renders the node itself.
      *
-     * @param mesh
-     *            The mesh to render
+     * @param viewport
+     *            The viewport
      */
 
-    public void renderMesh(final Viewport viewport, final MeshInstance mesh)
+    protected void render(final Viewport viewport)
     {
-        for (final MeshPolygons polygons : mesh.getMesh().getPolygons())
-            renderMeshPolygon(viewport, mesh, polygons);
-    }
-
-
-    /**
-     * Renders the specified mesh polygons.
-     *
-     * @param mesh
-     *            The mesh
-     * @param polygons
-     *            The mesh polygons
-     */
-
-    private void renderMeshPolygon(final Viewport viewport,
-            final MeshInstance mesh, final MeshPolygons polygons)
-    {
-        // Create some shortcuts
-        final GL gl = viewport.getGL();
-        final FloatBuffer vertices = polygons.getVertices();
-        final FloatBuffer normals = polygons.getNormals();
-        final FloatBuffer texCoords = polygons.getTexCoords();
-        final ShortBuffer indices = polygons.getIndices();
-        final int materialIndex = polygons.getMaterial();
-        final int mode = getPolygonMode(polygons.getSize());
-
-        // Set vertex pointer
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glVertexPointer(3, 0, vertices);
-
-        // Set normal pointer (if normals are used)
-        if (normals != null)
-        {
-            gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-            gl.glNormalPointer(0, normals);
-        }
-
-        // Set texture coordinate pointer (if used)
-        if (texCoords != null)
-        {
-            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
-            gl.glTexCoordPointer(2, 0, texCoords);
-        }
-
-        // Apply material
-        final Material material = (materialIndex == -1) ? Material.DEFAULT
-                : mesh.getMaterial(materialIndex);
-        applyMaterial(viewport, material);
-
-        // Draw polygons
-        gl.glDrawElements(mode, GL.GL_UNSIGNED_SHORT, indices);
-
-        // Reset GL state
-        removeMaterial(viewport, material);
-        if (texCoords != null)
-            gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
-        if (normals != null) gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-    }
-
-
-    /**
-     * Returns the polygon mode for the specified polygon size.
-     *
-     * @param size
-     *            The polygon size (1-3)
-     * @return The polygon Mode (GL_POINTS, GL_LINES, GL_TRIANGLES)
-     */
-
-    private int getPolygonMode(final int size)
-    {
-        switch (size)
-        {
-            case 1:
-                return GL.GL_POINTS;
-
-            case 2:
-                return GL.GL_LINES;
-
-            case 3:
-                return GL.GL_TRIANGLES;
-
-            default:
-                throw new IllegalArgumentException("Invalid polygon size: "
-                        + size);
-        }
-    }
-
-
-    /**
-     * Applies the material to the GL context.
-     *
-     * @param material
-     *            The material to apply
-     */
-
-    private void applyMaterial(final Viewport viewport, final Material material)
-    {
-        final GL gl = viewport.getGL();
-        final String diffuseTexture = material.getDiffuseTexture();
-
-        if (diffuseTexture != null)
-        {
-            final Texture texture = this.diffuseTexture = TextureCache
-                    .getInstance().getTexture(diffuseTexture);
-            texture.bind(gl);
-        }
-        else
-
-            this.diffuseTexture = null;
-
-        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_SPECULAR, material
-                .getSpecularColor().getBuffer());
-        if (this.diffuseTexture == null)
-            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, material
-                    .getDiffuseColor().getBuffer());
-        else
-            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, Color.WHITE
-                    .getBuffer());
-        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT, material
-                .getAmbientColor().getBuffer());
-        gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_EMISSION, material
-                .getEmissionColor().getBuffer());
-        gl.glMaterialf(GL.GL_FRONT_AND_BACK, GL.GL_SHININESS, material
-                .getShininess());
-    }
-
-
-    /**
-     * Removes the material from the GL context.
-     *
-     * @param material
-     *            The material to remove
-     */
-
-    private void removeMaterial(final Viewport viewport, final Material material)
-    {
-        if (this.diffuseTexture != null)
-        {
-            this.diffuseTexture.unbind(viewport.getGL());
-            this.diffuseTexture = null;
-        }
+        // Empty
     }
 
 
@@ -910,9 +716,9 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
      *            The light to add
      */
 
-    public void addLight(final LightNode light)
+    public void addLight(final Light light)
     {
-        if (this.lights == null) this.lights = new ArrayList<LightNode>();
+        if (this.lights == null) this.lights = new ArrayList<Light>();
         this.lights.add(light);
     }
 
@@ -925,7 +731,7 @@ public class SceneNode implements Iterable<SceneNode>, Transformable
      *            The light to remove
      */
 
-    public void removeLight(final LightNode light)
+    public void removeLight(final Light light)
     {
         this.lights.remove(light);
     }

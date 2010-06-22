@@ -5,9 +5,9 @@
 
 package de.ailis.threedee.physics;
 
-import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.math.Coord3f;
 import de.ailis.threedee.math.Matrix4f;
+import de.ailis.threedee.scene.SceneNode;
 
 
 /**

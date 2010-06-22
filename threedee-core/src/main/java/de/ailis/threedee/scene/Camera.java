@@ -3,19 +3,20 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene;
 
+import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.rendering.opengl.GL;
 
 
 /**
- * A instance of a light.
+ * A camera node
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class CameraNode extends SceneNode
+public class Camera extends SceneNode
 {
     /** The current camera transformation */
     private final Matrix4f cameraTransform = Matrix4f.identity();
@@ -41,7 +42,7 @@ public class CameraNode extends SceneNode
      * Creates a new camera with default settings.
      */
 
-    public CameraNode()
+    public Camera()
     {
         this(45, 0.1f, 10000f);
     }
@@ -58,7 +59,7 @@ public class CameraNode extends SceneNode
      *            The distance from the viewer to the far clipping plane
      */
 
-    public CameraNode(final float fovY, final float zNear, final float zFar)
+    public Camera(final float fovY, final float zNear, final float zFar)
     {
         this.fovY = fovY;
         this.zNear = zNear;
@@ -80,7 +81,7 @@ public class CameraNode extends SceneNode
      *            The distance from the viewer to the far clipping plane
      */
 
-    public CameraNode(final float fovY, final float aspectRatio, final float zNear,
+    public Camera(final float fovY, final float aspectRatio, final float zNear,
             final float zFar)
     {
         this(fovY, zNear, zFar);

@@ -3,10 +3,12 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
+import de.ailis.threedee.entities.Color;
+import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -17,7 +19,7 @@ import de.ailis.threedee.utils.BufferUtils;
  * @version $Revision$
  */
 
-public class AmbientLight extends LightNode
+public class AmbientLight extends Light
 {
     /** Position for a point light */
     private final static FloatBuffer ambientLightPosition = (FloatBuffer) BufferUtils

@@ -8,7 +8,7 @@ package de.ailis.threedee.scene;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import de.ailis.threedee.entities.SceneNode;
+
 
 
 /**

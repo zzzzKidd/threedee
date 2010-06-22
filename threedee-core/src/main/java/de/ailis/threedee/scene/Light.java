@@ -3,11 +3,13 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import de.ailis.threedee.entities.Color;
+import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.exceptions.LightException;
 import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.utils.BufferUtils;
@@ -19,7 +21,7 @@ import de.ailis.threedee.utils.BufferUtils;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class LightNode extends SceneNode
+public abstract class Light extends SceneNode
 {
     /** The currently associated light id */
     private int lightId = -1;
@@ -51,7 +53,7 @@ public class LightNode extends SceneNode
      * Creates a new light with default colors (White).
      */
 
-    public LightNode()
+    public Light()
     {
         this(Color.BLACK, Color.WHITE, Color.WHITE);
     }
@@ -64,7 +66,7 @@ public class LightNode extends SceneNode
      *            The color of the light
      */
 
-    public LightNode(final Color color)
+    public Light(final Color color)
     {
         this(Color.BLACK, color, color);
     }
@@ -81,7 +83,7 @@ public class LightNode extends SceneNode
      *            The diffuse color
      */
 
-    public LightNode(final Color ambientColor, final Color specularColor,
+    public Light(final Color ambientColor, final Color specularColor,
             final Color diffuseColor)
     {
         this.ambientColor = ambientColor;

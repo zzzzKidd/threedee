@@ -3,10 +3,12 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
+import de.ailis.threedee.entities.Color;
+import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -17,7 +19,7 @@ import de.ailis.threedee.utils.BufferUtils;
  * @version $Revision$
  */
 
-public class SpotLight extends LightNode
+public class SpotLight extends Light
 {
     /** Position for a directional light */
     private final static FloatBuffer spotLightPosition = (FloatBuffer) BufferUtils
@@ -71,7 +73,7 @@ public class SpotLight extends LightNode
 
 
     /**
-     * @see de.ailis.threedee.entities.LightNode#getCutOff()
+     * @see de.ailis.threedee.scene.Light#getCutOff()
      */
 
     @Override

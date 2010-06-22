@@ -4,7 +4,7 @@
  * See LICENSE.txt file for licensing information.
  */
 
-package de.ailis.threedee.scene;
+package de.ailis.threedee.scene.nodes;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,18 +15,18 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.math.Matrix4f;
+import de.ailis.threedee.scene.Group;
 
 
 /**
- * Tests the SceneNode class.
+ * Tests the Group class.
  *
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision$
  */
 
-public class SceneNodeTest
+public class GroupTest
 {
     /**
      * Tests empty node.
@@ -35,7 +35,7 @@ public class SceneNodeTest
     @Test
     public void testEmpty()
     {
-        final SceneNode node = new SceneNode();
+        final Group node = new Group();
         assertNull(node.getFirstChild());
         assertNull(node.getLastChild());
         assertNull(node.getParentNode());
@@ -54,8 +54,8 @@ public class SceneNodeTest
     public void testAppendOneChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
 
         // Validate state of first child node
@@ -84,10 +84,10 @@ public class SceneNodeTest
     public void testAppendTwoChildren()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
 
         // Validate state of first child node
@@ -125,10 +125,10 @@ public class SceneNodeTest
     public void testAppendFirstChildAsThirdChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
 
         // Move first node to the end
@@ -168,7 +168,7 @@ public class SceneNodeTest
     public void testAppendChildChecks()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
+        final Group parent = new Group();
 
         // Tests passing null as child
         try
@@ -203,10 +203,10 @@ public class SceneNodeTest
     public void testInsertBeforeAtFirst()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.insertBefore(child2, child1);
 
         // Validate state of first child node
@@ -244,12 +244,12 @@ public class SceneNodeTest
     public void testInsertBeforeAtMiddle()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.insertBefore(child2, child3);
 
         // Validate state of first child node
@@ -295,10 +295,10 @@ public class SceneNodeTest
     public void testInsertBeforeLastChildAsFirst()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
 
         // Move last node to the beginning
@@ -338,9 +338,9 @@ public class SceneNodeTest
     public void testInsertBeforeChecks()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child = new SceneNode();
-        final SceneNode realChild = new SceneNode();
+        final Group parent = new Group();
+        final Group child = new Group();
+        final Group realChild = new Group();
         parent.appendChild(realChild);
 
         // Tests passing null as newNode
@@ -397,12 +397,12 @@ public class SceneNodeTest
     public void testRemoveMiddleChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
         // Remove the child
@@ -450,12 +450,12 @@ public class SceneNodeTest
     public void testRemoveFirstChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
         // Remove the child
@@ -503,12 +503,12 @@ public class SceneNodeTest
     public void testRemoveLastChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
         // Remove the child
@@ -556,12 +556,12 @@ public class SceneNodeTest
     public void testRemoveAllChildren()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
         // Remove the child
@@ -611,7 +611,7 @@ public class SceneNodeTest
     public void testRemoveChildChecks()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
+        final Group parent = new Group();
 
         // Tests passing null as child
         try
@@ -645,15 +645,15 @@ public class SceneNodeTest
     public void testReplaceMiddleChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode oldChild = new SceneNode();
+        final Group oldChild = new Group();
         parent.appendChild(oldChild);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.replaceChild(oldChild, child2);
 
         // Validate state of replaced child node
@@ -706,15 +706,15 @@ public class SceneNodeTest
     public void testReplaceFirstChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode oldChild = new SceneNode();
+        final Group parent = new Group();
+        final Group oldChild = new Group();
         parent.appendChild(oldChild);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.appendChild(child3);
 
-        final SceneNode child1 = new SceneNode();
+        final Group child1 = new Group();
         parent.replaceChild(oldChild, child1);
 
         // Validate state of replaced child node
@@ -767,15 +767,15 @@ public class SceneNodeTest
     public void testReplaceLastChild()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child1 = new SceneNode();
+        final Group parent = new Group();
+        final Group child1 = new Group();
         parent.appendChild(child1);
-        final SceneNode child2 = new SceneNode();
+        final Group child2 = new Group();
         parent.appendChild(child2);
-        final SceneNode oldChild = new SceneNode();
+        final Group oldChild = new Group();
         parent.appendChild(oldChild);
 
-        final SceneNode child3 = new SceneNode();
+        final Group child3 = new Group();
         parent.replaceChild(oldChild, child3);
 
         // Validate state of replaced child node
@@ -828,8 +828,8 @@ public class SceneNodeTest
     public void testReplaceSame()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child = new SceneNode();
+        final Group parent = new Group();
+        final Group child = new Group();
         parent.appendChild(child);
         parent.replaceChild(child, child);
 
@@ -859,9 +859,9 @@ public class SceneNodeTest
     public void testReplaceChildChecks()
     {
         // Create the nodes
-        final SceneNode parent = new SceneNode();
-        final SceneNode child = new SceneNode();
-        final SceneNode realChild = new SceneNode();
+        final Group parent = new Group();
+        final Group child = new Group();
+        final Group realChild = new Group();
         parent.appendChild(realChild);
 
         // Tests passing null as oldNode

@@ -7,7 +7,7 @@ package de.ailis.threedee.physics;
 
 import java.io.Serializable;
 
-import de.ailis.threedee.entities.SceneNode;
+import de.ailis.threedee.scene.SceneNode;
 
 
 /**
