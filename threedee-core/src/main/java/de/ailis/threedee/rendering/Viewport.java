@@ -3,9 +3,8 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.entities;
+package de.ailis.threedee.rendering;
 
-import de.ailis.threedee.rendering.GL;
 
 
 /**

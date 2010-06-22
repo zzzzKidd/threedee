@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.model.Material;
@@ -21,6 +20,7 @@ import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.builder.MaterialBuilder;
 import de.ailis.threedee.model.builder.ModelBuilder;
 import de.ailis.threedee.rendering.GL;
+import de.ailis.threedee.scene.Color;
 
 
 /**

@@ -13,12 +13,12 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.io.StreamWriter;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.ModelGroup;
+import de.ailis.threedee.scene.Color;
 
 
 /**

@@ -10,14 +10,13 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import de.ailis.threedee.builder.MeshBuilder;
-import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.Material;
-import de.ailis.threedee.entities.Mesh;
-import de.ailis.threedee.entities.MeshPolygons;
-import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.BoundsRenderer;
 import de.ailis.threedee.rendering.GL;
+import de.ailis.threedee.rendering.Viewport;
+import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.model.MeshPolygons;
 import de.ailis.threedee.textures.Texture;
 import de.ailis.threedee.textures.TextureCache;
 

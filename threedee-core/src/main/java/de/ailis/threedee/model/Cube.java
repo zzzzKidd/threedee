@@ -6,7 +6,7 @@
 package de.ailis.threedee.model;
 
 import de.ailis.threedee.builder.MeshBuilder;
-import de.ailis.threedee.entities.Mesh;
+import de.ailis.threedee.scene.model.Mesh;
 
 
 /**

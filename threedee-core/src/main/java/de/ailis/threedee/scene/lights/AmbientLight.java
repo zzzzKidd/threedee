@@ -7,7 +7,7 @@ package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.entities.Color;
+import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 

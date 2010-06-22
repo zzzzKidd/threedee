@@ -50,13 +50,11 @@ import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
 import de.ailis.threedee.collada.parser.ColladaParser;
-import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.Material;
-import de.ailis.threedee.entities.Mesh;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.reader.SceneReader;
 import de.ailis.threedee.scene.Camera;
+import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Group;
 import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.scene.Model;
@@ -65,6 +63,8 @@ import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.lights.DirectionalLight;
 import de.ailis.threedee.scene.lights.PointLight;
 import de.ailis.threedee.scene.lights.SpotLight;
+import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.scene.model.Mesh;
 
 
 /**

@@ -9,11 +9,11 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ailis.threedee.entities.Mesh;
-import de.ailis.threedee.entities.MeshPolygons;
 import de.ailis.threedee.exceptions.ModelBuilderException;
 import de.ailis.threedee.math.Vector2f;
 import de.ailis.threedee.math.Vector3f;
+import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.model.MeshPolygons;
 import de.ailis.threedee.utils.FloatBufferBuilder;
 import de.ailis.threedee.utils.ShortBufferBuilder;
 

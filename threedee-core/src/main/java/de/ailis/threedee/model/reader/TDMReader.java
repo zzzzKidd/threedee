@@ -11,13 +11,13 @@ import java.nio.Buffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.StreamReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.ModelGroup;
+import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.utils.BufferUtils;
 
 
