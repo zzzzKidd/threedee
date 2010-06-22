@@ -7,17 +7,19 @@ package de.ailis.threedee.model.reader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.StreamReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.model.Material;
-import de.ailis.threedee.model.Model;
-import de.ailis.threedee.model.ModelGroup;
+import de.ailis.threedee.reader.ModelReader;
 import de.ailis.threedee.scene.Color;
+import de.ailis.threedee.scene.Model;
+import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.model.MeshPolygons;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -108,7 +110,7 @@ public class TDMReader extends ModelReader
 
 
     /**
-     * @see de.ailis.threedee.model.reader.ModelReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.reader.ModelReader#read(java.io.InputStream)
      */
 
     @Override
@@ -132,7 +134,19 @@ public class TDMReader extends ModelReader
         readHeader();
         readVersion();
         readFileFlags();
-        return new Model(readGroups(), readMaterials());
+        final MeshPolygons[] polygons = readGroups();
+        final Material[] materials = readMaterials();
+        final String[] materialNames = new String[materials.length];
+        final Mesh mesh = new Mesh(polygons, materialNames);
+        final Model model = new Model(mesh);
+        for (int i = materials.length - 1; i >= 0; i--)
+        {
+            final Material material = materials[i];
+            final String name = materials[i].getId();
+            materialNames[i] = name;
+            model.bindMaterial(name, material);
+        }
+        return model;
     }
 
 
@@ -144,10 +158,10 @@ public class TDMReader extends ModelReader
      *             When model groups could not be read
      */
 
-    private ModelGroup[] readGroups() throws IOException
+    private MeshPolygons[] readGroups() throws IOException
     {
         final int groupCount = this.reader.readInt();
-        final ModelGroup[] groups = new ModelGroup[groupCount];
+        final MeshPolygons[] groups = new MeshPolygons[groupCount];
         for (int i = 0; i < groupCount; i++)
         {
             groups[i] = readGroup();
@@ -164,7 +178,7 @@ public class TDMReader extends ModelReader
      *             When model group could not be read
      */
 
-    private ModelGroup readGroup() throws IOException
+    private MeshPolygons readGroup() throws IOException
     {
         final int material = this.reader.readShort();
         final byte flags = (byte) this.reader.readByte();
@@ -184,18 +198,9 @@ public class TDMReader extends ModelReader
                     .readFloatBuffer(vertexCount * 2));
 
         final int indexCount = this.reader.readInt();
-        Buffer indices;
-        if (vertexCount <= 256)
-            indices = this.reader.readByteBuffer(indexCount);
-        else if (vertexCount <= 65536)
-            indices = BufferUtils.convertToNativeEndian(this.reader
+        final ShortBuffer indices = BufferUtils.convertToNativeEndian(this.reader
                     .readShortBuffer(indexCount));
-        else
-            indices = BufferUtils.convertToNativeEndian(this.reader
-                    .readIntBuffer(indexCount));
-
-        return new ModelGroup(material, mode, indices, vertices, texCoords,
-                normals);
+        return new MeshPolygons(material, mode, indices, vertices, texCoords, normals);
     }
 
 
