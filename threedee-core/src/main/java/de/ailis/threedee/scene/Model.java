@@ -14,6 +14,7 @@ import de.ailis.threedee.entities.Mesh;
 import de.ailis.threedee.entities.MeshPolygons;
 import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Vector3f;
+import de.ailis.threedee.model.BoundsRenderer;
 import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.textures.Texture;
 import de.ailis.threedee.textures.TextureCache;
@@ -162,8 +163,13 @@ public class Model extends SceneNode
     @Override
     protected void render(final Viewport viewport)
     {
+        final GL gl = viewport.getGL();
+
         for (final MeshPolygons polygons : this.mesh.getPolygons())
-            renderMeshPolygon(viewport.getGL(), polygons);
+            renderMeshPolygon(gl, polygons);
+
+        // Render the mesh bounds if requested
+        if (this.showBounds) renderBounds(gl);
     }
 
 
@@ -305,5 +311,26 @@ public class Model extends SceneNode
             this.diffuseTexture.unbind(gl);
             this.diffuseTexture = null;
         }
+    }
+
+
+    /**
+     * Renders the bounds of the mesh.
+     *
+     * @param gl
+     *            The GL context
+     */
+
+    private void renderBounds(final GL gl)
+    {
+        final boolean oldLighting = gl.glIsEnabled(GL.GL_LIGHTING);
+        gl.glDisable(GL.GL_LIGHTING);
+
+        BoundsRenderer.render(gl, this.mesh.getBounds());
+        if (this.showGroupBounds)
+            for (final MeshPolygons polygons : this.mesh.getPolygons())
+                BoundsRenderer.render(gl, polygons.getBounds());
+
+        if (oldLighting) gl.glEnable(GL.GL_LIGHTING);
     }
 }

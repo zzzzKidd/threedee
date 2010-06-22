@@ -8,6 +8,10 @@ package de.ailis.threedee.entities;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import de.ailis.threedee.math.Bounds;
+import de.ailis.threedee.math.Vector3f;
+import de.ailis.threedee.utils.BufferIterator;
+
 
 /**
  * A group of mesh polygons.
@@ -17,7 +21,7 @@ import java.nio.ShortBuffer;
 
 public class MeshPolygons
 {
-     /** The material */
+    /** The material */
     private final int material;
 
     /** The elements */
@@ -34,6 +38,9 @@ public class MeshPolygons
 
     /** The size of the polygons (1-3) */
     private final int size;
+
+    /** The bounding box */
+    private final Bounds bounds;
 
 
     /**
@@ -53,9 +60,9 @@ public class MeshPolygons
      *            The normals
      */
 
-    public MeshPolygons(final int material, final int size, final ShortBuffer indices,
-            final FloatBuffer vertices, final FloatBuffer texCoords,
-            final FloatBuffer normals)
+    public MeshPolygons(final int material, final int size,
+            final ShortBuffer indices, final FloatBuffer vertices,
+            final FloatBuffer texCoords, final FloatBuffer normals)
     {
         this.indices = indices;
         this.material = material;
@@ -63,6 +70,18 @@ public class MeshPolygons
         this.vertices = vertices;
         this.texCoords = texCoords;
         this.normals = normals;
+
+        // Create bounding box
+        this.bounds = new Bounds();
+        final BufferIterator iterator = new BufferIterator(this.indices);
+        final Vector3f v = new Vector3f();
+        while (iterator.hasNext())
+        {
+            final int index = iterator.next().intValue();
+            this.bounds.update(v.set(this.vertices.get(index * 3),
+                    this.vertices.get(index * 3 + 1), this.vertices
+                            .get(index * 3 + 2)));
+        }
     }
 
 
@@ -100,7 +119,6 @@ public class MeshPolygons
     {
         return this.texCoords != null;
     }
-
 
 
     /**
@@ -189,5 +207,17 @@ public class MeshPolygons
     public int getVertexCount()
     {
         return this.vertices.rewind().remaining() / 3;
+    }
+
+
+    /**
+     * Returns the bounding box.
+     *
+     * @return The bounding box
+     */
+
+    public Bounds getBounds()
+    {
+        return this.bounds;
     }
 }

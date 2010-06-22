@@ -5,6 +5,8 @@
 
 package de.ailis.threedee.entities;
 
+import de.ailis.threedee.math.Bounds;
+
 
 /**
  * A mesh.
@@ -20,6 +22,9 @@ public class Mesh
     /** The material mapping */
     private final String[] materials;
 
+    /** The bounds */
+    private final Bounds bounds;
+
 
     /**
      * Constructor
@@ -34,6 +39,11 @@ public class Mesh
     {
         this.polygons = polygons;
         this.materials = materials;
+
+        // Create bounds
+        this.bounds = new Bounds();
+        for (final MeshPolygons p : polygons)
+            this.bounds.update(p.getBounds());
     }
 
 
@@ -58,5 +68,18 @@ public class Mesh
     public String[] getMaterials()
     {
         return this.materials;
+    }
+
+
+
+    /**
+     * Returns the bounds of the model.
+     *
+     * @return The model bounds
+     */
+
+    public Bounds getBounds()
+    {
+        return this.bounds;
     }
 }
