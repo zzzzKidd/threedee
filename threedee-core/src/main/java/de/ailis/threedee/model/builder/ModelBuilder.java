@@ -15,7 +15,7 @@ import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.ModelGroup;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.FloatBufferBuilder;
 import de.ailis.threedee.utils.IntBufferBuilder;
 

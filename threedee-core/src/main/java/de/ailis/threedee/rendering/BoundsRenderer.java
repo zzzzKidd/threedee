@@ -3,14 +3,13 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.model;
+package de.ailis.threedee.rendering;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import de.ailis.threedee.math.Bounds;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.rendering.opengl.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.scene.Camera;
 import de.ailis.threedee.scene.Group;
 import de.ailis.threedee.scene.SceneNode;

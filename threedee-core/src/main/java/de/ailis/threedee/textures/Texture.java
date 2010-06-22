@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 
 import de.ailis.threedee.exceptions.TextureException;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
 

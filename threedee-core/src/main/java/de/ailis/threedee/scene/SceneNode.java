@@ -13,7 +13,7 @@ import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.math.Transformable;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.scene.physics.Physics;
 import de.ailis.threedee.scene.properties.NodeProperty;
 

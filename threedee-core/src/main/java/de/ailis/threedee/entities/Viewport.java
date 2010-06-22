@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.entities;
 
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 
 
 /**

@@ -7,7 +7,7 @@ package de.ailis.threedee.scene;
 
 import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Matrix4f;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 
 
 /**

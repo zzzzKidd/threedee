@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.ailis.threedee.math.Bounds;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.BoundsRenderer;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferIterator;
 import de.ailis.threedee.utils.BufferUtils;
 import de.ailis.threedee.utils.FloatBufferBuilder;

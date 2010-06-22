@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.rendering.opengl;
+package de.ailis.threedee.rendering;
 
 import java.io.InputStream;
 import java.nio.Buffer;

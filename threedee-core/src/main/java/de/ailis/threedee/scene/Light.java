@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.exceptions.LightException;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
 

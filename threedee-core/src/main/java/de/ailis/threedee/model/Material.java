@@ -6,7 +6,7 @@
 package de.ailis.threedee.model;
 
 import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.textures.Texture;
 import de.ailis.threedee.textures.TextureCache;
 

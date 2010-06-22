@@ -20,7 +20,7 @@ import de.ailis.threedee.model.Material;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.builder.MaterialBuilder;
 import de.ailis.threedee.model.builder.ModelBuilder;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 
 
 /**

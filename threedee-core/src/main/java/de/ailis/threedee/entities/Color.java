@@ -7,7 +7,7 @@ package de.ailis.threedee.entities;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
 

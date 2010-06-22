@@ -5,17 +5,19 @@
 
 package de.ailis.threedee.scene;
 
+import java.lang.ref.SoftReference;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.Material;
 import de.ailis.threedee.entities.Mesh;
 import de.ailis.threedee.entities.MeshPolygons;
 import de.ailis.threedee.entities.Viewport;
 import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.model.BoundsRenderer;
-import de.ailis.threedee.rendering.opengl.GL;
+import de.ailis.threedee.rendering.BoundsRenderer;
+import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.textures.Texture;
 import de.ailis.threedee.textures.TextureCache;
 
@@ -33,8 +35,11 @@ public class Model extends SceneNode
     /** The cached model to render */
     private final Mesh mesh;
 
+    /** The cached normal mesh */
+    private SoftReference<Mesh> normalMesh;
+
     /** If normals should be displayed */
-    private final boolean showNormals = false;
+    private final boolean showNormals = true;
 
     /** If bounds should be displayed */
     private final boolean showBounds = false;
@@ -170,6 +175,28 @@ public class Model extends SceneNode
 
         // Render the mesh bounds if requested
         if (this.showBounds) renderBounds(gl);
+
+        // Render mesh normals if requested
+        if (this.showNormals) renderNormals(gl);
+    }
+
+
+    /**
+     * Renders the mesh normals.
+     *
+     * @param gl
+     *            The GL context
+     */
+
+    private void renderNormals(final GL gl)
+    {
+        final boolean oldLighting = gl.glIsEnabled(GL.GL_LIGHTING);
+        gl.glDisable(GL.GL_LIGHTING);
+
+        for (final MeshPolygons polygons : getNormalMesh().getPolygons())
+            renderMeshPolygon(gl, polygons);
+
+        if (oldLighting) gl.glEnable(GL.GL_LIGHTING);
     }
 
 
@@ -332,5 +359,52 @@ public class Model extends SceneNode
                 BoundsRenderer.render(gl, polygons.getBounds());
 
         if (oldLighting) gl.glEnable(GL.GL_LIGHTING);
+    }
+
+
+    /**
+     * Builds and returns the normal mesh for this model.
+     *
+     * @return The normal mesh
+     */
+
+    public Mesh getNormalMesh()
+    {
+        // If there is a cached normal mesh then use this one
+        if (this.normalMesh != null)
+        {
+            final Mesh normalMesh = this.normalMesh.get();
+            if (normalMesh != null) return normalMesh;
+        }
+
+        // Build the normal mesh
+        final MeshBuilder builder = new MeshBuilder();
+        for (final MeshPolygons polygons : this.mesh.getPolygons())
+        {
+            // Do nothing if mesh has no normals
+            if (!polygons.hasNormals()) continue;
+
+            // Calculate a scale factor for the normals
+            final float scale = polygons.getBounds().getSize() / 50;
+
+            final FloatBuffer normals = polygons.getNormals();
+            final FloatBuffer vertices = polygons.getVertices();
+            while (vertices.hasRemaining())
+            {
+                final Vector3f a = new Vector3f(vertices.get(), vertices.get(),
+                        vertices.get());
+                final Vector3f b = new Vector3f(normals.get(), normals.get(),
+                        normals.get());
+                b.multiply(scale);
+                b.add(a);
+                builder.addElement(2, builder.addVertex(a), builder
+                        .addVertex(b));
+            }
+        }
+        final Mesh normalMesh = builder.build();
+
+        // Cache normal mesh and return it
+        this.normalMesh = new SoftReference<Mesh>(normalMesh);
+        return normalMesh;
     }
 }
