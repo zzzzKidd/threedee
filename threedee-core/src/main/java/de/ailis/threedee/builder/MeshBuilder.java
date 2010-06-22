@@ -301,17 +301,7 @@ public class MeshBuilder
         // If size is larger then 3 then triangulize the elements
         if (size > 3)
         {
-            final int triangles = size - 2;
-            final int[] newVertices = new int[triangles * vertexCount / size
-                    * 3];
-            final int p = 0;
-            for (int t = 0; t < triangles; t++)
-            {
-                newVertices[size * p + t * 3 + 0] = vertices[size * p];
-                newVertices[size * p + t * 3 + 1] = vertices[size * p + t + 1];
-                newVertices[size * p + t * 3 + 2] = vertices[size * p + t + 2];
-            }
-            addElement(3, newVertices);
+            triangulate(size, vertices);
             return;
         }
 
@@ -336,8 +326,8 @@ public class MeshBuilder
         }
 
         // Finish current elements if mode has changed
-        if ((this.indexBuilder.getSize() + vertexCount) > 32768 || size != this.size
-                || useTexCoords != this.useTexCoords
+        if ((this.indexBuilder.getSize() + vertexCount) > 32768
+                || size != this.size || useTexCoords != this.useTexCoords
                 || useNormals != this.useNormals) finishElements();
 
         // Remember new elements configuration
@@ -384,6 +374,60 @@ public class MeshBuilder
 
 
     /**
+     * Triangulates faces.
+     *
+     * @param size
+     *            Number of vertices per face
+     * @param vertices
+     *            The vertices
+     */
+
+    private void triangulate(final int size, final int[] vertices)
+    {
+        final boolean useNormals = this.nextNormals != null;
+        final boolean useTexCoords = this.nextTexCoords != null;
+        final int vertexCount = vertices.length;
+        final int triangles = size - 2;
+        final int[] newVertices = new int[triangles * vertexCount / size
+                * 3];
+        final int[] newNormals = useNormals ? new int[triangles
+                * vertexCount / size * 3] : null;
+        final int[] newTexCoords = useTexCoords ? new int[triangles
+                * vertexCount / size * 3] : null;
+        final int p = 0;
+        for (int t = 0; t < triangles; t++)
+        {
+            newVertices[size * p + t * 3 + 0] = vertices[size * p];
+            newVertices[size * p + t * 3 + 1] = vertices[size * p + t + 1];
+            newVertices[size * p + t * 3 + 2] = vertices[size * p + t + 2];
+
+            if (useNormals)
+            {
+                newNormals[size * p + t * 3 + 0] = this.nextNormals[size * p];
+                newNormals[size * p + t * 3 + 1] = this.nextNormals[size * p
+                        + t + 1];
+                newNormals[size * p + t * 3 + 2] = this.nextNormals[size * p
+                        + t + 2];
+            }
+
+            if (useTexCoords)
+            {
+                newTexCoords[size * p + t * 3 + 0] = this.nextTexCoords[size
+                        * p];
+                newTexCoords[size * p + t * 3 + 1] = this.nextTexCoords[size
+                        * p + t + 1];
+                newTexCoords[size * p + t * 3 + 2] = this.nextTexCoords[size
+                        * p + t + 2];
+            }
+        }
+        if (useNormals) useNormals(newNormals);
+        if (useTexCoords) useTexCoords(newTexCoords);
+        addElement(3, newVertices);
+        return;
+    }
+
+
+    /**
      * Builds the mesh.
      *
      * @return The mesh
@@ -392,9 +436,8 @@ public class MeshBuilder
     public Mesh build()
     {
         finishElements();
-        final Mesh model = new Mesh(this.elements
-                .toArray(new MeshPolygons[0]), this.materials
-                .toArray(new String[0]));
+        final Mesh model = new Mesh(this.elements.toArray(new MeshPolygons[0]),
+                this.materials.toArray(new String[0]));
         return model;
     }
 }

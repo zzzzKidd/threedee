@@ -38,13 +38,13 @@ public class Model extends SceneNode
     private SoftReference<Mesh> normalMesh;
 
     /** If normals should be displayed */
-    private final boolean showNormals = true;
+    private boolean showNormals = false;
 
     /** If bounds should be displayed */
-    private final boolean showBounds = false;
+    private boolean showBounds = false;
 
     /** If group bounds should be displayed */
-    private final boolean showGroupBounds = false;
+    private boolean showGroupBounds = false;
 
     /** Offset for rendering the model relative to the node */
     private final Vector3f modelOffset = new Vector3f();
@@ -405,5 +405,82 @@ public class Model extends SceneNode
         // Cache normal mesh and return it
         this.normalMesh = new SoftReference<Mesh>(normalMesh);
         return normalMesh;
+    }
+
+
+    /**
+     * Checks if vertex normals are displayed.
+     *
+     * @return True if displayed, false if not
+     */
+
+    public boolean isShowNormals()
+    {
+        return this.showNormals;
+    }
+
+
+    /**
+     * Enables or disables displaying of vertex normals.
+     *
+     * @param showNormals
+     *            True to enable, false to disable
+     */
+
+    public void setShowNormals(final boolean showNormals)
+    {
+        this.showNormals = showNormals;
+    }
+
+
+    /**
+     * Checks if model bounding box is displayed.
+     *
+     * @return True if displayed, false if not
+     */
+
+    public boolean isShowBounds()
+    {
+        return this.showBounds;
+    }
+
+
+    /**
+     * Enables or disabled the display of the model bounding box.
+     *
+     * @param showBounds
+     *            True to enable, false to disable
+     */
+
+    public void setShowBounds(final boolean showBounds)
+    {
+        this.showBounds = showBounds;
+    }
+
+
+    /**
+     * Checks if polygon group bounds are displayed.
+     *
+     * @return True if displayed, false if not
+     */
+
+    public boolean isShowGroupBounds()
+    {
+        return this.showGroupBounds;
+    }
+
+
+    /**
+     * Enables or disabled the display of polygon group bounds. If set to
+     * true then setShowBounds must also be set to true or otherwise you
+     * won't see anything.
+     *
+     * @param showGroupBounds
+     *            True to enable, false to disable
+     */
+
+    public void setShowGroupBounds(final boolean showGroupBounds)
+    {
+        this.showGroupBounds = showGroupBounds;
     }
 }

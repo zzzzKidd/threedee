@@ -48,6 +48,7 @@ public class Scene
     {
         this.lastUpdate = System.nanoTime();
         this.rootNode = createDefaultRootNode();
+        this.cameraNode = createDefaultCamera();
     }
 
 
@@ -62,6 +63,18 @@ public class Scene
         final SceneNode node = new Group();
         node.addProperty(new Lighting(true));
         return node;
+    }
+
+
+    /**
+     * Creates and returns the default camera.
+     *
+     * @return The default camera
+     */
+
+    private Camera createDefaultCamera()
+    {
+        return new Camera();
     }
 
 
