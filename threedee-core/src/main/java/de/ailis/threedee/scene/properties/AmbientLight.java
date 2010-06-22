@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.properties;
+package de.ailis.threedee.scene.properties;
 
 import java.nio.FloatBuffer;
 

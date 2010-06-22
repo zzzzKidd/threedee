@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.physics;
+package de.ailis.threedee.scene.physics;
 
 import de.ailis.threedee.math.Coord3f;
 

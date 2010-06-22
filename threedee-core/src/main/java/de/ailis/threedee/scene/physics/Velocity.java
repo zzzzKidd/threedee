@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.physics;
+package de.ailis.threedee.scene.physics;
 
 import de.ailis.threedee.math.Coord3f;
 import de.ailis.threedee.math.Matrix4f;
@@ -11,34 +11,31 @@ import de.ailis.threedee.scene.SceneNode;
 
 
 /**
- * Spin physics
+ * Velocity physics
  *
  * @author Klaus Reimer (k@ailis.de)
  * @version $Revision: 84727 $
  */
 
-public class Spin extends Coord3f
+public class Velocity extends Coord3f
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
 
-    /** The minimum spin */
+    /** The minimum velocity */
     private final Constraint min = new Constraint(Float.NEGATIVE_INFINITY);
 
-    /** The maximum spin */
+    /** The maximum velocity */
     private final Constraint max = new Constraint(Float.POSITIVE_INFINITY);
 
-    /** The spin acceleration */
+    /** The acceleration */
     private final Acceleration acceleration = new Acceleration();
-
-    /** The spin deceleration */
-    private final Deceleration deceleration = new Deceleration();
 
 
     /**
-     * Returns the spin acceleration in degree per square second. Never null.
+     * Returns the acceleration in units per square second. Never null.
      *
-     * @return The spin acceleration
+     * @return The acceleration
      */
 
     public Acceleration getAcceleration()
@@ -48,20 +45,9 @@ public class Spin extends Coord3f
 
 
     /**
-     * Returns the spin deceleration in degree per square second. Never null.
+     * Returns the minimum velocity in units per second. Never null.
      *
-     * @return The spin deceleration
-     */
-
-    public Deceleration getDeceleration()
-    {
-        return this.deceleration;
-    }
-
-    /**
-     * Returns the minimum spin in degree per second.
-     *
-     * @return The minimum spin
+     * @return The minimum velocity
      */
 
     public Constraint getMin()
@@ -71,9 +57,9 @@ public class Spin extends Coord3f
 
 
     /**
-     * Returns the maximum spin in degree per second.
+     * Returns the maximum velocity in units per second. Never null.
      *
-     * @return The maximum spin
+     * @return The maximum velocity
      */
 
     public Constraint getMax()
@@ -98,12 +84,10 @@ public class Spin extends Coord3f
 
         final Matrix4f matrix = node.getTransform();
 
-        // Apply the spin
-        if (this.x != 0) matrix.rotateX(this.x * delta);
-        if (this.y != 0) matrix.rotateY(this.y * delta);
-        if (this.z != 0) matrix.rotateZ(this.z * delta);
+        // Apply the velocity
+        matrix.translate(this.x * delta, this.y * delta, this.z * delta);
 
-        // Apply spin acceleration
+        // Apply acceleration
         tmp = this.acceleration.getX();
         if (tmp != 0)
             this.x = Math.min(this.max.getX(), Math.max(this.min.getX(), this.x
@@ -116,26 +100,6 @@ public class Spin extends Coord3f
         if (tmp != 0)
             this.z = Math.min(this.max.getZ(), Math.max(this.min.getZ(), this.z
                     + tmp * delta));
-
-        // Apply spin deceleration
-        tmp = Math.abs(this.deceleration.getX());
-        if (tmp != 0)
-            if (this.x < 0)
-                this.x = Math.min(0, this.x + tmp * delta);
-            else if (this.x > 0)
-                this.x = Math.max(0, this.x - tmp * delta);
-        tmp = Math.abs(this.deceleration.getY());
-        if (tmp != 0)
-            if (this.y < 0)
-                this.y = Math.min(0, this.y + tmp * delta);
-            else if (this.y > 0)
-                this.y = Math.max(0, this.y - tmp * delta);
-        tmp = Math.abs(this.deceleration.getZ());
-        if (tmp != 0)
-            if (this.z < 0)
-                this.z = Math.min(0, this.z + tmp * delta);
-            else if (this.z > 0)
-                this.z = Math.max(0, this.z - tmp * delta);
 
         return !isEmpty() || !this.acceleration.isEmpty();
     }

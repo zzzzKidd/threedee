@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.physics;
+package de.ailis.threedee.scene.physics;
 
 import java.io.Serializable;
 
