@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.ailis.threedee.math.Matrix4f;
-import de.ailis.threedee.math.Transformable;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
@@ -26,7 +25,7 @@ import de.ailis.threedee.scene.properties.NodeProperty;
  * @version $Revision$
  */
 
-public abstract class SceneNode implements Iterable<SceneNode>, Transformable
+public abstract class SceneNode implements Iterable<SceneNode>
 {
     /** The parent node. Can be null if there is none. */
     private SceneNode parentNode;
@@ -335,19 +334,13 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#addTransform(Matrix4f)
-     */
-
-    public void addTransform(final Matrix4f transform)
-    {
-        if (transform == null)
-            throw new IllegalArgumentException("transform must not be null");
-        this.transform = this.transform.multiply(transform);
-    }
-
-
-    /**
-     * @see Transformable#rotate(Vector3f, float)
+     * Rotates the current transformation matrix by the specified angle around
+     * the specified axis.
+     *
+     * @param v
+     *            The vector to rotate around
+     * @param r
+     *            The X rotation angle in clock-wise RAD.
      */
 
     public void rotate(final Vector3f v, final float r)
@@ -357,7 +350,11 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#rotateX(float)
+     * Rotates the current transformation matrix by the specified angle around
+     * the X axis.
+     *
+     * @param r
+     *            The X rotation angle in clock-wise RAD.
      */
 
     public void rotateX(final float r)
@@ -367,7 +364,11 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#rotateY(float)
+     * Rotates the current transformation matrix by the specified angle around
+     * the Y axis.
+     *
+     * @param r
+     *            The Y rotation angle in clock-wise RAD.
      */
 
     public void rotateY(final float r)
@@ -377,7 +378,11 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#rotateZ(float)
+     * Rotates the current transformation matrix by the specified angle around
+     * the Z axis.
+     *
+     * @param r
+     *            The Z rotation angle in clock-wise RAD.
      */
 
     public void rotateZ(final float r)
@@ -387,7 +392,14 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#scale(float, float, float)
+     * Scales the current transformation matrix by the specified factors.
+     *
+     * @param sx
+     *            The X scale factor
+     * @param sy
+     *            The Y scale factor
+     * @param sz
+     *            The Z scale factor
      */
 
     public void scale(final float sx, final float sy, final float sz)
@@ -397,7 +409,11 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#scale(float)
+     * Scales the current transformation by the specified factor on all three
+     * axis.
+     *
+     * @param s
+     *            The scale factor
      */
 
     public void scale(final float s)
@@ -407,7 +423,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#scaleX(float)
+     * Scales the current transformation matrix by the specified X factor.
+     *
+     * @param s
+     *            The X scale factor
      */
 
     public void scaleX(final float s)
@@ -417,7 +436,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#scaleY(float)
+     * Scales the current transformation matrix by the specified Y factor.
+     *
+     * @param s
+     *            The Y scale factor
      */
 
     public void scaleY(final float s)
@@ -427,7 +449,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#scaleZ(float)
+     * Scales the current transformation matrix by the specified Z factor.
+     *
+     * @param s
+     *            The Z scale factor
      */
 
     public void scaleZ(final float s)
@@ -437,7 +462,14 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#translate(float, float, float)
+     * Translates the current transformation matrix by the specified deltas.
+     *
+     * @param tx
+     *            The X translation delta
+     * @param ty
+     *            The Y translation delta
+     * @param tz
+     *            The Z translation delta
      */
 
     public void translate(final float tx, final float ty, final float tz)
@@ -447,7 +479,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#translateX(float)
+     * Translates the current transformation matrix by the specified X delta.
+     *
+     * @param t
+     *            The X translation delta
      */
 
     public void translateX(final float t)
@@ -457,7 +492,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#translateY(float)
+     * Translates the current transformation matrix by the specified Y delta.
+     *
+     * @param t
+     *            The Y translation delta
      */
 
     public void translateY(final float t)
@@ -467,7 +505,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#translateZ(float)
+     * Translates the current transformation matrix by the specified Z delta.
+     *
+     * @param t
+     *            The Z translation delta
      */
 
     public void translateZ(final float t)
@@ -477,7 +518,9 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#getTransform()
+     * Returns the current transformation matrix.
+     *
+     * @return The current transformation matrix
      */
 
     public final Matrix4f getTransform()
@@ -522,7 +565,10 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
 
 
     /**
-     * @see Transformable#setTransform(Matrix4f)
+     * Sets a new transformation matrix.
+     *
+     * @param transform
+     *            The transformation matrix to set
      */
 
     public final void setTransform(final Matrix4f transform)
@@ -530,6 +576,36 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
         if (transform == null)
             throw new IllegalArgumentException("transform must not be null");
         this.transform = transform;
+    }
+
+
+    /**
+     * Multiplies the current transformation matrix with the specified one.
+     *
+     * @param matrix
+     *            The transformation matrix
+     */
+
+    public void transform(final Matrix4f matrix)
+    {
+        if (matrix == null)
+            throw new IllegalArgumentException("matrix must not be null");
+        this.transform.multiply(matrix);
+    }
+
+
+    /**
+     * Multiplies the current transformation matrix with the specified one.
+     *
+     * @param matrix
+     *            The transformation matrix (Column-major order)
+     */
+
+    public void transform(final float... matrix)
+    {
+        if (matrix == null)
+            throw new IllegalArgumentException("matrix must not be null");
+        this.transform.multiply(matrix);
     }
 
 
@@ -584,28 +660,6 @@ public abstract class SceneNode implements Iterable<SceneNode>, Transformable
     {
         if (this.properties == null) return;
         this.properties.remove(property);
-    }
-
-
-    /**
-     * @see de.ailis.threedee.math.Transformable#transform(de.ailis.threedee.math.Matrix4f)
-     */
-
-    @Override
-    public void transform(final Matrix4f m)
-    {
-        this.transform.multiply(m);
-    }
-
-
-    /**
-     * @see de.ailis.threedee.math.Transformable#transform(float[])
-     */
-
-    @Override
-    public void transform(final float... m)
-    {
-        this.transform.multiply(m);
     }
 
 
