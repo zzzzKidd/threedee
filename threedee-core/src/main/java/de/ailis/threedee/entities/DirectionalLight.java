@@ -5,6 +5,10 @@
 
 package de.ailis.threedee.entities;
 
+import java.nio.FloatBuffer;
+
+import de.ailis.threedee.utils.BufferUtils;
+
 
 
 /**
@@ -14,8 +18,12 @@ package de.ailis.threedee.entities;
  * @version $Revision$
  */
 
-public class DirectionalLight extends Light
+public class DirectionalLight extends LightNode
 {
+    /** Position for a directional light */
+    private final static FloatBuffer directionalLightPosition = (FloatBuffer) BufferUtils
+            .createDirectFloatBuffer(4).put(0).put(0).put(1).put(0).rewind();
+
     /**
      * Creates a new light with default colors (White).
      */
@@ -23,6 +31,7 @@ public class DirectionalLight extends Light
     public DirectionalLight()
     {
         super();
+        this.position = directionalLightPosition;
     }
 
 
@@ -36,6 +45,7 @@ public class DirectionalLight extends Light
     public DirectionalLight(final Color color)
     {
         super(color);
+        this.position = directionalLightPosition;
     }
 
 
@@ -54,5 +64,6 @@ public class DirectionalLight extends Light
             final Color diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
+        this.position = directionalLightPosition;
     }
 }

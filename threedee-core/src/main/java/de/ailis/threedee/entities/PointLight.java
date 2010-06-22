@@ -5,6 +5,10 @@
 
 package de.ailis.threedee.entities;
 
+import java.nio.FloatBuffer;
+
+import de.ailis.threedee.utils.BufferUtils;
+
 
 
 /**
@@ -14,8 +18,12 @@ package de.ailis.threedee.entities;
  * @version $Revision$
  */
 
-public class PointLight extends Light
+public class PointLight extends LightNode
 {
+    /** Position for a point light */
+    private final static FloatBuffer pointLightPosition = (FloatBuffer) BufferUtils
+            .createDirectFloatBuffer(4).put(0).put(0).put(0).put(1).rewind();
+
     /**
      * Creates a new light with default colors (White).
      */
@@ -23,6 +31,7 @@ public class PointLight extends Light
     public PointLight()
     {
         super();
+        this.position = pointLightPosition;
     }
 
 
@@ -36,6 +45,7 @@ public class PointLight extends Light
     public PointLight(final Color color)
     {
         super(color);
+        this.position = pointLightPosition;
     }
 
 
@@ -54,5 +64,6 @@ public class PointLight extends Light
             final Color diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
+        this.position = pointLightPosition;
     }
 }

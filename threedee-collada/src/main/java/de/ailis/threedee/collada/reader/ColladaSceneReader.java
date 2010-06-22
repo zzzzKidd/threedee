@@ -52,7 +52,6 @@ import de.ailis.threedee.entities.Camera;
 import de.ailis.threedee.entities.CameraNode;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
-import de.ailis.threedee.entities.Light;
 import de.ailis.threedee.entities.LightNode;
 import de.ailis.threedee.entities.Material;
 import de.ailis.threedee.entities.Mesh;
@@ -218,10 +217,9 @@ public class ColladaSceneReader extends SceneReader
         {
             final ColladaLight colladaLight = this.collada.getLibraryLights()
                     .get(instanceLight.getURL().getFragment());
-            final Light light = buildLight(colladaLight);
-            final LightNode lightInstance = new LightNode(light);
-            sceneNode.appendChild(lightInstance);
-            this.scene.getRootNode().addLight(lightInstance);
+            final LightNode light = buildLight(colladaLight);
+            sceneNode.appendChild(light);
+            this.scene.getRootNode().addLight(light);
         }
 
         // Process the cameras
@@ -348,7 +346,7 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee light
      */
 
-    private Light buildLight(final ColladaLight colladaLight)
+    private LightNode buildLight(final ColladaLight colladaLight)
     {
         if (colladaLight instanceof ColladaPointLight)
             return buildPointLight((ColladaPointLight) colladaLight);

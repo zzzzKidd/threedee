@@ -21,9 +21,6 @@ import de.ailis.threedee.utils.BufferUtils;
 
 public class LightNode extends SceneNode
 {
-    /** The light */
-    private final Light light;
-
     /** The currently associated light id */
     private int lightId = -1;
 
@@ -33,41 +30,167 @@ public class LightNode extends SceneNode
     /** The maximum lights */
     private static int maxLights = -1;
 
-    /** Position for a directional light */
-    private final static FloatBuffer directionalLightPosition = (FloatBuffer) BufferUtils
-            .createDirectFloatBuffer(4).put(0).put(0).put(1).put(0).rewind();
-
-    /** Position for a point light */
-    private final static FloatBuffer pointLightPosition = (FloatBuffer) BufferUtils
-            .createDirectFloatBuffer(4).put(0).put(0).put(0).put(1).rewind();
-
     /** Direction for a spot light */
-    private static final FloatBuffer spotLightDirection = (FloatBuffer) BufferUtils
+    private static final FloatBuffer direction = (FloatBuffer) BufferUtils
             .createDirectFloatBuffer(4).put(0).put(0).put(-1).put(1).rewind();
+
+    /** The ambient color of the light */
+    private Color ambientColor = Color.BLACK;
+
+    /** The specular color of the light */
+    private Color specularColor = Color.WHITE;
+
+    /** The diffuse color of the light */
+    private Color diffuseColor = Color.WHITE;
+
+    /** The light position */
+    protected FloatBuffer position;
 
 
     /**
-     * Constructor
-     *
-     * @param light
-     *            The light to instance
+     * Creates a new light with default colors (White).
      */
 
-    public LightNode(final Light light)
+    public LightNode()
     {
-        this.light = light;
+        this(Color.BLACK, Color.WHITE, Color.WHITE);
     }
 
 
     /**
-     * Returns the light.
+     * Constructs a new light with the specified color.
      *
-     * @return The light
+     * @param color
+     *            The color of the light
      */
 
-    public Light getLight()
+    public LightNode(final Color color)
     {
-        return this.light;
+        this(Color.BLACK, color, color);
+    }
+
+
+    /**
+     * Constructs a new light with the specified colors.
+     *
+     * @param ambientColor
+     *            The ambient color
+     * @param specularColor
+     *            The specular color
+     * @param diffuseColor
+     *            The diffuse color
+     */
+
+    public LightNode(final Color ambientColor, final Color specularColor,
+            final Color diffuseColor)
+    {
+        this.ambientColor = ambientColor;
+        this.specularColor = specularColor;
+        this.diffuseColor = diffuseColor;
+    }
+
+
+    /**
+     * Returns the ambient color.
+     *
+     * @return The ambient color
+     */
+
+    public Color getAmbientColor()
+    {
+        return this.ambientColor;
+    }
+
+
+    /**
+     * Sets the ambient color.
+     *
+     * @param ambientColor
+     *            The ambient color to set
+     */
+
+    public void setAmbientColor(final Color ambientColor)
+    {
+        this.ambientColor = ambientColor;
+    }
+
+
+    /**
+     * Returns the specular color.
+     *
+     * @return The specular color
+     */
+
+    public Color getSpecularColor()
+    {
+        return this.specularColor;
+    }
+
+
+    /**
+     * Sets the specular color.
+     *
+     * @param specularColor
+     *            The specularColor to set
+     */
+
+    public void setSpecularColor(final Color specularColor)
+    {
+        this.specularColor = specularColor;
+    }
+
+
+    /**
+     * Returns the diffuse color.
+     *
+     * @return The diffuse color
+     */
+
+    public Color getDiffuseColor()
+    {
+        return this.diffuseColor;
+    }
+
+
+    /**
+     * Sets the diffuse color.
+     *
+     * @param diffuseColor
+     *            The diffuse color to set
+     */
+
+    public void setDiffuseColor(final Color diffuseColor)
+    {
+        this.diffuseColor = diffuseColor;
+    }
+
+
+    /**
+     * Sets the light color. This sets the ambient, diffuse and specular
+     * color to the same value.
+     *
+     * @param color
+     *            The color to set
+     */
+
+    public void setColor(final Color color)
+    {
+        setAmbientColor(Color.BLACK);
+        setDiffuseColor(color);
+        setSpecularColor(Color.BLACK);
+    }
+
+
+    /**
+     * Returns the cut off angle in degree. For a point light or a directional
+     * light this always returns 180.
+     *
+     * @return The cut off angle in degree.
+     */
+
+    public float getCutOff()
+    {
+        return 180f;
     }
 
 
@@ -81,25 +204,24 @@ public class LightNode extends SceneNode
     public void apply(final Viewport viewport)
     {
         final GL gl = viewport.getGL();
+        final float cutOff = getCutOff();
 
-        final Light light = this.light;
         final int index = getLightId(gl);
-        if (light instanceof DirectionalLight)
-            gl.glLight(index, GL.GL_POSITION, directionalLightPosition);
-        else
-            gl.glLight(index, GL.GL_POSITION, pointLightPosition);
-        if (light instanceof SpotLight)
+        gl.glLight(index, GL.GL_POSITION, this.position);
+        if (cutOff < 180f)
         {
-            gl.glLight(index, GL.GL_SPOT_DIRECTION, spotLightDirection);
+            gl.glLight(index, GL.GL_SPOT_DIRECTION, direction);
             gl.glLightf(index, GL.GL_SPOT_CUTOFF, 90f);
         }
         else
         {
             gl.glLightf(index, GL.GL_SPOT_CUTOFF, 180f);
         }
-        gl.glLight(index, GL.GL_AMBIENT, light.getAmbientColor().getBuffer());
-        gl.glLight(index, GL.GL_DIFFUSE, light.getDiffuseColor().getBuffer());
-        gl.glLight(index, GL.GL_SPECULAR, light.getSpecularColor().getBuffer());
+        gl.glLight(index, GL.GL_AMBIENT, this.ambientColor.getBuffer());
+        gl.glLight(index, GL.GL_DIFFUSE, this.diffuseColor.getBuffer());
+        gl.glLight(index, GL.GL_SPECULAR, this.specularColor
+
+                .getBuffer());
         gl.glEnable(index);
     }
 

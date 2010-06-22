@@ -5,6 +5,9 @@
 
 package de.ailis.threedee.entities;
 
+import java.nio.FloatBuffer;
+
+import de.ailis.threedee.utils.BufferUtils;
 
 
 /**
@@ -14,8 +17,15 @@ package de.ailis.threedee.entities;
  * @version $Revision$
  */
 
-public class SpotLight extends Light
+public class SpotLight extends LightNode
 {
+    /** Position for a directional light */
+    private final static FloatBuffer spotLightPosition = (FloatBuffer) BufferUtils
+            .createDirectFloatBuffer(4).put(0).put(0).put(1).put(0).rewind();
+
+    /** The cut off angle in degree */
+    private float cutOff = 180f;
+
     /**
      * Creates a new light with default colors (White).
      */
@@ -23,6 +33,7 @@ public class SpotLight extends Light
     public SpotLight()
     {
         super();
+        this.position = spotLightPosition;
     }
 
 
@@ -36,6 +47,7 @@ public class SpotLight extends Light
     public SpotLight(final Color color)
     {
         super(color);
+        this.position = spotLightPosition;
     }
 
 
@@ -54,5 +66,30 @@ public class SpotLight extends Light
             final Color diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
+        this.position = spotLightPosition;
+    }
+
+
+    /**
+     * @see de.ailis.threedee.entities.LightNode#getCutOff()
+     */
+
+    @Override
+    public float getCutOff()
+    {
+        return this.cutOff;
+    }
+
+
+    /**
+     * Sets the cut off angle in degree.
+     *
+     * @param cutOff
+     *            The cut off angle to set
+     */
+
+    public void setCutOff(final float cutOff)
+    {
+        this.cutOff = cutOff;
     }
 }
