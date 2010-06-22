@@ -36,6 +36,8 @@ import de.ailis.threedee.collada.entities.InstanceVisualScene;
 import de.ailis.threedee.collada.entities.LibraryVisualScenes;
 import de.ailis.threedee.collada.entities.MatrixTransformation;
 import de.ailis.threedee.collada.entities.Node;
+import de.ailis.threedee.collada.entities.Optic;
+import de.ailis.threedee.collada.entities.PerspectiveOptic;
 import de.ailis.threedee.collada.entities.Phong;
 import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.Primitives;
@@ -48,7 +50,6 @@ import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
 import de.ailis.threedee.collada.parser.ColladaParser;
-import de.ailis.threedee.entities.Camera;
 import de.ailis.threedee.entities.CameraNode;
 import de.ailis.threedee.entities.Color;
 import de.ailis.threedee.entities.DirectionalLight;
@@ -228,10 +229,9 @@ public class ColladaSceneReader extends SceneReader
             final ColladaCamera colladaCamera = this.collada
                     .getLibraryCameras().get(
                             instanceCamera.getURL().getFragment());
-            final Camera camera = buildCamera(colladaCamera);
-            final CameraNode cameraNode = new CameraNode(camera);
-            sceneNode.appendChild(cameraNode);
-            this.scene.setCameraNode(cameraNode);
+            final CameraNode camera = buildCamera(colladaCamera);
+            sceneNode.appendChild(camera);
+            this.scene.setCameraNode(camera);
         }
 
         // Process child nodes
@@ -250,7 +250,7 @@ public class ColladaSceneReader extends SceneReader
 
     private Material buildMaterial(final InstanceMaterial instanceMaterial)
     {
-        //if (1==1) return Material.DEFAULT;
+        // if (1==1) return Material.DEFAULT;
         final ColladaMaterial colladaMaterial = this.collada
                 .getLibraryMaterials().get(
                         instanceMaterial.getTarget().getFragment());
@@ -332,9 +332,26 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee camera
      */
 
-    private Camera buildCamera(final ColladaCamera colladaCamera)
+    private CameraNode buildCamera(final ColladaCamera colladaCamera)
     {
-        return new Camera();
+        final Optic optic = colladaCamera.getOptic();
+        if (optic instanceof PerspectiveOptic)
+        {
+            final PerspectiveOptic pOptic = (PerspectiveOptic) optic;
+            final Float fovX = pOptic.getXfov();
+            Float fovY = pOptic.getYfov();
+            final Float ar = pOptic.getAspectRatio();
+            if (fovY == null)
+            {
+                if (fovX == null || ar == null)
+                    throw new ReaderException(
+                            "Unable to calculate fovY because fovX or aspect ratio is missing");
+                fovY = fovX / ar;
+            }
+            return new CameraNode(fovY, pOptic.getZnear(), pOptic.getZfar());
+        }
+        throw new ReaderException("Unsupported camera optic: "
+                + optic.getClass());
     }
 
 

@@ -17,53 +17,199 @@ import de.ailis.threedee.rendering.opengl.GL;
 
 public class CameraNode extends SceneNode
 {
-    /** The camera */
-    private Camera camera;
-
-    /** Cached camera transformation */
+    /** The current camera transformation */
     private final Matrix4f cameraTransform = Matrix4f.identity();
 
-    /** If cached camera transformation is valid */
-    private final boolean cameraTransformValid = false;
+    /** The field of view angle, in degrees, in the y direction. */
+    private float fovY;
+
+    /**
+     * The aspect ratio (width/height) that determines the field of view in the
+     * x direction.
+     * If null then aspect ratio of the output rectangle is used.
+     */
+    private Float aspectRatio;
+
+    /** The distance from the viewer to the near clipping plane */
+    private float zNear;
+
+    /** The distance from the viewer to the far clipping plane */
+    private float zFar;
 
 
     /**
-     * Constructor
-     *
-     * @param camera
-     *            The camera to instance. Must not be null
+     * Creates a new camera with default settings.
      */
 
-    public CameraNode(final Camera camera)
+    public CameraNode()
     {
-        setCamera(camera);
+        this(45, 0.1f, 10000f);
     }
 
 
     /**
-     * Returns the camera.
+     * Constructs a new camera.
      *
-     * @return The camera. Never null
+     * @param fovY
+     *            The field of view angle, in degrees, in the y direction.
+     * @param zNear
+     *            The distance from the viewer to the near clipping plane
+     * @param zFar
+     *            The distance from the viewer to the far clipping plane
      */
 
-    public Camera getCamera()
+    public CameraNode(final float fovY, final float zNear, final float zFar)
     {
-        return this.camera;
+        this.fovY = fovY;
+        this.zNear = zNear;
+        this.zFar = zFar;
+        this.aspectRatio = null;
+    }
+
+    /**
+     * Constructs a new camera.
+     *
+     * @param fovY
+     *            The field of view angle, in degrees, in the y direction.
+     * @param aspectRatio
+     *            The aspect ratio (width/height) that determines the field of
+     *            view in the x direction.
+     * @param zNear
+     *            The distance from the viewer to the near clipping plane
+     * @param zFar
+     *            The distance from the viewer to the far clipping plane
+     */
+
+    public CameraNode(final float fovY, final float aspectRatio, final float zNear,
+            final float zFar)
+    {
+        this(fovY, zNear, zFar);
+        this.aspectRatio = aspectRatio;
     }
 
 
     /**
-     * Sets the camera.
+     * Returns the field of view angle, in degrees, in the y direction..
      *
-     * @param camera
-     *            The camera to set. Must not be null
+     * @return The field of view angle, in degrees, in the y direction.
      */
 
-    public void setCamera(final Camera camera)
+    public float getFovY()
     {
-        if (camera == null)
-            throw new IllegalArgumentException("camera must be set");
-        this.camera = camera;
+        return this.fovY;
+    }
+
+
+    /**
+     * Sets the field of view angle, in degrees, in the y direction..
+     *
+     * @param fovY
+     *            The field of view angle, in degrees, in the y direction.
+     */
+
+    public void setFovY(final float fovY)
+    {
+        this.fovY = fovY;
+    }
+
+
+    /**
+     * Returns the aspect ratio (width/height) that determines the field of view
+     * in the x direction. If null is returned then the aspect ratio of the
+     * output rectangle is used.
+     *
+     * @return The aspect ratio or null if automatically calculated
+     */
+
+    public Float getAspectRatio()
+    {
+        return this.aspectRatio;
+    }
+
+
+    /**
+     * Sets the aspect ratio (width/height) that determines the field of view in
+     * the x direction. Set to null to use the aspect ratio of the output
+     * rectangle instead.
+     *
+     * @param aspectRatio
+     *            The aspect ratio to set
+     */
+
+    public void setAspectRatio(final Float aspectRatio)
+    {
+        this.aspectRatio = aspectRatio;
+    }
+
+
+    /**
+     * Returns the distance from the viewer to the near clipping plane.
+     *
+     * @return The distance from the viewer to the near clipping plane
+     */
+
+    public float getZNear()
+    {
+        return this.zNear;
+    }
+
+
+    /**
+     * Sets the distance from the viewer to the near clipping plane.
+     *
+     * @param zNear
+     *            The distance from the viewer to the near clipping plane
+     */
+
+    public void setZNear(final float zNear)
+    {
+        this.zNear = zNear;
+    }
+
+
+    /**
+     * Returns the distance from the viewer to the far clipping plane.
+     *
+     * @return The distance from the viewer to the far clipping plane
+     */
+
+    public float getZFar()
+    {
+        return this.zFar;
+    }
+
+
+    /**
+     * Sets the distance from the viewer to the far clipping plane.
+     *
+     * @param zFar
+     *            The distance from the viewer to the far clipping plane
+     */
+
+    public void setZFar(final float zFar)
+    {
+        this.zFar = zFar;
+    }
+
+
+    /**
+     * Returns the field of view aspect ratio (width/height). If a custom one
+     * was set then this is returned. Otherwise it is automatically calculated
+     * from the specified viewport size.
+     *
+     * @param width
+     *            The viewport width
+     * @param height
+     *            The viewport height
+     * @return The field of view aspect ratio
+     */
+
+    public float getAspectRatio(final int width, final int height)
+    {
+        if (this.aspectRatio == null)
+            return (float) width / (float) height;
+        else
+            return this.aspectRatio;
     }
 
 
@@ -75,9 +221,6 @@ public class CameraNode extends SceneNode
 
     public Matrix4f getCameraTransform()
     {
-        // If a cached scene transformation is present then use that
-        if (this.cameraTransformValid) return this.cameraTransform;
-
         return this.cameraTransform.set(getSceneTransform()).invert();
     }
 
@@ -93,15 +236,13 @@ public class CameraNode extends SceneNode
     {
         // Create some shortcuts
         final GL gl = viewport.getGL();
-        final Camera camera = this.camera;
 
         // Setup the coordinate system
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-        final Float aspectRatio = camera.getAspectRatio();
-        gl.gluPerspective(camera.getFovY(), aspectRatio == null ? viewport
-                .getAspectRatio() : aspectRatio.floatValue(),
-                camera.getZNear(), camera.getZFar());
+        gl.gluPerspective(this.fovY, this.aspectRatio == null ? viewport
+                .getAspectRatio() : this.aspectRatio.floatValue(),
+                this.zNear, this.zFar);
 
         // Set the viewport
         gl.glMatrixMode(GL.GL_MODELVIEW);
