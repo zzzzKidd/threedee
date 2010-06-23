@@ -10,7 +10,7 @@ package de.ailis.threedee.rendering;
 /**
  * Viewport
  *
- * @author k
+ * @author Klaus Reimer (k@ailis.de)
  */
 
 public class Viewport
@@ -39,6 +39,11 @@ public class Viewport
     {
         this.gl = gl;
     }
+
+
+    /**
+     * Initializes the viewport.
+     */
 
     public void init()
     {
@@ -84,6 +89,7 @@ public class Viewport
         this.aspectRatio = (float) width / (float) height;
     }
 
+
     /**
      * Returns the viewport width.
      *
@@ -94,6 +100,7 @@ public class Viewport
     {
         return this.width;
     }
+
 
     /**
      * Returns the viewport height.
