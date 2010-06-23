@@ -7,16 +7,13 @@ package de.ailis.threedee.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
 
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.scene.model.MeshPolygons;
 
 
 /**
@@ -114,7 +111,7 @@ public class ThreeDeeModelWriter extends ModelWriter
         writeHeader();
         writeVersion();
         writeFileFlags();
-        writeGroups();
+        writeMesh();
         writeMaterials();
     }
 
@@ -150,7 +147,7 @@ public class ThreeDeeModelWriter extends ModelWriter
         writeColor(material.getSpecularColor());
         writeColor(material.getEmissionColor());
         this.writer.writeFloat(material.getShininess());
-        final String texture = material.getTextureName();
+        final String texture = material.getDiffuseTexture();
         if (texture == null)
             this.writer.writeByte(0);
         else
@@ -179,54 +176,47 @@ public class ThreeDeeModelWriter extends ModelWriter
 
 
     /**
-     * Writes the model groups.
+     * Writes the mesh.
      *
      * @throws IOException
      *             When write fails
      */
 
-    private void writeGroups() throws IOException
+    private void writeMesh() throws IOException
     {
-        final ModelGroup[] groups = this.model.getGroups();
+        final MeshPolygons[] groups = this.model.getMesh().getPolygons();
         this.writer.writeInt(groups.length);
-        for (final ModelGroup group : groups)
+        for (final MeshPolygons group : groups)
         {
-            writeGroup(group);
+            writeMeshPolygons(group);
         }
     }
 
 
     /**
-     * Writes the specified model group.
+     * Writes mesh polygons.
      *
-     * @param group
-     *            The model group to write
+     * @param polygons
+     *            The mesh polygons to write
      * @throws IOException
      *             When write fails
      */
 
-    private void writeGroup(final ModelGroup group) throws IOException
+    private void writeMeshPolygons(final MeshPolygons polygons) throws IOException
     {
-        this.writer.writeShort(group.getMaterial());
-        final boolean hasNormals = group.hasNormals();
-        final boolean hasTexCoords = group.hasTexCoords();
+        this.writer.writeShort(polygons.getMaterial());
+        final boolean hasNormals = polygons.hasNormals();
+        final boolean hasTexCoords = polygons.hasTexCoords();
         final byte flags = (byte) ((hasNormals ? 1 : 0) | (hasTexCoords ? 2 : 0));
         this.writer.writeByte(flags);
-        this.writer.writeByte((byte) group.getMode());
-        final int vertexCount = group.getVertexCount();
+        this.writer.writeByte((byte) polygons.getSize());
+        final int vertexCount = polygons.getVertexCount();
         this.writer.writeInt(vertexCount);
-        this.writer.writeFloatBuffer(group.getVertices());
-        if (hasNormals) this.writer.writeFloatBuffer(group.getNormals());
-        if (hasTexCoords) this.writer.writeFloatBuffer(group.getTexCoords());
-
-        this.writer.writeInt(group.getIndexCount());
-        final Buffer indices = group.getIndices();
-        if (vertexCount <= 256)
-            this.writer.writeByteBuffer((ByteBuffer) indices);
-        else if (vertexCount <= 65536)
-            this.writer.writeShortBuffer((ShortBuffer) indices);
-        else
-            this.writer.writeIntBuffer((IntBuffer) indices);
+        this.writer.writeFloatBuffer(polygons.getVertices());
+        if (hasNormals) this.writer.writeFloatBuffer(polygons.getNormals());
+        if (hasTexCoords) this.writer.writeFloatBuffer(polygons.getTexCoords());
+        this.writer.writeInt(polygons.getIndexCount());
+        this.writer.writeShortBuffer(polygons.getIndices());
     }
 
 

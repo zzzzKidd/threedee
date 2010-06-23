@@ -483,4 +483,16 @@ public class Model extends SceneNode
     {
         this.showGroupBounds = showGroupBounds;
     }
+
+
+    /**
+     * Returns the bound materials.
+     *
+     * @return the bound materials
+     */
+
+    public Material[] getMaterials()
+    {
+        return this.materials;
+    }
 }
