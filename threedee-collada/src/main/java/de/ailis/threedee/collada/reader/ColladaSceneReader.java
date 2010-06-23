@@ -51,8 +51,8 @@ import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
 import de.ailis.threedee.collada.parser.ColladaParser;
 import de.ailis.threedee.exceptions.ReaderException;
+import de.ailis.threedee.io.SceneReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.reader.SceneReader;
 import de.ailis.threedee.scene.Camera;
 import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Group;
@@ -99,7 +99,7 @@ public class ColladaSceneReader extends SceneReader
 
 
     /**
-     * @see de.ailis.threedee.reader.SceneReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.io.SceneReader#read(java.io.InputStream)
      */
 
     @Override

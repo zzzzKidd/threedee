@@ -17,8 +17,8 @@ import java.util.StringTokenizer;
 import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.exceptions.ReaderException;
+import de.ailis.threedee.io.ModelReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.reader.ModelReader;
 import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
@@ -61,7 +61,7 @@ public class WavefrontModelReader extends ModelReader
 
 
     /**
-     * @see de.ailis.threedee.model.reader.ModelReader#read(java.io.InputStream)
+     * @see de.de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
      */
 
     @Override

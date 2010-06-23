@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.reader;
+package de.ailis.threedee.io;
 
 import java.io.IOException;
 import java.io.InputStream;

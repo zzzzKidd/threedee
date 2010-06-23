@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.model.writer;
+package de.ailis.threedee.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,12 +13,10 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-import de.ailis.threedee.io.StreamWriter;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.model.Material;
-import de.ailis.threedee.model.Model;
-import de.ailis.threedee.model.ModelGroup;
 import de.ailis.threedee.scene.Color;
+import de.ailis.threedee.scene.Model;
+import de.ailis.threedee.scene.model.Material;
 
 
 /**
@@ -28,7 +26,7 @@ import de.ailis.threedee.scene.Color;
  * @version $Revision: 84727 $
  */
 
-public class TDMWriter extends ModelWriter
+public class ThreeDeeModelWriter extends ModelWriter
 {
     /** The writer to write to */
     private StreamWriter writer;
@@ -50,7 +48,7 @@ public class TDMWriter extends ModelWriter
      *            The resource provider to use
      */
 
-    public TDMWriter(final ResourceProvider resourceProvider)
+    public ThreeDeeModelWriter(final ResourceProvider resourceProvider)
     {
         super(resourceProvider);
     }

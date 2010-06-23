@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.model.reader;
+package de.ailis.threedee.io;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +12,7 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import de.ailis.threedee.exceptions.ReaderException;
-import de.ailis.threedee.io.StreamReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.reader.ModelReader;
 import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
@@ -80,7 +78,7 @@ import de.ailis.threedee.utils.BufferUtils;
  * @version $Revision: 84727 $
  */
 
-public class TDMReader extends ModelReader
+public class ThreeDeeModelReader extends ModelReader
 {
     /** The reader to use for reading the model */
     private StreamReader reader;
@@ -103,14 +101,14 @@ public class TDMReader extends ModelReader
      *            libraries and texture files
      */
 
-    public TDMReader(final ResourceProvider resourceProvider)
+    public ThreeDeeModelReader(final ResourceProvider resourceProvider)
     {
         super(resourceProvider);
     }
 
 
     /**
-     * @see de.ailis.threedee.reader.ModelReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
      */
 
     @Override
