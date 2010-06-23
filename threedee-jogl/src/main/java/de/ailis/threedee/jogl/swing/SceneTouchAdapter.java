@@ -9,9 +9,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.events.TouchEvent;
-import de.ailis.threedee.rendering.Renderer;
+import de.ailis.threedee.rendering.Viewport;
+import de.ailis.threedee.scene.Scene;
 
 
 /**
@@ -25,8 +25,8 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     /** The scene */
     private final Scene scene;
 
-    /** The renderer */
-    private final Renderer renderer;
+    /** The viewport */
+    private final Viewport viewport;
 
 
     /**
@@ -34,14 +34,14 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
      *
      * @param scene
      *            The scene
-     * @param renderer
-     *            The renderer
+     * @param viewport
+     *            The viewport
      */
 
-    public SceneTouchAdapter(final Scene scene, final Renderer renderer)
+    public SceneTouchAdapter(final Scene scene, final Viewport viewport)
     {
         this.scene = scene;
-        this.renderer = renderer;
+        this.viewport = viewport;
     }
 
 
@@ -52,8 +52,8 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mouseDragged(final MouseEvent e)
     {
-        this.scene.touchMove(new TouchEvent(0, e.getX() - this.renderer.getWidth()
-                / 2, this.renderer.getHeight() / 2 - e.getY()));
+        this.scene.touchMove(new TouchEvent(0, e.getX() - this.viewport.getWidth()
+                / 2, this.viewport.getHeight() / 2 - e.getY()));
     }
 
 
@@ -108,8 +108,8 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mousePressed(final MouseEvent e)
     {
-        this.scene.touchDown(new TouchEvent(0, e.getX() - this.renderer.getWidth()
-                / 2, this.renderer.getHeight() / 2 - e.getY()));
+        this.scene.touchDown(new TouchEvent(0, e.getX() - this.viewport.getWidth()
+                / 2, this.viewport.getHeight() / 2 - e.getY()));
     }
 
 
@@ -121,7 +121,7 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     public void mouseReleased(final MouseEvent e)
     {
         this.scene.touchRelease(new TouchEvent(0, e.getX()
-                - this.renderer.getWidth() / 2, this.renderer.getHeight() / 2
+                - this.viewport.getWidth() / 2, this.viewport.getHeight() / 2
                 - e.getY()));
     }
 }

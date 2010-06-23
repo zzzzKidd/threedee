@@ -17,10 +17,9 @@ import javax.swing.JComponent;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
-import de.ailis.threedee.entities.Scene;
 import de.ailis.threedee.jogl.opengl.GL;
-import de.ailis.threedee.rendering.Renderer;
-import de.ailis.threedee.rendering.opengl.GLRenderer;
+import de.ailis.threedee.rendering.Viewport;
+import de.ailis.threedee.scene.Scene;
 
 
 /**
@@ -47,7 +46,7 @@ public class SceneCanvas extends JComponent
     GL gl;
 
     /** The renderer */
-    Renderer renderer;
+    Viewport viewport;
 
 
     /**
@@ -78,24 +77,25 @@ public class SceneCanvas extends JComponent
         capabilities.setSampleBuffers(true);
         capabilities.setNumSamples(4);
         this.canvas = new GLCanvas(capabilities);
-        final Renderer renderer = this.renderer = new GLRenderer(new GL(
+        final Viewport viewport = this.viewport = new Viewport(new GL(
                 this.canvas.getGL(), new GLU()));
         this.animator = new FPSAnimator(this.canvas, 75);
         add(this.canvas);
 
         this.canvas.addGLEventListener(new GLEventListener()
         {
-            @Override
-            public void reshape(final GLAutoDrawable drawable, final int x,
-                    final int y, final int width, final int height)
-            {
-                renderer.setSize(width, height);
-            }
 
             @Override
             public void init(final GLAutoDrawable drawable)
             {
-                renderer.init(scene);
+                viewport.init();
+            }
+
+            @Override
+            public void reshape(final GLAutoDrawable drawable, final int x,
+                    final int y, final int width, final int height)
+            {
+                viewport.setSize(width, height);
             }
 
             @Override
@@ -108,7 +108,7 @@ public class SceneCanvas extends JComponent
             @Override
             public void display(final GLAutoDrawable drawable)
             {
-                renderer.render(scene);
+                scene.render(viewport);
                 final boolean animate = scene.update();
                 if (animate && !SceneCanvas.this.animator.isAnimating())
                     SceneCanvas.this.animator.start();
@@ -119,7 +119,7 @@ public class SceneCanvas extends JComponent
 
         // Install mouse event handler
         final SceneTouchAdapter touchAdapter = new SceneTouchAdapter(
-                this.scene, this.renderer);
+                this.scene, this.viewport);
         this.canvas.addMouseListener(touchAdapter);
         this.canvas.addMouseMotionListener(touchAdapter);
     }
