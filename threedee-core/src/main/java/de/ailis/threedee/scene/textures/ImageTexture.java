@@ -5,15 +5,21 @@
 
 package de.ailis.threedee.scene.textures;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import de.ailis.threedee.exceptions.TextureException;
+import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.rendering.GL;
 
 
 /**
- * Texture
+ * Texture based on a static image.
  *
- * @author k
+ * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Texture
+public class ImageTexture implements Texture
 {
     /** The texture filename */
     public String filename;
@@ -26,7 +32,7 @@ public class Texture
      *            The texture filename
      */
 
-    public Texture(final String filename)
+    public ImageTexture(final String filename)
     {
         this.filename = filename;
     }
@@ -80,12 +86,41 @@ public class Texture
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        final Texture other = (Texture) obj;
+        final ImageTexture other = (ImageTexture) obj;
         if (this.filename == null)
         {
             if (other.filename != null) return false;
         }
         else if (!this.filename.equals(other.filename)) return false;
         return true;
+    }
+
+
+    /**
+     * @see Texture#load(GL, ResourceProvider)
+     */
+
+    @Override
+    public void load(final GL gl, final ResourceProvider resourceProvider)
+    {
+        // Produce a texture from the bitmap
+        try
+        {
+            final InputStream stream = resourceProvider
+                    .openForRead(this.filename);
+            try
+            {
+                gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, stream, 0);
+            }
+            finally
+            {
+                stream.close();
+            }
+        }
+        catch (final IOException e)
+        {
+            throw new TextureException("Unable to load texture '"
+                    + this.filename + "': " + e, e);
+        }
     }
 }

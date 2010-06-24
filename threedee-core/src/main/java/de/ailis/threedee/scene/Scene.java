@@ -119,11 +119,23 @@ public class Scene
 
     public boolean update()
     {
+        // Calculate time delta
         final long now = System.nanoTime();
         final float delta = ((now - this.lastUpdate)) / 1000000000f;
         this.lastUpdate = now;
-        if (this.rootNode != null) return this.rootNode.update(delta);
-        return false;
+
+        // Initialize changed flag
+        boolean changed = false;
+
+        // Update nodes and update the changed-flag if needed
+        if (this.rootNode != null)
+            changed |= this.rootNode.update(delta);
+
+        // Update textures and update the changed-flag if needed
+        changed |= TextureManager.getInstance().update(delta);
+
+        // Return true if scene was changed, false if not
+        return changed;
     }
 
 

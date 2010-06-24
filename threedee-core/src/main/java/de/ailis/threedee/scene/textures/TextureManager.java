@@ -118,12 +118,12 @@ public final class TextureManager
 
 
     /**
-     * Clean-up the textures. This removes unreferenced textures from the
-     * cache (And also unloads them from the OpenGL context if still loaded).
-     * This method should be called once during rendering.
+     * Clean-up the textures. This removes unreferenced textures from the cache
+     * (And also unloads them from the OpenGL context if still loaded). This
+     * method should be called once during rendering.
      *
-     * TODO Add a time check so the cleanUp only does something once per
-     * second or something like that.
+     * TODO Add a time check so the cleanUp only does something once per second
+     * or something like that.
      *
      * @param gl
      *            The OpenGL context
@@ -149,6 +149,31 @@ public final class TextureManager
 
 
     /**
+     * Updates the textures.
+     *
+     * @param delta
+     *            The time delta in seconds
+     * @return True if a texture was changed and therefor the scene must be
+     *         rendered again. False if nothing was changed.
+     */
+
+    public boolean update(final float delta)
+    {
+        boolean changed = false;
+        for (final Texture texture : this.textures.keySet())
+        {
+            if (texture instanceof DynamicTexture)
+            {
+                final DynamicTexture dynamicTexture = (DynamicTexture) texture;
+                dynamicTexture.update(delta);
+                changed |= !dynamicTexture.isValid();
+            }
+        }
+        return changed;
+    }
+
+
+    /**
      * Binds a texture to the specified OpenGL context.
      *
      * @param gl
@@ -169,6 +194,10 @@ public final class TextureManager
 
         // Bind texture
         gl.glBindTexture(GL.GL_TEXTURE_2D, ref.getTextureId());
+
+        // Re-render the texture if needed.
+        if (texture instanceof DynamicTexture)
+            ((DynamicTexture) texture).reload(gl);
     }
 
 

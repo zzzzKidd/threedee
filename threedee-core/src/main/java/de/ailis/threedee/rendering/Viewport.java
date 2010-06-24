@@ -70,6 +70,13 @@ public class Viewport
         // Enable Anisotropic filtering if available
         // gl.glTexParameteri(GL.GL_TEXTURE_2D,
         // GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
+
+        // Flip the texture matrix so texture origin is top-left
+        gl.glMatrixMode(GL.GL_TEXTURE);
+        gl.glRotatef(180.0f,0.0f,0.0f,1.0f);
+        gl.glScalef(-1.0f,1.0f,1.0f);
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+
     }
 
 

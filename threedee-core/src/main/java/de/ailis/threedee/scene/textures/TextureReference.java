@@ -5,14 +5,11 @@
 
 package de.ailis.threedee.scene.textures;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.IntBuffer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.ailis.threedee.exceptions.TextureException;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferUtils;
@@ -27,7 +24,7 @@ import de.ailis.threedee.utils.BufferUtils;
 class TextureReference
 {
     /** The logger */
-    private static final Log log = LogFactory.getLog(Texture.class);
+    private static final Log log = LogFactory.getLog(ImageTexture.class);
 
     /** The texture data */
     private final Texture texture;
@@ -39,7 +36,8 @@ class TextureReference
     private boolean loaded = false;
 
     /** Buffer containing the texture ID */
-    private final IntBuffer textureId = BufferUtils.createDirectIntegerBuffer(1);
+    private final IntBuffer textureId = BufferUtils
+            .createDirectIntegerBuffer(1);
 
 
     /**
@@ -113,9 +111,8 @@ class TextureReference
     void load(final GL gl, final ResourceProvider resourceProvider)
     {
         if (this.loaded)
-            throw new IllegalStateException("Texture is already loaded");
-
-        final String filename = this.texture.getFilename();
+            throw new IllegalStateException("Texture is already loaded: "
+                    + this.texture);
 
         // Generate a new texture id
         gl.glGenTextures(this.textureId);
@@ -137,25 +134,10 @@ class TextureReference
                 .glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
                         GL.GL_REPEAT);
 
-        // Produce a texture from the bitmap
-        try
-        {
-            final InputStream stream = resourceProvider
-                    .openForRead(filename);
-            try
-            {
-                gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, stream, 0);
-            }
-            finally
-            {
-                stream.close();
-            }
-        }
-        catch (final IOException e)
-        {
-            throw new TextureException("Unable to load texture '"
-                    + filename + "': " + e, e);
-        }
+        // Enable hardware mipmaps
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_GENERATE_MIPMAP, GL.GL_TRUE);
+
+        this.texture.load(gl, resourceProvider);
 
         // Unbind the texture
         gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -163,7 +145,7 @@ class TextureReference
         // Remember that we have loaded the texture
         this.loaded = true;
 
-        log.debug("Loaded texture " + filename);
+        log.debug("Loaded texture " + this.texture);
     }
 
 
@@ -186,7 +168,7 @@ class TextureReference
         // Remember that texture is now unloaded
         this.loaded = false;
 
-        log.debug("Unloaded texture " + this.texture.getFilename());
+        log.debug("Unloaded texture " + this.texture);
     }
 
 

@@ -26,6 +26,9 @@ public interface GL
     /** Lines */
     public static final int GL_LINES = 0x1;
 
+    /** True */
+    public static final int GL_TRUE = 1;
+
     /** Line loop */
     public static final int GL_LINE_LOOP = 0x2;
 
@@ -215,6 +218,9 @@ public interface GL
     /** Projection */
     public static final int GL_PROJECTION = 0x1701;
 
+    /** Texture */
+    public static final int GL_TEXTURE = 0x1702;
+
     /** RGB */
     public static final int GL_RGB = 0x1907;
 
@@ -250,6 +256,15 @@ public interface GL
 
     /** Texture min filter */
     public static final int GL_TEXTURE_MIN_FILTER = 0x2801;
+
+    /** Texture wrap S */
+    public static final int GL_TEXTURE_WRAP_S = 0x2802;
+
+    /** Texture wrap T */
+    public static final int GL_TEXTURE_WRAP_T = 0x2803;
+
+    /** Repeat */
+    public static final int GL_REPEAT = 0x2901;
 
     /** Color buffer */
     public static final int GL_COLOR_BUFFER_BIT = 0x4000;
@@ -290,6 +305,9 @@ public interface GL
     /** Multisample */
     public static final int GL_MULTISAMPLE = 0x809d;
 
+    /** Generate mipmap */
+    public static final int GL_GENERATE_MIPMAP = 0x8191;
+
     /** Light model color control */
     public static final int GL_LIGHT_MODEL_COLOR_CONTROL = 0x81f8;
 
@@ -298,15 +316,6 @@ public interface GL
 
     /** Max Texture Max Anisotropy */
     public static final int GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84ff;
-
-    /** Repeat */
-    public static final int GL_REPEAT = 0x2901;
-
-    /** Texture wrap S */
-    public static final int GL_TEXTURE_WRAP_S = 0x2802;
-
-    /** Texture wrap T */
-    public static final int GL_TEXTURE_WRAP_T = 0x2803;
 
 
     /**
@@ -805,6 +814,54 @@ public interface GL
     public void glTexImage2D(int target, int level, InputStream stream,
             int border);
 
+    /**
+     * Specify a two-dimensional texture subimage.
+     *
+     * @param target
+     *            Specifies the target texture. Must be GL_TEXTURE_2D,
+     *            GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+     *            GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+     *            GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+     *            GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+     *            GL_TEXTURE_CUBE_MAP_POSITIVE_Z, or
+     *            GL_TEXTURE_CUBE_MAP_NEGATIVE_Z.
+     * @param level
+     *            Specifies the level-of-detail number. Level 0 is the base
+     *            image level. Level n is the nth mipmap reduction image.
+     * @param xOffset
+     *            Specifies a texel offset in the x direction within the texture
+     *            array.
+     * @param yOffset
+     *            Specifies a texel offset in the y direction within the texture
+     *            array.
+     * @param width
+     *            Specifies the width of the texture subimage.
+     * @param height
+     *            Specifies the height of the texture subimage.
+     * @param format
+     *            Specifies the format of the pixel data. The following symbolic
+     *            values are accepted: GL_COLOR_INDEX, GL_RED, GL_GREEN,
+     *            GL_BLUE, GL_ALPHA, GL_RGB, GL_BGR, GL_RGBA, GL_BGRA,
+     *            GL_LUMINANCE, and GL_LUMINANCE_ALPHA.
+     * @param type
+     *            Specifies the data type of the pixel data. The following
+     *            symbolic values are accepted: GL_UNSIGNED_BYTE, GL_BYTE,
+     *            GL_BITMAP, GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT,
+     *            GL_INT, GL_FLOAT, GL_UNSIGNED_BYTE_3_3_2,
+     *            GL_UNSIGNED_BYTE_2_3_3_REV, GL_UNSIGNED_SHORT_5_6_5,
+     *            GL_UNSIGNED_SHORT_5_6_5_REV, GL_UNSIGNED_SHORT_4_4_4_4,
+     *            GL_UNSIGNED_SHORT_4_4_4_4_REV, GL_UNSIGNED_SHORT_5_5_5_1,
+     *            GL_UNSIGNED_SHORT_1_5_5_5_REV, GL_UNSIGNED_INT_8_8_8_8,
+     *            GL_UNSIGNED_INT_8_8_8_8_REV, GL_UNSIGNED_INT_10_10_10_2, and
+     *            GL_UNSIGNED_INT_2_10_10_10_REV.
+     * @param data
+     *            Specifies a pointer to the image data in memory.
+     */
+
+    public void glTexSubImage2D(int target, int level, int xOffset,
+            int yOffset, int width, int height, int format, int type,
+            Buffer data);
+
 
     /**
      * Specify a two-dimensional texture image.
@@ -821,65 +878,25 @@ public interface GL
      *            Specifies the level-of-detail number. Level 0 is the base
      *            image level. Level n is the nth mipmap reduction image.
      * @param internalFormat
-     *            Specifies the number of color components in the texture.
-     *            Must be 1, 2, 3, or 4, or one of the following symbolic
-     *            constants:
-     *            GL_ALPHA,
-     *            GL_ALPHA4,
-     *            GL_ALPHA8,
-     *            GL_ALPHA12,
-     *            GL_ALPHA16,
-     *            GL_COMPRESSED_ALPHA,
-     *            GL_COMPRESSED_LUMINANCE,
-     *            GL_COMPRESSED_LUMINANCE_ALPHA,
-     *            GL_COMPRESSED_INTENSITY,
-     *            GL_COMPRESSED_RGB,
-     *            GL_COMPRESSED_RGBA,
-     *            GL_DEPTH_COMPONENT,
-     *            GL_DEPTH_COMPONENT16,
-     *            GL_DEPTH_COMPONENT24,
-     *            GL_DEPTH_COMPONENT32,
-     *            GL_LUMINANCE,
-     *            GL_LUMINANCE4,
-     *            GL_LUMINANCE8,
-     *            GL_LUMINANCE12,
-     *            GL_LUMINANCE16,
-     *            GL_LUMINANCE_ALPHA,
-     *            GL_LUMINANCE4_ALPHA4,
-     *            GL_LUMINANCE6_ALPHA2,
-     *            GL_LUMINANCE8_ALPHA8,
-     *            GL_LUMINANCE12_ALPHA4,
-     *            GL_LUMINANCE12_ALPHA12,
-     *            GL_LUMINANCE16_ALPHA16,
-     *            GL_INTENSITY,
-     *            GL_INTENSITY4,
-     *            GL_INTENSITY8,
-     *            GL_INTENSITY12,
-     *            GL_INTENSITY16,
-     *            GL_R3_G3_B2,
-     *            GL_RGB,
-     *            GL_RGB4,
-     *            GL_RGB5,
-     *            GL_RGB8,
-     *            GL_RGB10,
-     *            GL_RGB12,
-     *            GL_RGB16,
-     *            GL_RGBA,
-     *            GL_RGBA2,
-     *            GL_RGBA4,
-     *            GL_RGB5_A1,
-     *            GL_RGBA8,
-     *            GL_RGB10_A2,
-     *            GL_RGBA12,
-     *            GL_RGBA16,
-     *            GL_SLUMINANCE,
-     *            GL_SLUMINANCE8,
-     *            GL_SLUMINANCE_ALPHA,
-     *            GL_SLUMINANCE8_ALPHA8,
-     *            GL_SRGB,
-     *            GL_SRGB8,
-     *            GL_SRGB_ALPHA, or
-     *            GL_SRGB8_ALPHA8.
+     *            Specifies the number of color components in the texture. Must
+     *            be 1, 2, 3, or 4, or one of the following symbolic constants:
+     *            GL_ALPHA, GL_ALPHA4, GL_ALPHA8, GL_ALPHA12, GL_ALPHA16,
+     *            GL_COMPRESSED_ALPHA, GL_COMPRESSED_LUMINANCE,
+     *            GL_COMPRESSED_LUMINANCE_ALPHA, GL_COMPRESSED_INTENSITY,
+     *            GL_COMPRESSED_RGB, GL_COMPRESSED_RGBA, GL_DEPTH_COMPONENT,
+     *            GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT24,
+     *            GL_DEPTH_COMPONENT32, GL_LUMINANCE, GL_LUMINANCE4,
+     *            GL_LUMINANCE8, GL_LUMINANCE12, GL_LUMINANCE16,
+     *            GL_LUMINANCE_ALPHA, GL_LUMINANCE4_ALPHA4,
+     *            GL_LUMINANCE6_ALPHA2, GL_LUMINANCE8_ALPHA8,
+     *            GL_LUMINANCE12_ALPHA4, GL_LUMINANCE12_ALPHA12,
+     *            GL_LUMINANCE16_ALPHA16, GL_INTENSITY, GL_INTENSITY4,
+     *            GL_INTENSITY8, GL_INTENSITY12, GL_INTENSITY16, GL_R3_G3_B2,
+     *            GL_RGB, GL_RGB4, GL_RGB5, GL_RGB8, GL_RGB10, GL_RGB12,
+     *            GL_RGB16, GL_RGBA, GL_RGBA2, GL_RGBA4, GL_RGB5_A1, GL_RGBA8,
+     *            GL_RGB10_A2, GL_RGBA12, GL_RGBA16, GL_SLUMINANCE,
+     *            GL_SLUMINANCE8, GL_SLUMINANCE_ALPHA, GL_SLUMINANCE8_ALPHA8,
+     *            GL_SRGB, GL_SRGB8, GL_SRGB_ALPHA, or GL_SRGB8_ALPHA8.
      * @param width
      *            Specifies the width of the texture image including the border
      *            if any. If the GL version does not support non-power-of-two
@@ -895,41 +912,20 @@ public interface GL
      * @param border
      *            Specifies the width of the border. Must be either 0 or 1.
      * @param format
-     *            Specifies the format of the pixel data.
-     *            The following symbolic values are accepted:
-     *            GL_COLOR_INDEX,
-     *            GL_RED,
-     *            GL_GREEN,
-     *            GL_BLUE,
-     *            GL_ALPHA,
-     *            GL_RGB,
-     *            GL_BGR,
-     *            GL_RGBA,
-     *            GL_BGRA,
-     *            GL_LUMINANCE, and
-     *            GL_LUMINANCE_ALPHA.
+     *            Specifies the format of the pixel data. The following symbolic
+     *            values are accepted: GL_COLOR_INDEX, GL_RED, GL_GREEN,
+     *            GL_BLUE, GL_ALPHA, GL_RGB, GL_BGR, GL_RGBA, GL_BGRA,
+     *            GL_LUMINANCE, and GL_LUMINANCE_ALPHA.
      * @param type
-     *            Specifies the data type of the pixel data.
-     *            The following symbolic values are accepted:
-     *            GL_UNSIGNED_BYTE,
-     *            GL_BYTE,
-     *            GL_BITMAP,
-     *            GL_UNSIGNED_SHORT,
-     *            GL_SHORT,
-     *            GL_UNSIGNED_INT,
-     *            GL_INT,
-     *            GL_FLOAT,
-     *            GL_UNSIGNED_BYTE_3_3_2,
-     *            GL_UNSIGNED_BYTE_2_3_3_REV,
-     *            GL_UNSIGNED_SHORT_5_6_5,
-     *            GL_UNSIGNED_SHORT_5_6_5_REV,
-     *            GL_UNSIGNED_SHORT_4_4_4_4,
-     *            GL_UNSIGNED_SHORT_4_4_4_4_REV,
-     *            GL_UNSIGNED_SHORT_5_5_5_1,
-     *            GL_UNSIGNED_SHORT_1_5_5_5_REV,
-     *            GL_UNSIGNED_INT_8_8_8_8,
-     *            GL_UNSIGNED_INT_8_8_8_8_REV,
-     *            GL_UNSIGNED_INT_10_10_10_2, and
+     *            Specifies the data type of the pixel data. The following
+     *            symbolic values are accepted: GL_UNSIGNED_BYTE, GL_BYTE,
+     *            GL_BITMAP, GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT,
+     *            GL_INT, GL_FLOAT, GL_UNSIGNED_BYTE_3_3_2,
+     *            GL_UNSIGNED_BYTE_2_3_3_REV, GL_UNSIGNED_SHORT_5_6_5,
+     *            GL_UNSIGNED_SHORT_5_6_5_REV, GL_UNSIGNED_SHORT_4_4_4_4,
+     *            GL_UNSIGNED_SHORT_4_4_4_4_REV, GL_UNSIGNED_SHORT_5_5_5_1,
+     *            GL_UNSIGNED_SHORT_1_5_5_5_REV, GL_UNSIGNED_INT_8_8_8_8,
+     *            GL_UNSIGNED_INT_8_8_8_8_REV, GL_UNSIGNED_INT_10_10_10_2, and
      *            GL_UNSIGNED_INT_2_10_10_10_REV.
      * @param data
      *            Specifies a pointer to the image data in memory.
@@ -1032,16 +1028,47 @@ public interface GL
      * Cause a material color to track the current color
      *
      * @param face
-     *            Specifies whether front, back, or both front and back
-     *            material parameters should track the current color. Accepted
-     *            values are GL_FRONT, GL_BACK, and GL_FRONT_AND_BACK.
-     *            The initial value is GL_FRONT_AND_BACK.
+     *            Specifies whether front, back, or both front and back material
+     *            parameters should track the current color. Accepted values are
+     *            GL_FRONT, GL_BACK, and GL_FRONT_AND_BACK. The initial value is
+     *            GL_FRONT_AND_BACK.
      * @param mode
      *            Specifies which of several material parameters track the
      *            current color. Accepted values are GL_EMISSION, GL_AMBIENT,
-     *            GL_DIFFUSE, GL_SPECULAR, and GL_AMBIENT_AND_DIFFUSE.
-     *            The initial value is GL_AMBIENT_AND_DIFFUSE.
+     *            GL_DIFFUSE, GL_SPECULAR, and GL_AMBIENT_AND_DIFFUSE. The
+     *            initial value is GL_AMBIENT_AND_DIFFUSE.
      */
 
     public void glColorMaterial(int face, int mode);
+
+
+    /**
+     * Multiply the current matrix by a rotation matrix
+     *
+     * @param angle
+     *            Specifies the angle of rotation, in degrees.
+     * @param x
+     *            Specify the x coordinates of a vector
+     * @param y
+     *            Specify the y coordinates of a vector
+     * @param z
+     *            Specify the z coordinates of a vector
+     */
+
+    public void glRotatef(final float angle, final float x, final float y,
+            final float z);
+
+
+    /**
+     * Multiply the current matrix by a general scaling matrix
+     *
+     * @param x
+     *            Specify scale factors along the x axes
+     * @param y
+     *            Specify scale factors along the y axes
+     * @param z
+     *            Specify scale factors along the z axes
+     */
+
+    public void glScalef(final float x, final float y, final float z);
 }
