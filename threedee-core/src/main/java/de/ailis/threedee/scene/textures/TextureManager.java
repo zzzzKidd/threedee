@@ -162,9 +162,9 @@ public final class TextureManager
         boolean changed = false;
         for (final Texture texture : this.textures.keySet())
         {
-            if (texture instanceof DynamicTexture)
+            if (texture instanceof DynamicTexture<?>)
             {
-                final DynamicTexture dynamicTexture = (DynamicTexture) texture;
+                final DynamicTexture<?> dynamicTexture = (DynamicTexture<?>) texture;
                 dynamicTexture.update(delta);
                 changed |= !dynamicTexture.isValid();
             }
@@ -196,8 +196,8 @@ public final class TextureManager
         gl.glBindTexture(GL.GL_TEXTURE_2D, ref.getTextureId());
 
         // Re-render the texture if needed.
-        if (texture instanceof DynamicTexture)
-            ((DynamicTexture) texture).reload(gl);
+        if (texture instanceof DynamicTexture<?>)
+            ((DynamicTexture<?>) texture).reload(gl);
     }
 
 
