@@ -65,7 +65,7 @@ import de.ailis.threedee.scene.lights.PointLight;
 import de.ailis.threedee.scene.lights.SpotLight;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.Mesh;
-import de.ailis.threedee.scene.textures.Texture;
+import de.ailis.threedee.scene.textures.ImageTexture;
 
 
 /**
@@ -83,7 +83,7 @@ public class ColladaSceneReader extends SceneReader
     private Map<String, Mesh> meshes;
 
     /** Used textures */
-    private Map<String, Texture> textures;
+    private Map<String, ImageTexture> textures;
 
     /** The scene */
     private Scene scene;
@@ -204,7 +204,7 @@ public class ColladaSceneReader extends SceneReader
         for (final InstanceGeometry instanceGeometry : node
                 .getInstanceGeometries())
         {
-            this.textures = new HashMap<String, Texture>();
+            this.textures = new HashMap<String, ImageTexture>();
             final Geometry geometry = this.collada.getLibraryGeometries().get(
                     instanceGeometry.getURL().getFragment());
             final Mesh mesh = buildMesh(geometry);
@@ -215,7 +215,7 @@ public class ColladaSceneReader extends SceneReader
                 model.bindMaterial(instanceMaterial.getSymbol(),
                         buildMaterial(instanceMaterial));
             }
-            for (final Map.Entry<String, Texture> entry: this.textures.entrySet())
+            for (final Map.Entry<String, ImageTexture> entry: this.textures.entrySet())
             {
                 model.bindTexture(entry.getKey(), entry.getValue());
             }
@@ -299,7 +299,7 @@ public class ColladaSceneReader extends SceneReader
         if (shading.getDiffuse().isTexture())
         {
             final ColladaTexture colladaTexture = shading.getDiffuse().getTexture();
-            final Texture texture = buildTexture(colladaTexture);
+            final ImageTexture texture = buildTexture(colladaTexture);
             final String textureName = colladaTexture.getTexture();
             this.textures.put(textureName, texture);
             builder.setDiffuseTexture(textureName);
@@ -316,9 +316,9 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee texture
      */
 
-    private Texture buildTexture(final ColladaTexture texture)
+    private ImageTexture buildTexture(final ColladaTexture texture)
     {
-        return new Texture(this.collada.getLibraryImages().get(texture.getTexture())
+        return new ImageTexture(this.collada.getLibraryImages().get(texture.getTexture())
                 .getURI().getPath());
     }
 
