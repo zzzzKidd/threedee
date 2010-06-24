@@ -119,7 +119,6 @@
   	<module>threedee-jogl</module>
   	<module>threedee-demos</module>
   	<module>threedee-wavefront</module>
-  	<module>android-image2d</module>
   	<module>threedee-java2d</module>
   </modules>
   

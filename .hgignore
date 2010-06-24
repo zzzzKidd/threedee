@@ -9,3 +9,9 @@ syntax: regexp
 ^threedee-jogl/target$
 syntax: regexp
 ^threedee-demos/target$
+syntax: regexp
+^threedee-wavefront/target$
+syntax: regexp
+^threedee-java2d/target$
+syntax: regexp
+^threedee-android/target$
