@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.ailis.threedee.events.NodeListener;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.GL;
@@ -27,6 +28,9 @@ import de.ailis.threedee.scene.properties.NodeProperty;
 
 public abstract class SceneNode implements Iterable<SceneNode>
 {
+    /** The scene this node is currently connected to */
+    private Scene scene;
+
     /** The parent node. Can be null if there is none. */
     private SceneNode parentNode;
 
@@ -59,6 +63,9 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
     /** The node properties */
     private List<NodeProperty> properties;
+
+    /** The list with node listeners */
+    private List<NodeListener> nodeListeners;
 
 
     /**
@@ -98,6 +105,10 @@ public abstract class SceneNode implements Iterable<SceneNode>
         this.lastChild = node;
         if (this.firstChild == null) this.firstChild = node;
         node.parentNode = this;
+        node.setScene(this.scene);
+
+        // Inform node that it has been inserted
+        node.fireNodeInserted();
     }
 
 
@@ -222,6 +233,10 @@ public abstract class SceneNode implements Iterable<SceneNode>
         newNode.previousSibling = oldPrevious;
         newNode.nextSibling = referenceNode;
         newNode.parentNode = this;
+        newNode.setScene(this.scene);
+
+        // Inform node that it has been inserted
+        newNode.fireNodeInserted();
     }
 
 
@@ -230,9 +245,10 @@ public abstract class SceneNode implements Iterable<SceneNode>
      *
      * @param node
      *            The node to remove
+     * @return The removed node
      */
 
-    public final void removeChild(final SceneNode node)
+    public final SceneNode removeChild(final SceneNode node)
     {
         if (node == null)
             throw new IllegalArgumentException("node must not be null");
@@ -240,6 +256,9 @@ public abstract class SceneNode implements Iterable<SceneNode>
         // Verify that node is our child
         if (node.parentNode != this)
             throw new IllegalArgumentException("node is not my child node");
+
+        // Inform node that it is going to be removed
+        node.fireNodeRemoved();
 
         // Remove node from linked list
         final SceneNode next = node.nextSibling;
@@ -255,6 +274,9 @@ public abstract class SceneNode implements Iterable<SceneNode>
         node.parentNode = null;
         node.nextSibling = null;
         node.previousSibling = null;
+        node.setScene(null);
+
+        return node;
     }
 
 
@@ -788,5 +810,131 @@ public abstract class SceneNode implements Iterable<SceneNode>
     public void removeLight(final Light light)
     {
         this.lights.remove(light);
+    }
+
+
+    /**
+     * Sets the scene this node is connected to. This recursively also sets
+     * the scene in all child nodes.
+     *
+     * @param scene
+     *            The scene this node is connected to. Null is specified
+     *            when node is no longer connected to a scene.
+     */
+
+    void setScene(final Scene scene)
+    {
+        // Do nothing if state has not been changed
+        if (this.scene == scene) return;
+
+        if (scene == null) fireNodeRemovedFromScene();
+
+        for (final SceneNode node : this)
+            node.setScene(scene);
+        this.scene = scene;
+
+        if (scene != null) fireNodeInsertedIntoScene();
+
+    }
+
+
+    /**
+     * Checks if node is currently connected to a scene.
+     *
+     * @return True if connected to a scene, false if not
+     */
+
+    public boolean isInScene()
+    {
+        return this.scene != null;
+    }
+
+
+    /**
+     * Returns the scene this node is currently connected to. May return null
+     * if node is not connected to a scene.
+     *
+     * @return The scene or null if none
+     */
+
+    public Scene getScene()
+    {
+        return this.scene;
+    }
+
+
+    /**
+     * Fires the nodeInserted event.
+     */
+
+    private void fireNodeInserted()
+    {
+        if (this.nodeListeners == null) return;
+        for (final NodeListener listener : this.nodeListeners)
+            listener.nodeInserted();
+    }
+
+
+    /**
+     * Fires the nodeRemoved event.
+     */
+
+    private void fireNodeRemoved()
+    {
+        if (this.nodeListeners == null) return;
+        for (final NodeListener listener : this.nodeListeners)
+            listener.nodeRemoved();
+    }
+
+
+    /**
+     * Fires the nodeRemovedFromScene event.
+     */
+
+    private void fireNodeRemovedFromScene()
+    {
+        if (this.nodeListeners == null) return;
+        for (final NodeListener listener : this.nodeListeners)
+            listener.nodeRemovedFromScene();
+    }
+
+
+    /**
+     * Fires the nodeInsertedIntoScene event.
+     */
+    private void fireNodeInsertedIntoScene()
+    {
+        if (this.nodeListeners == null) return;
+        for (final NodeListener listener : this.nodeListeners)
+            listener.nodeInsertedIntoScene();
+    }
+
+
+    /**
+     * Adds a node listener.
+     *
+     * @param listener
+     *            The node listener to add
+     */
+
+    public void addNodeListener(final NodeListener listener)
+    {
+        if (this.nodeListeners == null)
+            this.nodeListeners = new ArrayList<NodeListener>();
+        this.nodeListeners.add(listener);
+    }
+
+
+    /**
+     * Removes a node listener.
+     *
+     * @param listener
+     *            The node listener to remove
+     */
+
+    public void removeNodeListener(final NodeListener listener)
+    {
+        if (this.nodeListeners == null) return;
+        this.nodeListeners.remove(listener);
     }
 }

@@ -67,7 +67,7 @@ import de.ailis.threedee.collada.entities.Profiles;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
-import de.ailis.threedee.collada.entities.Texture;
+import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Transformations;
 import de.ailis.threedee.collada.entities.UnsharedInput;
@@ -209,7 +209,7 @@ public class ColladaParserTest
         colorOrTexture = phong.getDiffuse();
         assertTrue(colorOrTexture.isTexture());
         assertFalse(colorOrTexture.isColor());
-        final Texture texture = colorOrTexture.getTexture();
+        final ColladaTexture texture = colorOrTexture.getTexture();
         assertNotNull(texture);
         assertEquals("photo-image", texture.getTexture());
         assertEquals("CHANNEL0", texture.getTexcoord());

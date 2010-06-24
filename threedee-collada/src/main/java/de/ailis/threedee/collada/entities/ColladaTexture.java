@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class Texture implements Serializable
+public class ColladaTexture implements Serializable
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,7 @@ public class Texture implements Serializable
      *            Semantic token for the texture coordinates to use
      */
 
-    public Texture(final String texture, final String texcoord)
+    public ColladaTexture(final String texture, final String texcoord)
     {
         setTexture(texture);
         setTexcoord(texcoord);

@@ -8,8 +8,11 @@ package de.ailis.threedee.scene;
 import java.lang.ref.SoftReference;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.ailis.threedee.builder.MeshBuilder;
+import de.ailis.threedee.events.NodeAdapter;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.BoundsRenderer;
 import de.ailis.threedee.rendering.GL;
@@ -17,8 +20,8 @@ import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.Mesh;
 import de.ailis.threedee.scene.model.MeshPolygons;
-import de.ailis.threedee.textures.Texture;
-import de.ailis.threedee.textures.TextureCache;
+import de.ailis.threedee.scene.textures.Texture;
+import de.ailis.threedee.scene.textures.TextureManager;
 
 
 /**
@@ -52,6 +55,9 @@ public class Model extends SceneNode
     /** The bound materials */
     private final Material[] materials;
 
+    /** The bound textures */
+    private final Map<String, Texture> textures = new HashMap<String, Texture>();
+
     /** The last used diffuse texture */
     private Texture diffuseTexture;
 
@@ -67,6 +73,25 @@ public class Model extends SceneNode
     {
         this.mesh = mesh;
         this.materials = new Material[mesh.getMaterials().length];
+        final Map<String, Texture> textures = this.textures;
+        addNodeListener(new NodeAdapter()
+        {
+            @Override
+            public void nodeInsertedIntoScene()
+            {
+                final TextureManager manager = TextureManager.getInstance();
+                for (final Texture texture : textures.values())
+                    manager.referenceTexture(texture);
+            }
+
+            @Override
+            public void nodeRemovedFromScene()
+            {
+                final TextureManager manager = TextureManager.getInstance();
+                for (final Texture texture : textures.values())
+                    manager.dereferenceTexture(texture);
+            }
+        });
     }
 
 
@@ -121,6 +146,56 @@ public class Model extends SceneNode
         for (int index = indices.length - 1; index >= 0; --index)
             if (indices[index].equals(id)) return index;
         return -1;
+    }
+
+
+    /**
+     * Binds a texture to a texture id.
+     *
+     * @param id
+     *            The texture id
+     * @param texture
+     *            The texture
+     */
+
+    public void bindTexture(final String id, final Texture texture)
+    {
+        final Texture oldTexture = this.textures.put(id, texture);
+        if (isInScene())
+        {
+            final TextureManager manager = TextureManager.getInstance();
+            manager.referenceTexture(texture);
+            if (oldTexture != null) manager.dereferenceTexture(oldTexture);
+        }
+    }
+
+
+    /**
+     * Unbinds the texture bound to the specified id.
+     *
+     * @param id
+     *            The texture id
+     */
+
+    public void unbindTexture(final String id)
+    {
+        final Texture oldTexture = this.textures.remove(id);
+        if (oldTexture != null && isInScene())
+            TextureManager.getInstance().dereferenceTexture(oldTexture);
+    }
+
+
+    /**
+     * Returns the texture which is bound to the specified texture id.
+     *
+     * @param id
+     *            The texture id
+     * @return The texture or null if no texture is bound to this id
+     */
+
+    public Texture getTexture(final String id)
+    {
+        return this.textures.get(id);
     }
 
 
@@ -296,12 +371,10 @@ public class Model extends SceneNode
 
         if (diffuseTexture != null)
         {
-            final Texture texture = this.diffuseTexture = TextureCache
-                    .getInstance().getTexture(diffuseTexture);
-            texture.bind(gl);
+            final Texture texture = this.diffuseTexture = getTexture(diffuseTexture);
+            if (texture != null) TextureManager.getInstance().bind(gl, texture);
         }
         else
-
             this.diffuseTexture = null;
 
         gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_SPECULAR, material
@@ -334,7 +407,7 @@ public class Model extends SceneNode
     {
         if (this.diffuseTexture != null)
         {
-            this.diffuseTexture.unbind(gl);
+            TextureManager.getInstance().unbindTexture(gl);
             this.diffuseTexture = null;
         }
     }

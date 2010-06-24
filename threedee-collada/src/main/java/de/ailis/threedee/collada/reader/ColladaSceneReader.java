@@ -23,6 +23,7 @@ import de.ailis.threedee.collada.entities.ColladaMesh;
 import de.ailis.threedee.collada.entities.ColladaPointLight;
 import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.ColladaSpotLight;
+import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.CommonTechnique;
 import de.ailis.threedee.collada.entities.DataSource;
 import de.ailis.threedee.collada.entities.Effect;
@@ -45,7 +46,6 @@ import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
-import de.ailis.threedee.collada.entities.Texture;
 import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
@@ -65,6 +65,7 @@ import de.ailis.threedee.scene.lights.PointLight;
 import de.ailis.threedee.scene.lights.SpotLight;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.textures.Texture;
 
 
 /**
@@ -80,6 +81,9 @@ public class ColladaSceneReader extends SceneReader
 
     /** The mesh cache */
     private Map<String, Mesh> meshes;
+
+    /** Used textures */
+    private Map<String, Texture> textures;
 
     /** The scene */
     private Scene scene;
@@ -200,6 +204,7 @@ public class ColladaSceneReader extends SceneReader
         for (final InstanceGeometry instanceGeometry : node
                 .getInstanceGeometries())
         {
+            this.textures = new HashMap<String, Texture>();
             final Geometry geometry = this.collada.getLibraryGeometries().get(
                     instanceGeometry.getURL().getFragment());
             final Mesh mesh = buildMesh(geometry);
@@ -209,7 +214,10 @@ public class ColladaSceneReader extends SceneReader
             {
                 model.bindMaterial(instanceMaterial.getSymbol(),
                         buildMaterial(instanceMaterial));
-
+            }
+            for (final Map.Entry<String, Texture> entry: this.textures.entrySet())
+            {
+                model.bindTexture(entry.getKey(), entry.getValue());
             }
             sceneNode.appendChild(model);
         }
@@ -289,8 +297,13 @@ public class ColladaSceneReader extends SceneReader
             builder
                     .setDiffuseColor(buildColor(shading.getDiffuse().getColor()));
         if (shading.getDiffuse().isTexture())
-            builder.setDiffuseTexture(buildTexture(shading.getDiffuse()
-                    .getTexture()));
+        {
+            final ColladaTexture colladaTexture = shading.getDiffuse().getTexture();
+            final Texture texture = buildTexture(colladaTexture);
+            final String textureName = colladaTexture.getTexture();
+            this.textures.put(textureName, texture);
+            builder.setDiffuseTexture(textureName);
+        }
         builder.setShininess(shading.getShininess());
         return builder.build();
     }
@@ -303,10 +316,10 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee texture
      */
 
-    private String buildTexture(final Texture texture)
+    private Texture buildTexture(final ColladaTexture texture)
     {
-        return this.collada.getLibraryImages().get(texture.getTexture())
-                .getURI().getPath();
+        return new Texture(this.collada.getLibraryImages().get(texture.getTexture())
+                .getURI().getPath());
     }
 
 

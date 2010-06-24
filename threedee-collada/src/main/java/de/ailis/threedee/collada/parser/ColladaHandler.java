@@ -48,7 +48,7 @@ import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
 import de.ailis.threedee.collada.entities.SharedInput;
-import de.ailis.threedee.collada.entities.Texture;
+import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.UnsharedInput;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
@@ -883,7 +883,7 @@ public class ColladaHandler extends DefaultHandler
     {
         final String texture = attributes.getValue("texture");
         final String texcoord = attributes.getValue("texcoord");
-        this.colorOrTexture = new ColorOrTexture(new Texture(texture, texcoord));
+        this.colorOrTexture = new ColorOrTexture(new ColladaTexture(texture, texcoord));
         enterElement(ParserMode.TEXTURE);
     }
 

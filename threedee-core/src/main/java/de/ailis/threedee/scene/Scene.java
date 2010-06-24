@@ -13,6 +13,7 @@ import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.properties.Lighting;
+import de.ailis.threedee.scene.textures.TextureManager;
 
 
 /**
@@ -47,7 +48,7 @@ public class Scene
     public Scene()
     {
         this.lastUpdate = System.nanoTime();
-        this.rootNode = createDefaultRootNode();
+        setRootNode(createDefaultRootNode());
         this.cameraNode = createDefaultCamera();
     }
 
@@ -136,6 +137,7 @@ public class Scene
     public void setRootNode(final SceneNode rootNode)
     {
         this.rootNode = rootNode;
+        this.rootNode.setScene(this);
     }
 
 
@@ -281,6 +283,9 @@ public class Scene
             // Remove camera transformation if camera is present
             if (this.cameraNode != null) this.cameraNode.remove(viewport);
         }
+
+        // Clean-up unused textures
+        TextureManager.getInstance().cleanUp(gl);
 
         // Finish renderering
         gl.glFlush();

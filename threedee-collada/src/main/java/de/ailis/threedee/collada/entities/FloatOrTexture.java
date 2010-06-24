@@ -23,7 +23,7 @@ public class FloatOrTexture implements Serializable
     private ColladaColor color;
 
     /** The texture */
-    private Texture texture;
+    private ColladaTexture texture;
 
 
     /**
@@ -46,7 +46,7 @@ public class FloatOrTexture implements Serializable
      *            The texture to set
      */
 
-    public FloatOrTexture(final Texture texture)
+    public FloatOrTexture(final ColladaTexture texture)
     {
         setTexture(texture);
     }
@@ -88,7 +88,7 @@ public class FloatOrTexture implements Serializable
      *            The texture to set. Must not be null.
      */
 
-    public void setTexture(final Texture texture)
+    public void setTexture(final ColladaTexture texture)
     {
         if (texture == null)
             throw new IllegalArgumentException("texture must be set");
@@ -104,7 +104,7 @@ public class FloatOrTexture implements Serializable
      * @return The texture or null if not set
      */
 
-    public Texture getTexture()
+    public ColladaTexture getTexture()
     {
         return this.texture;
     }
