@@ -14,10 +14,11 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JComponent;
 
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
-import de.ailis.threedee.jogl.opengl.GL;
+import de.ailis.threedee.jogl.rendering.JoGL;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.Scene;
 
@@ -43,7 +44,7 @@ public class SceneCanvas extends JComponent
     Animator animator;
 
     /** The GL interface */
-    GL gl;
+    JoGL gl;
 
     /** The renderer */
     Viewport viewport;
@@ -77,7 +78,7 @@ public class SceneCanvas extends JComponent
         capabilities.setSampleBuffers(true);
         capabilities.setNumSamples(4);
         this.canvas = new GLCanvas(capabilities);
-        final Viewport viewport = this.viewport = new Viewport(new GL(
+        final Viewport viewport = this.viewport = new Viewport(new JoGL(
                 this.canvas.getGL(), new GLU()));
         this.animator = new FPSAnimator(this.canvas, 75);
         add(this.canvas);

@@ -24,6 +24,10 @@
       <artifactId>threedee-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>de.ailis.threedee</groupId>
+      <artifactId>threedee-java2d</artifactId>
+    </dependency>
+    <dependency>
       <groupId>net.java.jogl</groupId>
       <artifactId>jogl</artifactId>
       <version>1.1.1a</version>

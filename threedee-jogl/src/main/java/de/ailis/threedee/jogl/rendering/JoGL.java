@@ -3,42 +3,25 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.jogl.opengl;
+package de.ailis.threedee.jogl.rendering;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Hashtable;
 
-import javax.imageio.ImageIO;
 import javax.media.opengl.glu.GLU;
 
-import de.ailis.threedee.exceptions.TextureException;
+import de.ailis.threedee.java2d.Java2DGL;
 
 
 /**
- * LWJGL implementation of the ThreeDee GL context.
+ * JoGL implementation of the ThreeDee GL context.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class GL implements de.ailis.threedee.rendering.GL
+public class JoGL extends Java2DGL
 {
     /** The real GL interface */
     private final javax.media.opengl.GL gl;
@@ -46,16 +29,6 @@ public class GL implements de.ailis.threedee.rendering.GL
     /** The real GLU interface */
     private final javax.media.opengl.glu.GLU glu;
 
-    /** The colour model including alpha for the GL image */
-    private static ColorModel glAlphaColorModel = new ComponentColorModel(
-            ColorSpace.getInstance(ColorSpace.CS_sRGB),
-            new int[] { 8, 8, 8, 8 }, true, false, Transparency.TRANSLUCENT,
-            DataBuffer.TYPE_BYTE);
-
-    /** The colour model for the GL image */
-    private static ColorModel glColorModel = new ComponentColorModel(ColorSpace
-            .getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8, 8, 0 }, false,
-            false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
 
     /**
      * Private constructor to prevent instantiation from outside. Use
@@ -67,7 +40,7 @@ public class GL implements de.ailis.threedee.rendering.GL
      *            The real GLU interface
      */
 
-    public GL(final javax.media.opengl.GL gl, final GLU glu)
+    public JoGL(final javax.media.opengl.GL gl, final GLU glu)
     {
         this.gl = gl;
         this.glu = glu;
@@ -255,7 +228,8 @@ public class GL implements de.ailis.threedee.rendering.GL
 
 
     /**
-     * @see de.ailis.threedee.rendering.GL#glClearColor(float, float, float, float)
+     * @see de.ailis.threedee.rendering.GL#glClearColor(float, float, float,
+     *      float)
      */
 
     public void glClearColor(final float red, final float green,
@@ -316,7 +290,8 @@ public class GL implements de.ailis.threedee.rendering.GL
 
 
     /**
-     * @see de.ailis.threedee.rendering.GL#glLight(int, int, java.nio.FloatBuffer)
+     * @see de.ailis.threedee.rendering.GL#glLight(int, int,
+     *      java.nio.FloatBuffer)
      */
 
     public void glLight(final int light, final int pname,
@@ -412,72 +387,6 @@ public class GL implements de.ailis.threedee.rendering.GL
 
 
     /**
-     * @see de.ailis.threedee.rendering.GL#glTexImage2D(int, int,
-     *      java.io.InputStream, int)
-     */
-
-    public void glTexImage2D(final int target, final int level,
-            final InputStream stream, final int border)
-    {
-        BufferedImage bufferedImage;
-        try
-        {
-            bufferedImage = ImageIO.read(stream);
-        }
-        catch (final IOException e)
-        {
-            throw new TextureException("Unable to load texture from stream");
-        }
-
-        final int width = bufferedImage.getWidth();
-        final int height = bufferedImage.getHeight();
-
-        // create a raster that can be used by OpenGL as a source
-        // for a texture
-        WritableRaster raster;
-        BufferedImage texImage;
-        int srcPixelFormat;
-        if (bufferedImage.getColorModel().hasAlpha())
-        {
-            raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                    width, height, 4, null);
-            texImage = new BufferedImage(glAlphaColorModel, raster, false,
-                    new Hashtable<Byte, Byte>());
-            srcPixelFormat = GL_RGBA;
-        }
-        else
-        {
-            raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                    width, height, 3, null);
-            texImage = new BufferedImage(glColorModel, raster, false,
-                    new Hashtable<Byte, Byte>());
-            srcPixelFormat = GL_RGB;
-        }
-
-        // copy the source image into the produced image
-        final Graphics2D g = (Graphics2D) texImage.getGraphics();
-        g.setColor(new Color(0f, 0f, 0f, 0f));
-        g.fillRect(0, 0, width, height);
-        g.translate(0, height);
-        final AffineTransform t = AffineTransform.getScaleInstance(1, -1);
-        g.drawImage(bufferedImage, t, null);
-
-        // build a byte buffer from the temporary image
-        // that be used by OpenGL to produce a texture.
-        final byte[] data = ((DataBufferByte) texImage.getRaster()
-                .getDataBuffer()).getData();
-
-        final ByteBuffer imageBuffer = ByteBuffer.allocateDirect(data.length);
-        imageBuffer.order(ByteOrder.nativeOrder());
-        imageBuffer.put(data, 0, data.length);
-        imageBuffer.flip();
-
-        glTexImage2D(target, level, GL_RGBA, width, height, border,
-                srcPixelFormat, GL_UNSIGNED_BYTE, imageBuffer);
-    }
-
-
-    /**
      * @see de.ailis.threedee.rendering.GL#glTexImage2D(int, int, int, int, int,
      *      int, int, int, java.nio.ByteBuffer)
      */
@@ -504,7 +413,8 @@ public class GL implements de.ailis.threedee.rendering.GL
 
 
     /**
-     * @see de.ailis.threedee.rendering.GL#glGetFloatv(int, java.nio.FloatBuffer)
+     * @see de.ailis.threedee.rendering.GL#glGetFloatv(int,
+     *      java.nio.FloatBuffer)
      */
 
     public void glGetFloatv(final int pname, final FloatBuffer params)
@@ -524,7 +434,8 @@ public class GL implements de.ailis.threedee.rendering.GL
 
 
     /**
-     * @see de.ailis.threedee.rendering.GL#glGetIntegerv(int, java.nio.IntBuffer)
+     * @see de.ailis.threedee.rendering.GL#glGetIntegerv(int,
+     *      java.nio.IntBuffer)
      */
 
     public void glGetIntegerv(final int pname, final IntBuffer params)
@@ -562,5 +473,42 @@ public class GL implements de.ailis.threedee.rendering.GL
     public void glColorMaterial(final int face, final int mode)
     {
         this.gl.glColorMaterial(face, mode);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glTexSubImage2D(int, int, int, int,
+     *      int, int, int, int, java.nio.Buffer)
+     */
+
+    @Override
+    public void glTexSubImage2D(final int target, final int level,
+            final int xOffset, final int yOffset, final int width,
+            final int height, final int format, final int type,
+            final Buffer data)
+    {
+        this.gl.glTexSubImage2D(target, level, xOffset, yOffset, width, height,
+                format, type, data);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glRotatef(float, float, float, float)
+     */
+
+    public void glRotatef(final float angle, final float x, final float y,
+            final float z)
+    {
+        this.gl.glRotatef(angle, x, y, z);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glScalef(float, float, float)
+     */
+
+    public void glScalef(final float x, final float y, final float z)
+    {
+        this.gl.glScalef(x, y, z);
     }
 }
