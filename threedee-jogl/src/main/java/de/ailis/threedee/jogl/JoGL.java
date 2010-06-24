@@ -44,6 +44,7 @@ public class JoGL extends Java2DGL
     {
         this.gl = gl;
         this.glu = glu;
+
     }
 
 

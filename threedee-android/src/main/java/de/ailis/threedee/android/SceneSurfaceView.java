@@ -77,4 +77,18 @@ public class SceneSurfaceView extends GLSurfaceView
     {
         return this.renderer.getScene();
     }
+
+
+    /**
+     * Sets the scene.
+     *
+     * @param scene
+     *            The scene to set
+     */
+
+    public void setScene(final Scene scene)
+    {
+        this.renderer.setScene(scene);
+        setOnTouchListener(new SceneTouchAdapter(getScene()));
+    }
 }

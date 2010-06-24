@@ -23,7 +23,7 @@ import de.ailis.threedee.scene.Scene;
 public class SceneRenderer implements GLSurfaceView.Renderer
 {
     /** The scene to render */
-    private final Scene scene;
+    private Scene scene;
 
     /** The view */
     private final SceneSurfaceView view;
@@ -95,5 +95,18 @@ public class SceneRenderer implements GLSurfaceView.Renderer
         final boolean changed = this.scene.update();
         this.scene.render(this.viewport);
         if (changed) this.view.requestRender();
+    }
+
+
+    /**
+     * Sets the scene.
+     *
+     * @param scene
+     *            The scene to set
+     */
+
+    public void setScene(final Scene scene)
+    {
+        this.scene = scene;
     }
 }

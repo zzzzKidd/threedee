@@ -8,8 +8,8 @@ package de.ailis.threedee.collada.parser;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -26,6 +26,7 @@ import de.ailis.threedee.collada.entities.ColladaMesh;
 import de.ailis.threedee.collada.entities.ColladaPointLight;
 import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.ColladaSpotLight;
+import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.ColorOrTexture;
 import de.ailis.threedee.collada.entities.CommonProfile;
 import de.ailis.threedee.collada.entities.CommonTechnique;
@@ -48,7 +49,6 @@ import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
 import de.ailis.threedee.collada.entities.SharedInput;
-import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.UnsharedInput;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
@@ -69,7 +69,7 @@ public class ColladaHandler extends DefaultHandler
     private ParserMode mode = ParserMode.ROOT;
 
     /** The parser mode stack */
-    private final LinkedList<ParserMode> modeStack = new LinkedList<ParserMode>();
+    private final Stack<ParserMode> modeStack = new Stack<ParserMode>();
 
     /** String Builder for building a string from element content */
     private StringBuilder stringBuilder;
@@ -156,7 +156,7 @@ public class ColladaHandler extends DefaultHandler
     private VisualScene visualScene;
 
     /** The node stack */
-    private LinkedList<Node> nodeStack;
+    private Stack<Node> nodeStack;
 
     /** The current node */
     private Node node;
@@ -202,81 +202,81 @@ public class ColladaHandler extends DefaultHandler
         switch (this.mode)
         {
             case ROOT:
-                if (qName.equals("COLLADA")) enterElement(ParserMode.COLLADA);
+                if (localName.equals("COLLADA")) enterElement(ParserMode.COLLADA);
                 break;
 
             case COLLADA:
-                if (qName.equals("library_images"))
+                if (localName.equals("library_images"))
                     enterElement(ParserMode.LIBRARY_IMAGES);
-                else if (qName.equals("library_materials"))
+                else if (localName.equals("library_materials"))
                     enterElement(ParserMode.LIBRARY_MATERIALS);
-                else if (qName.equals("library_effects"))
+                else if (localName.equals("library_effects"))
                     enterElement(ParserMode.LIBRARY_EFFECTS);
-                else if (qName.equals("library_geometries"))
+                else if (localName.equals("library_geometries"))
                     enterElement(ParserMode.LIBRARY_GEOMETRIES);
-                else if (qName.equals("library_lights"))
+                else if (localName.equals("library_lights"))
                     enterElement(ParserMode.LIBRARY_LIGHTS);
-                else if (qName.equals("library_cameras"))
+                else if (localName.equals("library_cameras"))
                     enterElement(ParserMode.LIBRARY_CAMERAS);
-                else if (qName.equals("library_visual_scenes"))
+                else if (localName.equals("library_visual_scenes"))
                     enterElement(ParserMode.LIBRARY_VISUAL_SCENES);
-                else if (qName.equals("scene")) enterScene();
+                else if (localName.equals("scene")) enterScene();
                 break;
 
             case LIBRARY_IMAGES:
-                if (qName.equals("image")) enterImage(attributes);
+                if (localName.equals("image")) enterImage(attributes);
                 break;
 
             case IMAGE:
-                if (qName.equals("init_from")) enterImageInitFrom();
+                if (localName.equals("init_from")) enterImageInitFrom();
                 break;
 
             case LIBRARY_MATERIALS:
-                if (qName.equals("material")) enterMaterial(attributes);
+                if (localName.equals("material")) enterMaterial(attributes);
                 break;
 
             case MATERIAL:
-                if (qName.equals("instance_effect"))
+                if (localName.equals("instance_effect"))
                     enterInstanceEffect(attributes);
                 break;
 
             case LIBRARY_EFFECTS:
-                if (qName.equals("effect")) enterEffect(attributes);
+                if (localName.equals("effect")) enterEffect(attributes);
                 break;
 
             case EFFECT:
-                if (qName.equals("profile_COMMON")) enterProfileCommon();
+                if (localName.equals("profile_COMMON")) enterProfileCommon();
                 break;
 
             case PROFILE_COMMON:
-                if (qName.equals("technique"))
+                if (localName.equals("technique"))
                     enterTechniqueCommon(attributes);
                 break;
 
             case TECHNIQUE_COMMON:
-                if (qName.equals("phong")) enterPhong();
+                if (localName.equals("phong")) enterPhong();
                 break;
 
             case PHONG:
-                if (qName.equals("emission"))
+                if (localName.equals("emission"))
                     enterElement(ParserMode.EMISSION);
-                else if (qName.equals("ambient"))
+                else if (localName.equals("ambient"))
                     enterElement(ParserMode.AMBIENT);
-                else if (qName.equals("diffuse"))
+                else if (localName.equals("diffuse"))
                     enterElement(ParserMode.DIFFUSE);
-                else if (qName.equals("specular"))
+                else if (localName.equals("specular"))
                     enterElement(ParserMode.SPECULAR);
-                else if (qName.equals("reflective"))
+                else if (localName.equals("reflective"))
                     enterElement(ParserMode.REFLECTIVE);
-                else if (qName.equals("transparent"))
+                else if (localName.equals("transparent"))
                     enterElement(ParserMode.TRANSPARENT);
-                else if (qName.equals("reflectivity"))
+                else if (localName.equals("reflectivity"))
                     enterElement(ParserMode.REFLECTIVITY);
-                else if (qName.equals("shininess"))
+                else if (localName.equals("shininess"))
                     enterElement(ParserMode.SHININESS);
-                else if (qName.equals("transparency"))
+                else if (localName.equals("transparency"))
                     enterElement(ParserMode.TRANSPARENCY);
-                else if (qName.equals("index_of_refraction"))
+                else if (localName.equals("index_of_refraction"))
                     enterElement(ParserMode.INDEX_OF_REFRACTION);
                 break;
 
@@ -284,7 +284,7 @@ public class ColladaHandler extends DefaultHandler
             case TRANSPARENCY:
             case SHININESS:
             case INDEX_OF_REFRACTION:
-                if (qName.equals("float")) enterFloat();
+                if (localName.equals("float")) enterFloat();
                 break;
 
             case EMISSION:
@@ -293,140 +293,140 @@ public class ColladaHandler extends DefaultHandler
             case SPECULAR:
             case REFLECTIVE:
             case TRANSPARENT:
-                if (qName.equals("color"))
+                if (localName.equals("color"))
                     enterShadingColor();
-                else if (qName.equals("texture")) enterTexture(attributes);
+                else if (localName.equals("texture")) enterTexture(attributes);
                 break;
 
             case LIBRARY_GEOMETRIES:
-                if (qName.equals("geometry")) enterGeometry(attributes);
+                if (localName.equals("geometry")) enterGeometry(attributes);
                 break;
 
             case GEOMETRY:
-                if (qName.equals("mesh")) enterMesh();
+                if (localName.equals("mesh")) enterMesh();
                 break;
 
             case MESH:
-                if (qName.equals("source"))
+                if (localName.equals("source"))
                     enterDataSource(attributes);
-                else if (qName.equals("vertices"))
+                else if (localName.equals("vertices"))
                     enterVertices(attributes);
-                else if (qName.equals("polygons")) enterPolygons(attributes);
+                else if (localName.equals("polygons")) enterPolygons(attributes);
                 break;
 
             case DATA_SOURCE:
-                if (qName.equals("float_array")) enterFloatArray(attributes);
+                if (localName.equals("float_array")) enterFloatArray(attributes);
                 break;
 
             case VERTICES:
-                if (qName.equals("input")) enterVerticesInput(attributes);
+                if (localName.equals("input")) enterVerticesInput(attributes);
                 break;
 
             case POLYGONS:
-                if (qName.equals("p"))
+                if (localName.equals("p"))
                     enterPolygonsP();
-                else if (qName.equals("input"))
+                else if (localName.equals("input"))
                     enterPrimitivesInput(attributes);
                 break;
 
             case LIBRARY_LIGHTS:
-                if (qName.equals("light")) enterLight(attributes);
+                if (localName.equals("light")) enterLight(attributes);
                 break;
 
             case LIGHT:
-                if (qName.equals("technique_common"))
+                if (localName.equals("technique_common"))
                     enterElement(ParserMode.LIGHT_TECHNIQUE_COMMON);
                 break;
 
             case LIGHT_TECHNIQUE_COMMON:
-                if (qName.equals("directional"))
+                if (localName.equals("directional"))
                     enterDirectional();
-                else if (qName.equals("point"))
+                else if (localName.equals("point"))
                     enterPoint();
-                else if (qName.equals("ambient")) enterAmbient();
-                else if (qName.equals("spot")) enterSpot();
+                else if (localName.equals("ambient")) enterAmbient();
+                else if (localName.equals("spot")) enterSpot();
                 break;
 
             case LIGHT_AMBIENT:
             case LIGHT_POINT:
             case LIGHT_DIRECTIONAL:
-                if (qName.equals("color")) enterLightColor();
+                if (localName.equals("color")) enterLightColor();
                 break;
 
             case LIGHT_SPOT:
-                if (qName.equals("color")) enterLightColor();
-                else if (qName.equals("falloff_angle")) enterFalloffAngle();
+                if (localName.equals("color")) enterLightColor();
+                else if (localName.equals("falloff_angle")) enterFalloffAngle();
                 break;
 
             case LIBRARY_CAMERAS:
-                if (qName.equals("camera")) enterCamera(attributes);
+                if (localName.equals("camera")) enterCamera(attributes);
                 break;
 
             case CAMERA:
-                if (qName.equals("optics")) enterElement(ParserMode.OPTICS);
+                if (localName.equals("optics")) enterElement(ParserMode.OPTICS);
                 break;
 
             case OPTICS:
-                if (qName.equals("technique_common"))
+                if (localName.equals("technique_common"))
                     enterElement(ParserMode.OPTICS_TECHNIQUE_COMMON);
                 break;
 
             case OPTICS_TECHNIQUE_COMMON:
-                if (qName.equals("perspective")) enterPerspective();
+                if (localName.equals("perspective")) enterPerspective();
                 break;
 
             case PERSPECTIVE:
-                if (qName.equals("xfov"))
+                if (localName.equals("xfov"))
                     enterPerspectiveValue(ParserMode.XFOV);
-                else if (qName.equals("yfov"))
+                else if (localName.equals("yfov"))
                     enterPerspectiveValue(ParserMode.YFOV);
-                else if (qName.equals("aspect_ratio"))
+                else if (localName.equals("aspect_ratio"))
                     enterPerspectiveValue(ParserMode.ASPECT_RATIO);
-                else if (qName.equals("znear"))
+                else if (localName.equals("znear"))
                     enterPerspectiveValue(ParserMode.ZNEAR);
-                else if (qName.equals("zfar"))
+                else if (localName.equals("zfar"))
                     enterPerspectiveValue(ParserMode.ZFAR);
                 break;
 
             case LIBRARY_VISUAL_SCENES:
-                if (qName.equals("visual_scene")) enterVisualScene(attributes);
+                if (localName.equals("visual_scene")) enterVisualScene(attributes);
                 break;
 
             case VISUAL_SCENE:
-                if (qName.equals("node")) enterVisualSceneNode(attributes);
+                if (localName.equals("node")) enterVisualSceneNode(attributes);
                 break;
 
             case NODE:
             case VISUAL_SCENE_NODE:
-                if (qName.equals("matrix"))
+                if (localName.equals("matrix"))
                     enterMatrix();
-                else if (qName.equals("node"))
+                else if (localName.equals("node"))
                     enterNode(attributes);
-                else if (qName.equals("instance_geometry"))
+                else if (localName.equals("instance_geometry"))
                     enterInstanceGeometry(attributes);
-                else if (qName.equals("instance_light"))
+                else if (localName.equals("instance_light"))
                     enterInstanceLight(attributes);
-                else if (qName.equals("instance_camera"))
+                else if (localName.equals("instance_camera"))
                     enterInstanceCamera(attributes);
                 break;
 
             case INSTANCE_GEOMETRY:
-                if (qName.equals("bind_material"))
+                if (localName.equals("bind_material"))
                     enterElement(ParserMode.BIND_MATERIAL);
                 break;
 
             case BIND_MATERIAL:
-                if (qName.equals("technique_common"))
+                if (localName.equals("technique_common"))
                     enterElement(ParserMode.BIND_MATERIAL_TECHNIQUE_COMMON);
                 break;
 
             case BIND_MATERIAL_TECHNIQUE_COMMON:
-                if (qName.equals("instance_material"))
+                if (localName.equals("instance_material"))
                     enterInstanceMaterial(attributes);
                 break;
 
             case SCENE:
-                if (qName.equals("instance_visual_scene"))
+                if (localName.equals("instance_visual_scene"))
                     enterInstanceVisualScene(attributes);
                 break;
 
@@ -444,7 +444,7 @@ public class ColladaHandler extends DefaultHandler
             final String qName) throws SAXException
     {
         // Ignore element when it is not the one we are currently watching
-        if (!qName.equals(this.mode.getTagName())) return;
+        if (!localName.equals(this.mode.getTagName())) return;
 
         switch (this.mode)
         {
@@ -1567,7 +1567,7 @@ public class ColladaHandler extends DefaultHandler
     {
         final String id = attributes.getValue("id");
         this.visualScene = new VisualScene(id);
-        this.nodeStack = new LinkedList<Node>();
+        this.nodeStack = new Stack<Node>();
         enterElement(ParserMode.VISUAL_SCENE);
     }
 

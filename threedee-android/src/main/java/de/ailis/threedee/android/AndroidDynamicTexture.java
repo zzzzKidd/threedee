@@ -44,7 +44,7 @@ public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
 
     public AndroidDynamicTexture(final int width, final int height)
     {
-        Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        this.bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
         this.width = width;
         this.height = height;
     }
@@ -79,7 +79,7 @@ public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
      * @return The canvas context
      */
 
-    public Canvas createGraphics()
+    public Canvas createCanvas()
     {
         return new Canvas(this.bitmap);
     }

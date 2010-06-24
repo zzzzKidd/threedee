@@ -35,7 +35,7 @@ public final class TextureManager
     private final Map<Texture, TextureReference> textures = new HashMap<Texture, TextureReference>();
 
     /** The resource provider */
-    private final ResourceProvider resourceProvider = new ClasspathResourceProvider();
+    public ResourceProvider resourceProvider = new ClasspathResourceProvider();
 
 
     /**

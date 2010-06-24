@@ -61,6 +61,10 @@ public class Viewport
         gl.glEnable(GL.GL_BLEND);
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
+        // Perform implementation specific initialization
+        gl.init();
+
+
         // gl.glEnable(GL.GL_COLOR_MATERIAL);
         // gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
 
@@ -71,11 +75,6 @@ public class Viewport
         // gl.glTexParameteri(GL.GL_TEXTURE_2D,
         // GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
 
-        // Flip the texture matrix so texture origin is top-left
-        gl.glMatrixMode(GL.GL_TEXTURE);
-        gl.glRotatef(180.0f,0.0f,0.0f,1.0f);
-        gl.glScalef(-1.0f,1.0f,1.0f);
-        gl.glMatrixMode(GL.GL_MODELVIEW);
 
     }
 

@@ -36,10 +36,10 @@ public class AndroidGL implements GL
 
 
     /**
-     * Constructs the GL interface.
+     * @see de.ailis.threedee.rendering.GL#init()
      */
 
-    public AndroidGL()
+    public void init()
     {
         // Empty
     }
@@ -59,8 +59,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glColorPointer(int, int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glColorPointer(int, int, java.nio.FloatBuffer)
      */
 
     public void glColorPointer(final int size, final int stride,
@@ -71,8 +70,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glMaterial(int, int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glMaterial(int, int, java.nio.FloatBuffer)
      */
 
     public void glMaterial(final int face, final int pname,
@@ -113,8 +111,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glVertexPointer(int, int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glVertexPointer(int, int, java.nio.FloatBuffer)
      */
 
     public void glVertexPointer(final int size, final int stride,
@@ -125,8 +122,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glNormalPointer(int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glNormalPointer(int, java.nio.FloatBuffer)
      */
 
     public void glNormalPointer(final int stride, final FloatBuffer pointer)
@@ -136,8 +132,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glTexCoordPointer(int, int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glTexCoordPointer(int, int, java.nio.FloatBuffer)
      */
 
     public void glTexCoordPointer(final int size, final int stride,
@@ -148,8 +143,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glDrawElements(int, int,
-     *      java.nio.Buffer)
+     * @see GL#glDrawElements(int, int, java.nio.Buffer)
      */
 
     public void glDrawElements(final int mode, final int type,
@@ -240,8 +234,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glClearColor(float, float, float,
-     *      float)
+     * @see GL#glClearColor(float, float, float, float)
      */
 
     public void glClearColor(final float red, final float green,
@@ -302,8 +295,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glLight(int, int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glLight(int, int, java.nio.FloatBuffer)
      */
 
     public void glLight(final int light, final int pname,
@@ -335,8 +327,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#gluPerspective(float, float, float,
-     *      float)
+     * @see GL#gluPerspective(float, float, float, float)
      */
 
     public void gluPerspective(final float fovy, final float aspect,
@@ -388,8 +379,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glTexImage2D(int, int,
-     *      java.io.InputStream, int)
+     * @see GL#glTexImage2D(int, int, java.io.InputStream, int)
      */
 
     public void glTexImage2D(final int target, final int level,
@@ -414,8 +404,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glLightModelfv(int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glLightModelfv(int, java.nio.FloatBuffer)
      */
 
     public void glLightModelfv(final int pname, final FloatBuffer params)
@@ -425,8 +414,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glGetFloatv(int,
-     *      java.nio.FloatBuffer)
+     * @see GL#glGetFloatv(int, java.nio.FloatBuffer)
      */
 
     public void glGetFloatv(final int pname, final FloatBuffer params)
@@ -446,8 +434,7 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glGetIntegerv(int,
-     *      java.nio.IntBuffer)
+     * @see GL#glGetIntegerv(int, java.nio.IntBuffer)
      */
 
     public void glGetIntegerv(final int pname, final IntBuffer params)
@@ -467,8 +454,8 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glTexImage2D(int, int, int, int, int,
-     *      int, int, int, java.nio.ByteBuffer)
+     * @see GL#glTexImage2D(int, int, int, int, int, int, int, int,
+     *      java.nio.ByteBuffer)
      */
 
     @Override
@@ -516,13 +503,14 @@ public class AndroidGL implements GL
 
 
     /**
-     * @see GL#glTexSubImage2D(int, int, int, int,
-     *      int, int, int, int, java.nio.Buffer)
+     * @see GL#glTexSubImage2D(int, int, int, int, int, int, int, int,
+     *      java.nio.Buffer)
      */
 
     @Override
-    public void glTexSubImage2D(final int target, final int level, final int xOffset,
-            final int yOffset, final int width, final int height, final int format, final int type,
+    public void glTexSubImage2D(final int target, final int level,
+            final int xOffset, final int yOffset, final int width,
+            final int height, final int format, final int type,
             final Buffer data)
     {
         this.gl.glTexSubImage2D(target, level, xOffset, yOffset, width, height,
@@ -535,7 +523,8 @@ public class AndroidGL implements GL
      */
 
     @Override
-    public void glRotatef(final float angle, final float x, final float y, final float z)
+    public void glRotatef(final float angle, final float x, final float y,
+            final float z)
     {
         this.gl.glRotatef(angle, x, y, z);
     }

@@ -319,6 +319,13 @@ public interface GL
 
 
     /**
+     * Perform implementation specific initializations.
+     */
+
+    public void init();
+
+
+    /**
      * Define an array of colors.
      *
      * @param size

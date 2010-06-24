@@ -8,11 +8,10 @@ package de.ailis.threedee.collada.parser;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 import de.ailis.threedee.collada.entities.COLLADA;
 import de.ailis.threedee.exceptions.ParserException;
@@ -42,19 +41,20 @@ public class ColladaParser
         try
         {
             final ColladaHandler handler = new ColladaHandler();
-            final SAXParser parser = SAXParserFactory.newInstance()
-                    .newSAXParser();
-            parser.parse(stream, handler);
+            //final SAXParser parser = SAXParserFactory.newInstance()
+                    //.newSAXParser();
+            final XMLReader reader = XMLReaderFactory.createXMLReader();
+            reader.setContentHandler(handler);
+            reader.parse(new InputSource(stream));
+//            LogFactory.getLog(ColladaParser.class).info(parser.getProperty("http://xml.org/sax/features/namespaces"));
+            //System.exit(0);
+            //parser.parse(stream, handler);
             return handler.getCOLLADA();
         }
         catch (final IOException e)
         {
             throw new ParserException("Unable to read collada document: " + e,
                     e);
-        }
-        catch (final ParserConfigurationException e)
-        {
-            throw new ParserException("Unable to create SAX parser: " + e, e);
         }
         catch (final SAXException e)
         {
