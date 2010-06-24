@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.jogl.swing;
+package de.ailis.threedee.jogl;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

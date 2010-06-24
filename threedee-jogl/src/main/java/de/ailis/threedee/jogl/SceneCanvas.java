@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.jogl.swing;
+package de.ailis.threedee.jogl;
 
 import java.awt.BorderLayout;
 
@@ -18,7 +18,6 @@ import javax.swing.JComponent;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
-import de.ailis.threedee.jogl.rendering.JoGL;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.Scene;
 

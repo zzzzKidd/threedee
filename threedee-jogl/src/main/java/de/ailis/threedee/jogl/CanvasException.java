@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package de.ailis.threedee.jogl.exceptions;
+package de.ailis.threedee.jogl;
 
 import de.ailis.threedee.exceptions.ParserException;
 

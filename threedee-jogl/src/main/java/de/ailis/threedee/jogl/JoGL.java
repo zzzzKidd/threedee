@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.jogl.rendering;
+package de.ailis.threedee.jogl;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
