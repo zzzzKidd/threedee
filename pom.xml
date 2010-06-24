@@ -81,6 +81,11 @@
       </dependency>
       <dependency>
         <groupId>de.ailis.threedee</groupId>
+        <artifactId>threedee-java2d</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>de.ailis.threedee</groupId>
         <artifactId>threedee-jogl</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -99,15 +104,23 @@
         <artifactId>junit</artifactId>
         <version>4.8.1</version>
       </dependency> 
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+      </dependency> 
     </dependencies>
   </dependencyManagement>
   
   <modules>
+    <module>threedee-android</module>
     <module>threedee-core</module>
   	<module>threedee-collada</module>
   	<module>threedee-jogl</module>
   	<module>threedee-demos</module>
   	<module>threedee-wavefront</module>
+  	<module>android-image2d</module>
+  	<module>threedee-java2d</module>
   </modules>
   
 </project>
