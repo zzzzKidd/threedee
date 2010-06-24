@@ -50,6 +50,21 @@ public abstract class Java2DGL implements GL
 
 
     /**
+     * @see de.ailis.threedee.rendering.GL#init()
+     */
+
+    public void init()
+    {
+        // Flip the texture matrix so texture origin is top-left
+        glMatrixMode(GL.GL_TEXTURE);
+        glLoadIdentity();
+        glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
+        glScalef(-1.0f, 1.0f, 1.0f);
+        glMatrixMode(GL.GL_MODELVIEW);
+    }
+
+
+    /**
      * @see de.ailis.threedee.rendering.GL#glTexImage2D(int, int,
      *      java.io.InputStream, int)
      */
