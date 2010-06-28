@@ -74,8 +74,8 @@ public class Viewport
         // Perform implementation specific initialization
         gl.init();
 
-        // gl.glEnable(GL.GL_COLOR_MATERIAL);
-        // gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
+        //gl.glEnable(GL.GL_COLOR_MATERIAL);
+       // gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
 
         // gl.glDisable(GL.GL_POINT_SMOOTH);
         // gl.glEnable(GL.GL_MULTISAMPLE);

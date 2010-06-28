@@ -23,7 +23,7 @@ public class SpotLight extends Light
 {
     /** Position for a directional light */
     private final static FloatBuffer spotLightPosition = (FloatBuffer) BufferUtils
-            .createDirectFloatBuffer(4).put(0).put(0).put(1).put(0).rewind();
+            .createDirectFloatBuffer(4).put(0).put(0).put(0).put(1).rewind();
 
     /** The cut off angle in degree */
     private float cutOff = 180f;

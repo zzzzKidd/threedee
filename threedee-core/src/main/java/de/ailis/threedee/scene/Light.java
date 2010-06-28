@@ -33,7 +33,7 @@ public abstract class Light extends SceneNode
 
     /** Direction for a spot light */
     private static final FloatBuffer direction = (FloatBuffer) BufferUtils
-            .createDirectFloatBuffer(4).put(0).put(0).put(-1).put(1).rewind();
+            .createDirectFloatBuffer(3).put(0).put(0).put(-1).rewind();
 
     /** The ambient color of the light */
     private Color ambientColor = Color.BLACK;
@@ -212,7 +212,7 @@ public abstract class Light extends SceneNode
         if (cutOff < 180f)
         {
             gl.glLight(index, GL.GL_SPOT_DIRECTION, direction);
-            gl.glLightf(index, GL.GL_SPOT_CUTOFF, 90f);
+            gl.glLightf(index, GL.GL_SPOT_CUTOFF, cutOff);
         }
         else
         {

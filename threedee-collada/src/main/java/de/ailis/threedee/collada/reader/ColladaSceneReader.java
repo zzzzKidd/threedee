@@ -434,8 +434,10 @@ public class ColladaSceneReader extends SceneReader
     private SpotLight buildSpotLight(final ColladaSpotLight colladaLight)
     {
         final ColladaColor color = colladaLight.getColor();
-        return new SpotLight(new Color(color.getRed(), color.getGreen(), color
+        final SpotLight spotLight = new SpotLight(new Color(color.getRed(), color.getGreen(), color
                 .getBlue()));
+        spotLight.setCutOff(colladaLight.getFalloffAngle());
+        return spotLight;
     }
 
 

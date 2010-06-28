@@ -41,14 +41,9 @@ public class ColladaParser
         try
         {
             final ColladaHandler handler = new ColladaHandler();
-            //final SAXParser parser = SAXParserFactory.newInstance()
-                    //.newSAXParser();
             final XMLReader reader = XMLReaderFactory.createXMLReader();
             reader.setContentHandler(handler);
             reader.parse(new InputSource(stream));
-//            LogFactory.getLog(ColladaParser.class).info(parser.getProperty("http://xml.org/sax/features/namespaces"));
-            //System.exit(0);
-            //parser.parse(stream, handler);
             return handler.getCOLLADA();
         }
         catch (final IOException e)
