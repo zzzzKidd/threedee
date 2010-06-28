@@ -55,6 +55,7 @@ public class ColladaCamera implements Identifiable
      * @return The camera id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

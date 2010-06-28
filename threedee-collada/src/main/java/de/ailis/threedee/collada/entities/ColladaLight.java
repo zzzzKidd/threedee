@@ -55,6 +55,7 @@ public class ColladaLight implements Identifiable
      * @return The light id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

@@ -324,6 +324,7 @@ public abstract class SceneNode implements Iterable<SceneNode>
      * @return The iterator
      */
 
+    @Override
     public final Iterator<SceneNode> iterator()
     {
         return new SceneNodeIterator(this.firstChild);

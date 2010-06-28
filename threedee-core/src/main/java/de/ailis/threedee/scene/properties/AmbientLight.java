@@ -44,6 +44,7 @@ public class AmbientLight implements NodeProperty
      * @see NodeProperty#apply(GL)
      */
 
+    @Override
     public void apply(final GL gl)
     {
         gl.glGetFloatv(GL.GL_LIGHT_MODEL_AMBIENT, this.oldIntensity);
@@ -56,6 +57,7 @@ public class AmbientLight implements NodeProperty
      * @see NodeProperty#remove(GL)
      */
 
+    @Override
     public void remove(final GL gl)
     {
         gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, this.oldIntensity);

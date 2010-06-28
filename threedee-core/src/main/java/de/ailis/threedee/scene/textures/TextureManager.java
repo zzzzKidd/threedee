@@ -49,6 +49,22 @@ public final class TextureManager
 
 
     /**
+     * Unloads all currently loaded textures from the manager.
+     *
+     * @param gl
+     *            The OpenGL context
+     */
+
+    public void clear(final GL gl)
+    {
+        for (final TextureReference ref : this.textures.values())
+        {
+            if (ref.isLoaded()) ref.unload(gl);
+        }
+    }
+
+
+    /**
      * Returns the singleton instance of the texture manager.
      *
      * @return The texture manager.
@@ -169,6 +185,7 @@ public final class TextureManager
                 changed |= !dynamicTexture.isValid();
             }
         }
+        log.trace("Updated");
         return changed;
     }
 
@@ -197,7 +214,10 @@ public final class TextureManager
 
         // Re-render the texture if needed.
         if (texture instanceof DynamicTexture<?>)
-            ((DynamicTexture<?>) texture).reload(gl);
+        {
+            final DynamicTexture<?> dynTexture = (DynamicTexture<?>) texture;
+            if (!dynTexture.isValid()) dynTexture.reload(gl);
+        }
     }
 
 

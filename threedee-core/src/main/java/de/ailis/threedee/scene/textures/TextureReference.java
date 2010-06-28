@@ -121,21 +121,17 @@ class TextureReference
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textureId.get(0));
 
         // Set high quality texture filters
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-                GL.GL_NEAREST);
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-                GL.GL_LINEAR);
+        gl.glTexParameterf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+            GL.GL_NEAREST);
+        gl.glTexParameterf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+            GL.GL_LINEAR);
 
         // Setup texture wrap mode
-        gl
-                .glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
-                        GL.GL_REPEAT);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
+                GL.GL_REPEAT);
         gl
                 .glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
-                        GL.GL_REPEAT);
-
-        // Enable hardware mipmaps
-        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_GENERATE_MIPMAP, GL.GL_TRUE);
+                    GL.GL_REPEAT);
 
         this.texture.load(gl, resourceProvider);
 

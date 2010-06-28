@@ -67,6 +67,7 @@ public class SceneRenderer implements GLSurfaceView.Renderer
      * @see GLSurfaceView.Renderer#onSurfaceCreated(GL10, EGLConfig)
      */
 
+    @Override
     public void onSurfaceCreated(final GL10 gl, final EGLConfig config)
     {
         this.gl.setGL((GL11) gl);
@@ -78,6 +79,7 @@ public class SceneRenderer implements GLSurfaceView.Renderer
      * @see GLSurfaceView.Renderer#onSurfaceChanged(GL10, int, int)
      */
 
+    @Override
     public void onSurfaceChanged(final GL10 gl, final int width,
             final int height)
     {
@@ -90,6 +92,7 @@ public class SceneRenderer implements GLSurfaceView.Renderer
      * @see GLSurfaceView.Renderer#onDrawFrame(GL10)
      */
 
+    @Override
     public void onDrawFrame(final GL10 gl)
     {
         final boolean changed = this.scene.update();

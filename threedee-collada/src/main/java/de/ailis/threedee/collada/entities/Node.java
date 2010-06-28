@@ -67,6 +67,7 @@ public class Node implements Identifiable
      * @return The visual scene id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

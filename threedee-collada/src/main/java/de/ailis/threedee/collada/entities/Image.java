@@ -55,6 +55,7 @@ public class Image implements Identifiable
      * @see de.ailis.threedee.collada.support.Identifiable#getId()
      */
 
+    @Override
     public String getId()
     {
         return this.id;

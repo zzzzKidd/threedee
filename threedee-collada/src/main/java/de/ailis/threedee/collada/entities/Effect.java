@@ -45,6 +45,7 @@ public class Effect implements Identifiable
      * @return The effect id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

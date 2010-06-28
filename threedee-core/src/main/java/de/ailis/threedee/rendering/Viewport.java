@@ -5,6 +5,11 @@
 
 package de.ailis.threedee.rendering;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import de.ailis.threedee.scene.textures.TextureManager;
+
 
 
 /**
@@ -15,6 +20,9 @@ package de.ailis.threedee.rendering;
 
 public class Viewport
 {
+    /** The logger */
+    private static final Log log = LogFactory.getLog(Viewport.class);
+
     /** The viewport width */
     private int width;
 
@@ -47,6 +55,8 @@ public class Viewport
 
     public void init()
     {
+        log.trace("Tracing");
+
         // Create some shortcuts
         final GL gl = this.gl;
 
@@ -64,7 +74,6 @@ public class Viewport
         // Perform implementation specific initialization
         gl.init();
 
-
         // gl.glEnable(GL.GL_COLOR_MATERIAL);
         // gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
 
@@ -75,7 +84,8 @@ public class Viewport
         // gl.glTexParameteri(GL.GL_TEXTURE_2D,
         // GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
 
-
+        // Initialize the texture manager.
+        TextureManager.getInstance().clear(gl);
     }
 
 

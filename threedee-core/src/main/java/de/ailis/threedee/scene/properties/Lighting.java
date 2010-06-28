@@ -39,6 +39,7 @@ public class Lighting implements NodeProperty
      * @see NodeProperty#apply(GL)
      */
 
+    @Override
     public void apply(final GL gl)
     {
         this.oldEnabled = gl.glIsEnabled(GL.GL_LIGHTING);
@@ -53,6 +54,7 @@ public class Lighting implements NodeProperty
      * @see NodeProperty#remove(GL)
      */
 
+    @Override
     public void remove(final GL gl)
     {
         if (this.oldEnabled && !this.enabled)

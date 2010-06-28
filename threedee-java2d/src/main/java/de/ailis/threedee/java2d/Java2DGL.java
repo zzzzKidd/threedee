@@ -53,6 +53,7 @@ public abstract class Java2DGL implements GL
      * @see de.ailis.threedee.rendering.GL#init()
      */
 
+    @Override
     public void init()
     {
         // Flip the texture matrix so texture origin is top-left
@@ -69,6 +70,7 @@ public abstract class Java2DGL implements GL
      *      java.io.InputStream, int)
      */
 
+    @Override
     public void glTexImage2D(final int target, final int level,
             final InputStream stream, final int border)
     {

@@ -6,8 +6,8 @@
 package de.ailis.threedee.android;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.opengl.GLUtils;
 import de.ailis.threedee.io.resources.ResourceProvider;
 import de.ailis.threedee.rendering.GL;
@@ -21,10 +21,14 @@ import de.ailis.threedee.scene.textures.Texture;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
+public class AndroidDynamicTexture extends
+        DynamicTexture<AndroidDynamicTexture>
 {
     /** The image */
-    public Bitmap bitmap;
+    private final Bitmap bitmap;
+
+    /** The canvas */
+    private final Canvas canvas;
 
     /** The texture width */
     private final int width;
@@ -45,6 +49,9 @@ public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
     public AndroidDynamicTexture(final int width, final int height)
     {
         this.bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        this.canvas = new Canvas(this.bitmap);
+        this.canvas.translate(0, height);
+        this.canvas.scale(1, -1);
         this.width = width;
         this.height = height;
     }
@@ -68,6 +75,7 @@ public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
     @Override
     public void reload(final GL gl)
     {
+        gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 4);
         GLUtils.texSubImage2D(GL.GL_TEXTURE_2D, 0, 0, 0, this.bitmap);
         validate();
     }
@@ -79,9 +87,9 @@ public class AndroidDynamicTexture extends DynamicTexture<AndroidDynamicTexture>
      * @return The canvas context
      */
 
-    public Canvas createCanvas()
+    public Canvas getCanvas()
     {
-        return new Canvas(this.bitmap);
+        return this.canvas;
     }
 
 

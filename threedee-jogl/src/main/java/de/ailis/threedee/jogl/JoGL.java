@@ -52,6 +52,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glColorPointer(int, int, FloatBuffer)
      */
 
+    @Override
     public void glColorPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -64,6 +65,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glMaterial(final int face, final int pname,
             final FloatBuffer params)
     {
@@ -75,6 +77,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glMaterialf(int, int, float)
      */
 
+    @Override
     public void glMaterialf(final int face, final int pname, final float param)
     {
         this.gl.glMaterialf(face, pname, param);
@@ -85,6 +88,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glDisableClientState(int)
      */
 
+    @Override
     public void glDisableClientState(final int cap)
     {
         this.gl.glDisableClientState(cap);
@@ -95,6 +99,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glEnableClientState(int)
      */
 
+    @Override
     public void glEnableClientState(final int cap)
     {
         this.gl.glEnableClientState(cap);
@@ -106,6 +111,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glVertexPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -118,6 +124,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glNormalPointer(final int stride, final FloatBuffer pointer)
     {
         this.gl.glNormalPointer(GL_FLOAT, stride, pointer);
@@ -129,6 +136,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glTexCoordPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -141,6 +149,7 @@ public class JoGL extends Java2DGL
      *      java.nio.Buffer)
      */
 
+    @Override
     public void glDrawElements(final int mode, final int type,
             final Buffer indices)
     {
@@ -152,6 +161,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glMultMatrix(java.nio.FloatBuffer)
      */
 
+    @Override
     public void glMultMatrix(final FloatBuffer m)
     {
         this.gl.glMultMatrixf(m);
@@ -162,6 +172,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glPopMatrix()
      */
 
+    @Override
     public void glPopMatrix()
     {
         this.gl.glPopMatrix();
@@ -172,6 +183,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glPushMatrix()
      */
 
+    @Override
     public void glPushMatrix()
     {
         this.gl.glPushMatrix();
@@ -182,6 +194,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glClear(int)
      */
 
+    @Override
     public void glClear(final int mask)
     {
         this.gl.glClear(mask);
@@ -192,6 +205,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glFlush()
      */
 
+    @Override
     public void glFlush()
     {
         this.gl.glFlush();
@@ -202,6 +216,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glLoadIdentity()
      */
 
+    @Override
     public void glLoadIdentity()
     {
         this.gl.glLoadIdentity();
@@ -212,6 +227,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glMatrixMode(int)
      */
 
+    @Override
     public void glMatrixMode(final int mode)
     {
         this.gl.glMatrixMode(mode);
@@ -222,6 +238,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glBlendFunc(int, int)
      */
 
+    @Override
     public void glBlendFunc(final int sfactor, final int dfactor)
     {
         this.gl.glBlendFunc(sfactor, dfactor);
@@ -233,6 +250,7 @@ public class JoGL extends Java2DGL
      *      float)
      */
 
+    @Override
     public void glClearColor(final float red, final float green,
             final float blue, final float alpha)
     {
@@ -244,6 +262,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glClearDepth(double)
      */
 
+    @Override
     public void glClearDepth(final double depth)
     {
         this.gl.glClearDepth(depth);
@@ -254,6 +273,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glDepthFunc(int)
      */
 
+    @Override
     public void glDepthFunc(final int func)
     {
         this.gl.glDepthFunc(func);
@@ -264,6 +284,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glDisable(int)
      */
 
+    @Override
     public void glDisable(final int cap)
     {
         this.gl.glDisable(cap);
@@ -274,6 +295,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glEnable(int)
      */
 
+    @Override
     public void glEnable(final int cap)
     {
         this.gl.glEnable(cap);
@@ -284,6 +306,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glHint(int, int)
      */
 
+    @Override
     public void glHint(final int target, final int mode)
     {
         this.gl.glHint(target, mode);
@@ -295,6 +318,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glLight(final int light, final int pname,
             final FloatBuffer param)
     {
@@ -306,6 +330,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glShadeModel(int)
      */
 
+    @Override
     public void glShadeModel(final int mode)
     {
         this.gl.glShadeModel(mode);
@@ -316,6 +341,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glViewport(int, int, int, int)
      */
 
+    @Override
     public void glViewport(final int x, final int y, final int width,
             final int height)
     {
@@ -328,6 +354,7 @@ public class JoGL extends Java2DGL
      *      float)
      */
 
+    @Override
     public void gluPerspective(final float fovy, final float aspect,
             final float zNear, final float zFar)
     {
@@ -339,6 +366,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glBindTexture(int, int)
      */
 
+    @Override
     public void glBindTexture(final int target, final int texture)
     {
         this.gl.glBindTexture(target, texture);
@@ -349,6 +377,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glDeleteTextures(java.nio.IntBuffer)
      */
 
+    @Override
     public void glDeleteTextures(final IntBuffer textures)
     {
         this.gl.glDeleteTextures(textures.remaining(), textures);
@@ -359,6 +388,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glGenTextures(java.nio.IntBuffer)
      */
 
+    @Override
     public void glGenTextures(final IntBuffer textures)
     {
         this.gl.glGenTextures(textures.remaining(), textures);
@@ -369,6 +399,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glTexParameteri(int, int, int)
      */
 
+    @Override
     public void glTexParameteri(final int target, final int pname,
             final int param)
     {
@@ -380,6 +411,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glTexParameterf(int, int, float)
      */
 
+    @Override
     public void glTexParameterf(final int target, final int pname,
             final float param)
     {
@@ -392,6 +424,7 @@ public class JoGL extends Java2DGL
      *      int, int, int, java.nio.ByteBuffer)
      */
 
+    @Override
     public void glTexImage2D(final int target, final int level,
             final int internalFormat, final int width, final int height,
             final int border, final int format, final int type,
@@ -407,6 +440,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glLightModelfv(final int pname, final FloatBuffer params)
     {
         this.gl.glLightModelfv(pname, params);
@@ -418,6 +452,7 @@ public class JoGL extends Java2DGL
      *      java.nio.FloatBuffer)
      */
 
+    @Override
     public void glGetFloatv(final int pname, final FloatBuffer params)
     {
         this.gl.glGetFloatv(pname, params);
@@ -428,6 +463,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glIsEnabled(int)
      */
 
+    @Override
     public boolean glIsEnabled(final int cap)
     {
         return this.gl.glIsEnabled(cap);
@@ -439,6 +475,7 @@ public class JoGL extends Java2DGL
      *      java.nio.IntBuffer)
      */
 
+    @Override
     public void glGetIntegerv(final int pname, final IntBuffer params)
     {
         this.gl.glGetIntegerv(pname, params);
@@ -449,6 +486,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glLightf(int, int, float)
      */
 
+    @Override
     public void glLightf(final int light, final int pname, final float param)
     {
         this.gl.glLightf(light, pname, param);
@@ -497,6 +535,7 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glRotatef(float, float, float, float)
      */
 
+    @Override
     public void glRotatef(final float angle, final float x, final float y,
             final float z)
     {
@@ -508,8 +547,31 @@ public class JoGL extends Java2DGL
      * @see de.ailis.threedee.rendering.GL#glScalef(float, float, float)
      */
 
+    @Override
     public void glScalef(final float x, final float y, final float z)
     {
         this.gl.glScalef(x, y, z);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glPixelStorei(int, int)
+     */
+
+    @Override
+    public void glPixelStorei(final int pname, final int param)
+    {
+        this.gl.glPixelStorei(pname, param);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glIsTexture(int)
+     */
+
+    @Override
+    public boolean glIsTexture(final int texture)
+    {
+        return this.gl.glIsTexture(texture);
     }
 }

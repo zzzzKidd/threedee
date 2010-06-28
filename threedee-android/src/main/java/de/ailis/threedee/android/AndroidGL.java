@@ -39,6 +39,7 @@ public class AndroidGL implements GL
      * @see de.ailis.threedee.rendering.GL#init()
      */
 
+    @Override
     public void init()
     {
         // Empty
@@ -62,6 +63,7 @@ public class AndroidGL implements GL
      * @see GL#glColorPointer(int, int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glColorPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -73,6 +75,7 @@ public class AndroidGL implements GL
      * @see GL#glMaterial(int, int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glMaterial(final int face, final int pname,
             final FloatBuffer param)
     {
@@ -84,6 +87,7 @@ public class AndroidGL implements GL
      * @see GL#glMaterialf(int, int, float)
      */
 
+    @Override
     public void glMaterialf(final int face, final int pname, final float param)
     {
         this.gl.glMaterialf(face, pname, param);
@@ -94,6 +98,7 @@ public class AndroidGL implements GL
      * @see GL#glDisableClientState(int)
      */
 
+    @Override
     public void glDisableClientState(final int cap)
     {
         this.gl.glDisableClientState(cap);
@@ -104,6 +109,7 @@ public class AndroidGL implements GL
      * @see GL#glEnableClientState(int)
      */
 
+    @Override
     public void glEnableClientState(final int cap)
     {
         this.gl.glEnableClientState(cap);
@@ -114,6 +120,7 @@ public class AndroidGL implements GL
      * @see GL#glVertexPointer(int, int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glVertexPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -125,6 +132,7 @@ public class AndroidGL implements GL
      * @see GL#glNormalPointer(int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glNormalPointer(final int stride, final FloatBuffer pointer)
     {
         this.gl.glNormalPointer(GL10.GL_FLOAT, stride, pointer);
@@ -135,6 +143,7 @@ public class AndroidGL implements GL
      * @see GL#glTexCoordPointer(int, int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glTexCoordPointer(final int size, final int stride,
             final FloatBuffer pointer)
     {
@@ -146,6 +155,7 @@ public class AndroidGL implements GL
      * @see GL#glDrawElements(int, int, java.nio.Buffer)
      */
 
+    @Override
     public void glDrawElements(final int mode, final int type,
             final Buffer indices)
     {
@@ -157,6 +167,7 @@ public class AndroidGL implements GL
      * @see GL#glMultMatrix(java.nio.FloatBuffer)
      */
 
+    @Override
     public void glMultMatrix(final FloatBuffer m)
     {
         this.gl.glMultMatrixf(m);
@@ -167,6 +178,7 @@ public class AndroidGL implements GL
      * @see GL#glPopMatrix()
      */
 
+    @Override
     public void glPopMatrix()
     {
         this.gl.glPopMatrix();
@@ -177,6 +189,7 @@ public class AndroidGL implements GL
      * @see GL#glPushMatrix()
      */
 
+    @Override
     public void glPushMatrix()
     {
         this.gl.glPushMatrix();
@@ -187,6 +200,7 @@ public class AndroidGL implements GL
      * @see GL#glClear(int)
      */
 
+    @Override
     public void glClear(final int mask)
     {
         this.gl.glClear(mask);
@@ -197,6 +211,7 @@ public class AndroidGL implements GL
      * @see GL#glFlush()
      */
 
+    @Override
     public void glFlush()
     {
         this.gl.glFlush();
@@ -207,6 +222,7 @@ public class AndroidGL implements GL
      * @see GL#glLoadIdentity()
      */
 
+    @Override
     public void glLoadIdentity()
     {
         this.gl.glLoadIdentity();
@@ -217,6 +233,7 @@ public class AndroidGL implements GL
      * @see GL#glMatrixMode(int)
      */
 
+    @Override
     public void glMatrixMode(final int mode)
     {
         this.gl.glMatrixMode(mode);
@@ -227,6 +244,7 @@ public class AndroidGL implements GL
      * @see GL#glBlendFunc(int, int)
      */
 
+    @Override
     public void glBlendFunc(final int sfactor, final int dfactor)
     {
         this.gl.glBlendFunc(sfactor, dfactor);
@@ -237,6 +255,7 @@ public class AndroidGL implements GL
      * @see GL#glClearColor(float, float, float, float)
      */
 
+    @Override
     public void glClearColor(final float red, final float green,
             final float blue, final float alpha)
     {
@@ -248,6 +267,7 @@ public class AndroidGL implements GL
      * @see GL#glClearDepth(double)
      */
 
+    @Override
     public void glClearDepth(final double depth)
     {
         this.gl.glClearDepthf((float) depth);
@@ -258,6 +278,7 @@ public class AndroidGL implements GL
      * @see GL#glDepthFunc(int)
      */
 
+    @Override
     public void glDepthFunc(final int func)
     {
         this.gl.glDepthFunc(func);
@@ -268,6 +289,7 @@ public class AndroidGL implements GL
      * @see GL#glDisable(int)
      */
 
+    @Override
     public void glDisable(final int cap)
     {
         this.gl.glDisable(cap);
@@ -278,6 +300,7 @@ public class AndroidGL implements GL
      * @see GL#glEnable(int)
      */
 
+    @Override
     public void glEnable(final int cap)
     {
         this.gl.glEnable(cap);
@@ -288,6 +311,7 @@ public class AndroidGL implements GL
      * @see GL#glHint(int, int)
      */
 
+    @Override
     public void glHint(final int target, final int mode)
     {
         this.gl.glHint(target, mode);
@@ -298,6 +322,7 @@ public class AndroidGL implements GL
      * @see GL#glLight(int, int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glLight(final int light, final int pname,
             final FloatBuffer params)
     {
@@ -309,6 +334,7 @@ public class AndroidGL implements GL
      * @see GL#glShadeModel(int)
      */
 
+    @Override
     public void glShadeModel(final int mode)
     {
         this.gl.glShadeModel(mode);
@@ -319,6 +345,7 @@ public class AndroidGL implements GL
      * @see GL#glViewport(int, int, int, int)
      */
 
+    @Override
     public void glViewport(final int x, final int y, final int width,
             final int height)
     {
@@ -330,6 +357,7 @@ public class AndroidGL implements GL
      * @see GL#gluPerspective(float, float, float, float)
      */
 
+    @Override
     public void gluPerspective(final float fovy, final float aspect,
             final float zNear, final float zFar)
     {
@@ -341,6 +369,7 @@ public class AndroidGL implements GL
      * @see GL#glBindTexture(int, int)
      */
 
+    @Override
     public void glBindTexture(final int target, final int texture)
     {
         this.gl.glBindTexture(target, texture);
@@ -351,6 +380,7 @@ public class AndroidGL implements GL
      * @see GL#glDeleteTextures(java.nio.IntBuffer)
      */
 
+    @Override
     public void glDeleteTextures(final IntBuffer textures)
     {
         this.gl.glDeleteTextures(textures.remaining(), textures);
@@ -361,6 +391,7 @@ public class AndroidGL implements GL
      * @see GL#glGenTextures(java.nio.IntBuffer)
      */
 
+    @Override
     public void glGenTextures(final IntBuffer textures)
     {
         this.gl.glGenTextures(textures.remaining(), textures);
@@ -371,6 +402,7 @@ public class AndroidGL implements GL
      * @see GL#glTexParameteri(int, int, int)
      */
 
+    @Override
     public void glTexParameteri(final int target, final int pname,
             final int param)
     {
@@ -382,6 +414,7 @@ public class AndroidGL implements GL
      * @see GL#glTexImage2D(int, int, java.io.InputStream, int)
      */
 
+    @Override
     public void glTexImage2D(final int target, final int level,
             final InputStream stream, final int border)
     {
@@ -407,6 +440,7 @@ public class AndroidGL implements GL
      * @see GL#glLightModelfv(int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glLightModelfv(final int pname, final FloatBuffer params)
     {
         this.gl.glLightModelfv(pname, params);
@@ -417,6 +451,7 @@ public class AndroidGL implements GL
      * @see GL#glGetFloatv(int, java.nio.FloatBuffer)
      */
 
+    @Override
     public void glGetFloatv(final int pname, final FloatBuffer params)
     {
         this.gl.glGetFloatv(pname, params);
@@ -427,6 +462,7 @@ public class AndroidGL implements GL
      * @see GL#glIsEnabled(int)
      */
 
+    @Override
     public boolean glIsEnabled(final int cap)
     {
         return this.gl.glIsEnabled(cap);
@@ -437,6 +473,7 @@ public class AndroidGL implements GL
      * @see GL#glGetIntegerv(int, java.nio.IntBuffer)
      */
 
+    @Override
     public void glGetIntegerv(final int pname, final IntBuffer params)
     {
         this.gl.glGetIntegerv(pname, params);
@@ -447,6 +484,7 @@ public class AndroidGL implements GL
      * @see GL#glLightf(int, int, float)
      */
 
+    @Override
     public void glLightf(final int light, final int pname, final float param)
     {
         this.gl.glLightf(light, pname, param);
@@ -473,6 +511,7 @@ public class AndroidGL implements GL
      * @see GL#glTranslate(float, float, float)
      */
 
+    @Override
     public void glTranslate(final float x, final float y, final float z)
     {
         this.gl.glTranslatef(x, y, z);
@@ -538,5 +577,27 @@ public class AndroidGL implements GL
     public void glScalef(final float x, final float y, final float z)
     {
         this.gl.glScalef(x, y, z);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glPixelStorei(int, int)
+     */
+
+    @Override
+    public void glPixelStorei(final int pname, final int param)
+    {
+        this.gl.glPixelStorei(pname, param);
+    }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glIsTexture(int)
+     */
+
+    @Override
+    public boolean glIsTexture(final int texture)
+    {
+        return this.gl.glIsTexture(texture);
     }
 }

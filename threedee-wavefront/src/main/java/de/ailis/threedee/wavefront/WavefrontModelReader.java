@@ -1,9 +1,10 @@
+
 package de.ailis.threedee.wavefront;
+
 /*
  * Copyright (C) 2010 Klaus Reimer <k@ailis.de>
  * See LICENSE.txt for licensing information.
  */
-
 
 
 import java.io.BufferedReader;
@@ -61,7 +62,7 @@ public class WavefrontModelReader extends ModelReader
 
 
     /**
-     * @see de.de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
      */
 
     @Override
@@ -148,7 +149,8 @@ public class WavefrontModelReader extends ModelReader
 
         final Mesh mesh = builder.build();
         final Model model = new Model(mesh);
-        for (final Map.Entry<String, Material> entry: this.materials.entrySet())
+        for (final Map.Entry<String, Material> entry : this.materials
+            .entrySet())
         {
             final String name = entry.getKey();
             final Material material = entry.getValue();
@@ -274,13 +276,10 @@ public class WavefrontModelReader extends ModelReader
                 }
 
                 // Process transparency
-                /* TODO Implement me
-                if ("d".equals(command))
-                {
-                    builder.setAlpha(parseFloat(tokenizer));
-                    continue;
-                }
-                */
+                /*
+                 * TODO Implement me if ("d".equals(command)) {
+                 * builder.setAlpha(parseFloat(tokenizer)); continue; }
+                 */
             }
         }
         finally
@@ -528,19 +527,13 @@ public class WavefrontModelReader extends ModelReader
         else
         {
             /*
-            final int triangles = vertices.length - 2;
-            for (int t = 0; t < triangles; t++)
-            {
-                if (useTexCoords)
-                    builder.useTexCoords(texCoords[0], texCoords[1 + t],
-                            texCoords[2 + t]);
-                if (useNormals)
-                    builder.useNormals(normals[0], normals[1 + t],
-                            normals[2 + t]);
-                builder.addElement(3, vertices[0],
-                        vertices[1 + t], vertices[2 + t]);
-            }
-            */
+             * final int triangles = vertices.length - 2; for (int t = 0; t <
+             * triangles; t++) { if (useTexCoords)
+             * builder.useTexCoords(texCoords[0], texCoords[1 + t], texCoords[2
+             * + t]); if (useNormals) builder.useNormals(normals[0], normals[1 +
+             * t], normals[2 + t]); builder.addElement(3, vertices[0],
+             * vertices[1 + t], vertices[2 + t]); }
+             */
             if (useTexCoords) builder.useTexCoords(texCoords);
             if (useNormals) builder.useNormals(normals);
             builder.addElement(vertices.length, vertices);

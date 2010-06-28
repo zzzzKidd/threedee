@@ -57,6 +57,7 @@ public class ColladaMaterial implements Identifiable
      * @return The material id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

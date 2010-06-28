@@ -155,6 +155,9 @@ public interface GL
     /** Perspective correction hint */
     public static final int GL_PERSPECTIVE_CORRECTION_HINT = 0xc50;
 
+    /** Unpack alignment */
+    public static final int GL_UNPACK_ALIGNMENT = 0x0CF5;
+
     /** Maximum lights */
     public static final int GL_MAX_LIGHTS = 0xd31;
 
@@ -310,6 +313,9 @@ public interface GL
 
     /** Light model color control */
     public static final int GL_LIGHT_MODEL_COLOR_CONTROL = 0x81f8;
+
+    /** Unsigned short 565 */
+    public static final int GL_UNSIGNED_SHORT_5_6_5 = 0x8363;
 
     /** Texture Max Anisotropy */
     public static final int GL_TEXTURE_MAX_ANISOTROPY_EXT = 0x84fe;
@@ -1078,4 +1084,35 @@ public interface GL
      */
 
     public void glScalef(final float x, final float y, final float z);
+
+    /**
+     * Set pixel storage modes.
+     *
+     * @param pname
+     *            Specifies the symbolic name of the parameter to be set. Six
+     *            values affect the packing of pixel data into memory:
+     *            GL_PACK_SWAP_BYTES, GL_PACK_LSB_FIRST, GL_PACK_ROW_LENGTH,
+     *            GL_PACK_IMAGE_HEIGHT, GL_PACK_SKIP_PIXELS, GL_PACK_SKIP_ROWS,
+     *            GL_PACK_SKIP_IMAGES, and GL_PACK_ALIGNMENT. Six more affect
+     *            the unpacking of pixel data from memory: GL_UNPACK_SWAP_BYTES,
+     *            GL_UNPACK_LSB_FIRST, GL_UNPACK_ROW_LENGTH,
+     *            GL_UNPACK_IMAGE_HEIGHT, GL_UNPACK_SKIP_PIXELS,
+     *            GL_UNPACK_SKIP_ROWS, GL_UNPACK_SKIP_IMAGES, and
+     *            GL_UNPACK_ALIGNMENT.
+     * @param param
+     *            Specifies the value that pname is set to.
+     */
+
+    public void glPixelStorei(int pname, int param);
+
+
+    /**
+     * Determine if a name corresponds to a texture.
+     *
+     * @param texture
+     *            Specifies a value that may be the name of a texture
+     * @return True if it is a name of a texture, false if not
+     */
+
+    public boolean glIsTexture(int texture);
 }
