@@ -938,4 +938,28 @@ public abstract class SceneNode implements Iterable<SceneNode>
         if (this.nodeListeners == null) return;
         this.nodeListeners.remove(listener);
     }
+
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(super.toString());
+        builder.append(" { ");
+        SceneNode child = getFirstChild();
+        boolean first = true;
+        while (child != null)
+        {
+            if (!first) builder.append(", ");
+            builder.append(child.toString());
+            first = false;
+            child = child.getNextSibling();
+        }
+        builder.append(" }");
+        return builder.toString();
+    }
 }

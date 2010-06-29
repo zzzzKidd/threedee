@@ -304,7 +304,9 @@ public class ColladaSceneReader extends SceneReader
             this.textures.put(textureName, texture);
             builder.setDiffuseTexture(textureName);
         }
-        builder.setShininess(shading.getShininess());
+        final Float shininess = shading.getShininess();
+        if (shininess != null)
+            builder.setShininess(shininess);
         return builder.build();
     }
 
@@ -436,7 +438,8 @@ public class ColladaSceneReader extends SceneReader
         final ColladaColor color = colladaLight.getColor();
         final SpotLight spotLight = new SpotLight(new Color(color.getRed(), color.getGreen(), color
                 .getBlue()));
-        spotLight.setCutOff(colladaLight.getFalloffAngle());
+        final Float falloffAngle = colladaLight.getFalloffAngle();
+        if (falloffAngle != null) spotLight.setCutOff(falloffAngle / 2);
         return spotLight;
     }
 
