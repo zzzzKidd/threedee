@@ -67,6 +67,9 @@ public abstract class SceneNode implements Iterable<SceneNode>
     /** The list with node listeners */
     private List<NodeListener> nodeListeners;
 
+    /** The node id */
+    private String id;
+
 
     /**
      * Constructs a new scene node.
@@ -553,8 +556,8 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
 
     /**
-     * Returns the scene transformation of this node. This is the
-     * transformation matrix of the node relative to the scene.
+     * Returns the scene transformation of this node. This is the transformation
+     * matrix of the node relative to the scene.
      *
      * @return The scene transformation
      */
@@ -786,8 +789,8 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
 
     /**
-     * Adds a light so it illuminates this node and all child nodes
-     * (not the parent nodes).
+     * Adds a light so it illuminates this node and all child nodes (not the
+     * parent nodes).
      *
      * @param light
      *            The light to add
@@ -815,12 +818,12 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
 
     /**
-     * Sets the scene this node is connected to. This recursively also sets
-     * the scene in all child nodes.
+     * Sets the scene this node is connected to. This recursively also sets the
+     * scene in all child nodes.
      *
      * @param scene
-     *            The scene this node is connected to. Null is specified
-     *            when node is no longer connected to a scene.
+     *            The scene this node is connected to. Null is specified when
+     *            node is no longer connected to a scene.
      */
 
     void setScene(final Scene scene)
@@ -828,14 +831,21 @@ public abstract class SceneNode implements Iterable<SceneNode>
         // Do nothing if state has not been changed
         if (this.scene == scene) return;
 
-        if (scene == null) fireNodeRemovedFromScene();
+        if (scene == null)
+        {
+            this.scene.unregisterNode(this);
+            fireNodeRemovedFromScene();
+        }
 
         for (final SceneNode node : this)
             node.setScene(scene);
         this.scene = scene;
 
-        if (scene != null) fireNodeInsertedIntoScene();
-
+        if (scene != null)
+        {
+            this.scene.registerNode(this);
+            fireNodeInsertedIntoScene();
+        }
     }
 
 
@@ -852,8 +862,8 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
 
     /**
-     * Returns the scene this node is currently connected to. May return null
-     * if node is not connected to a scene.
+     * Returns the scene this node is currently connected to. May return null if
+     * node is not connected to a scene.
      *
      * @return The scene or null if none
      */
@@ -961,5 +971,34 @@ public abstract class SceneNode implements Iterable<SceneNode>
         }
         builder.append(" }");
         return builder.toString();
+    }
+
+
+    /**
+     * Sets the id of the node.
+     *
+     * @return The node id
+     */
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+
+    /**
+     * Sets the id of the node.
+     *
+     * @param id
+     *            The id to set. May be null for removing the id
+     */
+
+    public void setId(final String id)
+    {
+        if (this.id == id) return;
+        if (id != null && id.equals(this.id)) return;
+        final String oldId = this.id;
+        this.id = id;
+        if (this.scene != null) this.scene.reregisterNode(this, oldId);
     }
 }

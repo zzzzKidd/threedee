@@ -187,6 +187,7 @@ public class ColladaSceneReader extends SceneReader
     {
         // Create the ThreeDee scene node and append it to the parent node
         final SceneNode sceneNode = new Group();
+        sceneNode.setId(node.getId());
         parentNode.appendChild(sceneNode);
 
         // Transform the scene node

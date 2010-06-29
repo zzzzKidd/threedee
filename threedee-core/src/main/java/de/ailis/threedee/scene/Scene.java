@@ -6,7 +6,9 @@
 package de.ailis.threedee.scene;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
@@ -39,6 +41,9 @@ public class Scene
 
     /** The list of touch listeners */
     private final List<TouchListener> touchListeners = new ArrayList<TouchListener>();
+
+    /** The ID-to-node mapping */
+    private final Map<String, SceneNode> nodes = new HashMap<String, SceneNode>();
 
 
     /**
@@ -301,5 +306,64 @@ public class Scene
 
         // Finish renderering
         gl.glFlush();
+    }
+
+
+    /**
+     * Registers a node so it can be found with getElementById.
+     *
+     * @param node
+     *            The node to register
+     */
+
+    void registerNode(final SceneNode node)
+    {
+        final String id = node.getId();
+        if (id != null) this.nodes.put(id, node);
+    }
+
+
+    /**
+     * Unregisters a node from the id-mapping.
+     *
+     * @param node
+     *            The node to unregister
+     */
+
+    void unregisterNode(final SceneNode node)
+    {
+        final String id = node.getId();
+        if (id != null) this.nodes.remove(id);
+    }
+
+
+    /**
+     * Re-registers a node. Must be called when the ID of the node has changed.
+     *
+     * @param node
+     *            The node to re-register
+     * @param oldId
+     *            The old id
+     */
+
+    void reregisterNode(final SceneNode node, final String oldId)
+    {
+        if (oldId != null) this.nodes.remove(oldId);
+        final String id = node.getId();
+        if (id != null) this.nodes.put(id, node);
+    }
+
+
+    /**
+     * Returns the node with the specified id or null if not found.
+     *
+     * @param id
+     *            The node id
+     * @return The node or null if not found
+     */
+
+    public SceneNode getNodeById(final String id)
+    {
+        return this.nodes.get(id);
     }
 }
