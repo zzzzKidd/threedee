@@ -14,6 +14,7 @@ import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.collada.entities.Blinn;
 import de.ailis.threedee.collada.entities.COLLADA;
+import de.ailis.threedee.collada.entities.ColladaAmbientLight;
 import de.ailis.threedee.collada.entities.ColladaCamera;
 import de.ailis.threedee.collada.entities.ColladaColor;
 import de.ailis.threedee.collada.entities.ColladaDirectionalLight;
@@ -60,6 +61,7 @@ import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.lights.AmbientLight;
 import de.ailis.threedee.scene.lights.DirectionalLight;
 import de.ailis.threedee.scene.lights.PointLight;
 import de.ailis.threedee.scene.lights.SpotLight;
@@ -387,6 +389,8 @@ public class ColladaSceneReader extends SceneReader
             return buildDirectionalLight((ColladaDirectionalLight) colladaLight);
         if (colladaLight instanceof ColladaSpotLight)
             return buildSpotLight((ColladaSpotLight) colladaLight);
+        if (colladaLight instanceof ColladaAmbientLight)
+            return buildAmbientLight((ColladaAmbientLight) colladaLight);
         throw new ReaderException("Unknown Collada light type "
                 + colladaLight.getClass());
     }
@@ -404,6 +408,22 @@ public class ColladaSceneReader extends SceneReader
     {
         final ColladaColor color = colladaLight.getColor();
         return new PointLight(new Color(color.getRed(), color.getGreen(), color
+                .getBlue()));
+    }
+
+
+    /**
+     * Builds a ThreeDee ambient light from a Collada ambient light.
+     *
+     * @param colladaLight
+     *            The Collada ambient light
+     * @return The ThreeDee ambient light
+     */
+
+    private AmbientLight buildAmbientLight(final ColladaAmbientLight colladaLight)
+    {
+        final ColladaColor color = colladaLight.getColor();
+        return new AmbientLight(new Color(color.getRed(), color.getGreen(), color
                 .getBlue()));
     }
 

@@ -15,7 +15,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.ailis.threedee.collada.entities.AmbientLight;
+import de.ailis.threedee.collada.entities.ColladaAmbientLight;
 import de.ailis.threedee.collada.entities.COLLADA;
 import de.ailis.threedee.collada.entities.ColladaCamera;
 import de.ailis.threedee.collada.entities.ColladaColor;
@@ -1331,7 +1331,7 @@ public class ColladaHandler extends DefaultHandler
 
     private void enterAmbient()
     {
-        this.light = new AmbientLight(this.lightId);
+        this.light = new ColladaAmbientLight(this.lightId);
         enterElement(ParserMode.LIGHT_AMBIENT);
     }
 

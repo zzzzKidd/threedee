@@ -13,7 +13,7 @@ package de.ailis.threedee.collada.entities;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class AmbientLight extends ColladaLight
+public class ColladaAmbientLight extends ColladaLight
 {
     /** Serial version UID */
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class AmbientLight extends ColladaLight
      * Constructs a ambient light without an id.
      */
 
-    public AmbientLight()
+    public ColladaAmbientLight()
     {
         this(null);
     }
@@ -36,7 +36,7 @@ public class AmbientLight extends ColladaLight
      *            The id
      */
 
-    public AmbientLight(final String id)
+    public ColladaAmbientLight(final String id)
     {
         super(id);
     }

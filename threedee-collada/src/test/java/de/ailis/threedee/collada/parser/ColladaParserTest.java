@@ -17,7 +17,7 @@ import java.io.InputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ailis.threedee.collada.entities.AmbientLight;
+import de.ailis.threedee.collada.entities.ColladaAmbientLight;
 import de.ailis.threedee.collada.entities.COLLADA;
 import de.ailis.threedee.collada.entities.ColladaCamera;
 import de.ailis.threedee.collada.entities.ColladaColor;
@@ -357,7 +357,7 @@ public class ColladaParserTest
 
         light = lights.get("SceneAmbient-lib");
         assertNotNull(light);
-        assertTrue(light instanceof AmbientLight);
+        assertTrue(light instanceof ColladaAmbientLight);
         color = light.getColor();
         assertEquals(0.4f, color.getRed(), 0.001);
         assertEquals(0.4f, color.getGreen(), 0.001);

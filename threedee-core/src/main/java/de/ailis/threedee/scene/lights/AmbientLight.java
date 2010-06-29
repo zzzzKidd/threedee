@@ -48,4 +48,23 @@ public class AmbientLight extends Light
         super(color, Color.BLACK, Color.BLACK);
         this.position = ambientLightPosition;
     }
+
+
+    /**
+     * Constructs a new light with the specified colors.
+     *
+     * @param ambientColor
+     *            The ambient color
+     * @param specularColor
+     *            The specular color
+     * @param diffuseColor
+     *            The diffuse color
+     */
+
+    public AmbientLight(final Color ambientColor, final Color specularColor,
+            final Color diffuseColor)
+    {
+        super(ambientColor, specularColor, diffuseColor);
+        this.position = ambientLightPosition;
+    }
 }
