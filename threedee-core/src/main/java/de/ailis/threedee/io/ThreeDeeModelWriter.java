@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteOrder;
 
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.MeshPolygons;
@@ -166,7 +166,7 @@ public class ThreeDeeModelWriter extends ModelWriter
      *             When write fails
      */
 
-    private void writeColor(final Color color) throws IOException
+    private void writeColor(final Color4f color) throws IOException
     {
         this.writer.writeByte((int) (color.getRed() * 255));
         this.writer.writeByte((int) (color.getGreen() * 255));

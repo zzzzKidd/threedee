@@ -11,9 +11,10 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import de.ailis.gramath.Color4f;
+import de.ailis.gramath.ImmutableColor4f;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.Mesh;
@@ -232,10 +233,10 @@ public class ThreeDeeModelReader extends ModelReader
 
     private Material readMaterial() throws IOException
     {
-        final Color ambientColor = readColor();
-        final Color diffuseColor = readColor();
-        final Color specularColor = readColor();
-        final Color emissionColor = readColor();
+        final Color4f ambientColor = readColor();
+        final Color4f diffuseColor = readColor();
+        final Color4f specularColor = readColor();
+        final Color4f emissionColor = readColor();
         final float shininess = this.reader.readFloat();
         final int len = this.reader.readByte();
         final String texture = len == 0 ? null : this.reader.readString(len);
@@ -252,13 +253,13 @@ public class ThreeDeeModelReader extends ModelReader
      *             When read fails
      */
 
-    private Color readColor() throws IOException
+    private Color4f readColor() throws IOException
     {
         final int red = this.reader.readByte();
         final int green = this.reader.readByte();
         final int blue = this.reader.readByte();
         final int alpha = this.reader.readByte();
-        return new Color(red / 255f, green / 255f, blue / 255f, alpha / 255f);
+        return new ImmutableColor4f(red / 255f, green / 255f, blue / 255f, alpha / 255f);
     }
 
 

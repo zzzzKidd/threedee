@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.builder;
 
-import de.ailis.threedee.scene.Color;
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.model.Material;
 
 
@@ -21,19 +21,19 @@ public class MaterialBuilder
     private String id;
 
     /** The emission color */
-    private Color emissionColor;
+    private Color4f emissionColor;
 
     /** The ambient color */
-    private Color ambientColor;
+    private Color4f ambientColor;
 
     /** The diffuse color */
-    private Color diffuseColor;
+    private Color4f diffuseColor;
 
     /** The diffuse texture */
     private String diffuseTexture;
 
     /** The specular color */
-    private Color specularColor;
+    private Color4f specularColor;
 
     /** The shininess */
     private float shininess;
@@ -91,7 +91,7 @@ public class MaterialBuilder
      * @return This builder for chaining
      */
 
-    public MaterialBuilder setEmissionColor(final Color emissionColor)
+    public MaterialBuilder setEmissionColor(final Color4f emissionColor)
     {
         this.emissionColor = emissionColor;
         return this;
@@ -106,7 +106,7 @@ public class MaterialBuilder
      * @return This builder for chaining
      */
 
-    public MaterialBuilder setAmbientColor(final Color ambientColor)
+    public MaterialBuilder setAmbientColor(final Color4f ambientColor)
     {
         this.ambientColor = ambientColor;
         return this;
@@ -121,7 +121,7 @@ public class MaterialBuilder
      * @return This builder for chaining
      */
 
-    public MaterialBuilder setDiffuseColor(final Color diffuseColor)
+    public MaterialBuilder setDiffuseColor(final Color4f diffuseColor)
     {
         this.diffuseColor = diffuseColor;
         return this;
@@ -151,7 +151,7 @@ public class MaterialBuilder
      * @return This builder for chaining
      */
 
-    public MaterialBuilder setSpecularColor(final Color specularColor)
+    public MaterialBuilder setSpecularColor(final Color4f specularColor)
     {
         this.specularColor = specularColor;
         return this;

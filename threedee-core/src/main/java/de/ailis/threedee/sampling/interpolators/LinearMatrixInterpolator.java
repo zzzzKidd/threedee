@@ -5,7 +5,8 @@
 
 package de.ailis.threedee.sampling.interpolators;
 
-import de.ailis.threedee.math.Matrix4f;
+import de.ailis.gramath.Matrix4f;
+import de.ailis.gramath.MutableMatrix4f;
 import de.ailis.threedee.sampling.Interpolator;
 
 
@@ -21,7 +22,7 @@ import de.ailis.threedee.sampling.Interpolator;
 public class LinearMatrixInterpolator implements Interpolator<Matrix4f>
 {
     /** The working matrix */
-    private final ThreadLocal<Matrix4f> storage = new ThreadLocal<Matrix4f>();
+    private final ThreadLocal<MutableMatrix4f> storage = new ThreadLocal<MutableMatrix4f>();
 
 
     /**
@@ -30,7 +31,7 @@ public class LinearMatrixInterpolator implements Interpolator<Matrix4f>
 
     public LinearMatrixInterpolator()
     {
-        this.storage.set(Matrix4f.identity());
+        this.storage.set(MutableMatrix4f.identity());
     }
 
 
@@ -43,15 +44,15 @@ public class LinearMatrixInterpolator implements Interpolator<Matrix4f>
         final float pos)
     {
         // Get working matrix from thread local variable
-        Matrix4f tmp = this.storage.get();
+        MutableMatrix4f tmp = this.storage.get();
         if (tmp == null)
         {
-            tmp = Matrix4f.identity();
+            tmp = MutableMatrix4f.identity();
             this.storage.set(tmp);
         }
 
-        final float[] va = a.getArray();
-        final float[] vb = b.getArray();
+        final float[] va = a.getElements();
+        final float[] vb = b.getElements();
         return tmp.set(
             va[0] + (vb[0] - va[0]) * pos,
             va[1] + (vb[1] - va[1]) * pos,

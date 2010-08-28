@@ -23,6 +23,11 @@
       <groupId>de.ailis.threedee</groupId>
       <artifactId>threedee-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>de.ailis.jollada</groupId>
+      <artifactId>jollada</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
   </dependencies> 
 
 </project>

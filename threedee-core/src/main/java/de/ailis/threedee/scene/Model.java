@@ -11,9 +11,11 @@ import java.nio.ShortBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.ailis.gramath.Color4f;
+import de.ailis.gramath.MutableVector3f;
+import de.ailis.gramath.Vector3f;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.events.NodeAdapter;
-import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.BoundsRenderer;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
@@ -50,7 +52,7 @@ public class Model extends SceneNode
     private boolean showGroupBounds = false;
 
     /** Offset for rendering the model relative to the node */
-    private final Vector3f modelOffset = new Vector3f();
+    private final MutableVector3f modelOffset = new MutableVector3f();
 
     /** The bound materials */
     private final Material[] materials;
@@ -383,7 +385,7 @@ public class Model extends SceneNode
             gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, material
                     .getDiffuseColor().getBuffer());
         else
-            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, Color.WHITE
+            gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, Color4f.WHITE
                     .getBuffer());
         gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT, material
                 .getAmbientColor().getBuffer());
@@ -463,11 +465,11 @@ public class Model extends SceneNode
             final FloatBuffer vertices = polygons.getVertices();
             while (vertices.hasRemaining())
             {
-                final Vector3f a = new Vector3f(vertices.get(), vertices.get(),
+                final MutableVector3f a = new MutableVector3f(vertices.get(), vertices.get(),
                         vertices.get());
-                final Vector3f b = new Vector3f(normals.get(), normals.get(),
+                final MutableVector3f b = new MutableVector3f(normals.get(), normals.get(),
                         normals.get());
-                b.multiply(scale);
+                b.scale(scale);
                 b.add(a);
                 builder.addElement(2, builder.addVertex(a), builder
                         .addVertex(b));

@@ -3,7 +3,10 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.math;
+package de.ailis.threedee.mathold;
+
+import de.ailis.gramath.MutableVector3f;
+import de.ailis.gramath.Vector3f;
 
 
 /**
@@ -15,13 +18,13 @@ package de.ailis.threedee.math;
 public class Bounds
 {
     /** The minimum vector */
-    private final Vector3f min;
+    private final MutableVector3f min;
 
     /** The maximum vector */
-    private final Vector3f max;
+    private final MutableVector3f max;
 
     /** The center vector */
-    private final Vector3f center;
+    private final MutableVector3f center;
 
     /** The The width */
     private float width;
@@ -42,9 +45,9 @@ public class Bounds
 
     public Bounds()
     {
-        this.min = new Vector3f();
-        this.max = new Vector3f();
-        this.center = new Vector3f();
+        this.min = new MutableVector3f();
+        this.max = new MutableVector3f();
+        this.center = new MutableVector3f();
     }
 
 
@@ -60,9 +63,9 @@ public class Bounds
 
     public Bounds(final Vector3f min, final Vector3f max)
     {
-        this.min = min;
-        this.max = max;
-        this.center = new Vector3f();
+        this.min = new MutableVector3f(min);
+        this.max = new MutableVector3f(max);
+        this.center = new MutableVector3f();
         updateCenter();
     }
 
@@ -110,7 +113,7 @@ public class Bounds
 
     public Bounds copy()
     {
-        return new Bounds(this.min.copy(), this.max.copy());
+        return new Bounds(this.min, this.max);
     }
 
 

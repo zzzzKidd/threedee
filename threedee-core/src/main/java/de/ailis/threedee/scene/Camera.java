@@ -5,7 +5,8 @@
 
 package de.ailis.threedee.scene;
 
-import de.ailis.threedee.math.Matrix4f;
+import de.ailis.gramath.Matrix4f;
+import de.ailis.gramath.MutableMatrix4f;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
 
@@ -19,7 +20,7 @@ import de.ailis.threedee.rendering.Viewport;
 public class Camera extends SceneNode
 {
     /** The current camera transformation */
-    private final Matrix4f cameraTransform = Matrix4f.identity();
+    private final MutableMatrix4f cameraTransform = MutableMatrix4f.identity();
 
     /** The field of view angle, in degrees, in the y direction. */
     private float fovY;

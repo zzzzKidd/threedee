@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.scene.model;
 
-import de.ailis.threedee.math.Bounds;
+import de.ailis.threedee.mathold.Bounds;
 
 
 /**

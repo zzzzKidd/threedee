@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.ailis.gramath.Matrix4f;
+import de.ailis.gramath.MutableMatrix4f;
+import de.ailis.gramath.Vector3f;
 import de.ailis.threedee.events.NodeListener;
-import de.ailis.threedee.math.Matrix4f;
-import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.physics.Physics;
@@ -47,10 +48,10 @@ public abstract class SceneNode implements Iterable<SceneNode>
     private SceneNode lastChild;
 
     /** The transformation of this node */
-    private Matrix4f transform = Matrix4f.identity();
+    private MutableMatrix4f transform = MutableMatrix4f.identity();
 
     /** Cached scene transformation of this node */
-    private final Matrix4f sceneTransform = Matrix4f.identity();
+    private final MutableMatrix4f sceneTransform = MutableMatrix4f.identity();
 
     /** If cached scene transformation is valid */
     private boolean sceneTransformValid = false;
@@ -371,7 +372,7 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
     public void rotate(final Vector3f v, final float r)
     {
-        this.transform = this.transform.rotate(v, r);
+        this.transform.rotate(v, r);
     }
 
 
@@ -549,7 +550,7 @@ public abstract class SceneNode implements Iterable<SceneNode>
      * @return The current transformation matrix
      */
 
-    public final Matrix4f getTransform()
+    public final MutableMatrix4f getTransform()
     {
         return this.transform;
     }
@@ -601,7 +602,7 @@ public abstract class SceneNode implements Iterable<SceneNode>
     {
         if (transform == null)
             throw new IllegalArgumentException("transform must not be null");
-        this.transform = transform;
+        this.transform.set(transform);
     }
 
 

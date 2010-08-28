@@ -57,7 +57,7 @@ public class BeetleDemo
 
         // Append model to scene
         root.appendChild(model);
-        model.getPhysics().getSpin().setY(0.3f);
+        model.getPhysics().getSpinVelocity().setY(0.3f);
 
         // Append a directional light
         final Light light = new DirectionalLight();

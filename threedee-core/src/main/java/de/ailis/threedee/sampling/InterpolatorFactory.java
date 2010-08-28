@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.sampling;
 
-import de.ailis.threedee.math.Matrix4f;
+import de.ailis.gramath.Matrix4f;
 import de.ailis.threedee.sampling.interpolators.LinearFloatInterpolator;
 import de.ailis.threedee.sampling.interpolators.LinearMatrixInterpolator;
 
@@ -70,7 +70,7 @@ public final class InterpolatorFactory
         switch (interpolation)
         {
             case LINEAR:
-                if (type == Matrix4f.class)
+                if (Matrix4f.class.isAssignableFrom(type))
                     return (Interpolator<T>) this.linearMatrixInterpolator;
                 else if (type == Float.class)
                     return (Interpolator<T>) this.linearFloatInterpolator;

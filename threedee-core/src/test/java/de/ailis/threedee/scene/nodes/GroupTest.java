@@ -6,7 +6,6 @@
 
 package de.ailis.threedee.scene.nodes;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -15,7 +14,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.scene.Group;
 
 
@@ -41,7 +39,7 @@ public class GroupTest
         assertNull(node.getParentNode());
         assertNull(node.getNextSibling());
         assertNull(node.getPreviousSibling());
-        assertEquals(Matrix4f.identity(), node.getTransform());
+        assertTrue(node.getTransform().isIdentity());
         assertFalse(node.hasChildNodes());
     }
 

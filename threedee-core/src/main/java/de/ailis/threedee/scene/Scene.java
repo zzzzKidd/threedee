@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
@@ -38,7 +39,7 @@ public class Scene
     private long lastUpdate;
 
     /** The color used to clear the screen */
-    private Color clearColor = Color.BLACK;
+    private Color4f clearColor = Color4f.BLACK;
 
     /** The list of touch listeners */
     private final List<TouchListener> touchListeners = new ArrayList<TouchListener>();
@@ -96,13 +97,13 @@ public class Scene
      *            The clear color to set. Must not be null.
      */
 
-    public void setClearColor(final Color clearColor)
+    public void setClearColor(final Color4f clearColor)
     {
         if (clearColor == null)
             throw new IllegalArgumentException("clearColor must be set");
         if (!this.clearColor.equals(clearColor))
         {
-            this.clearColor = clearColor;
+            this.clearColor = clearColor.asImmutable();
             // TODO Must reinit the scene rendering
         }
     }
@@ -114,7 +115,7 @@ public class Scene
      * @return The clear color. Never null.
      */
 
-    public Color getClearColor()
+    public Color4f getClearColor()
     {
         return this.clearColor;
     }
@@ -294,7 +295,7 @@ public class Scene
         // Create some shortcuts
         final GL gl = viewport.getGL();
         final SceneNode rootNode = this.rootNode;
-        final Color clearColor = this.clearColor;
+        final Color4f clearColor = this.clearColor;
 
         // Clear the viewport
         gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor

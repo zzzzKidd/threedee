@@ -8,8 +8,8 @@ package de.ailis.threedee.rendering;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.math.Bounds;
-import de.ailis.threedee.math.Vector3f;
+import de.ailis.gramath.Vector3f;
+import de.ailis.threedee.mathold.Bounds;
 import de.ailis.threedee.utils.BufferUtils;
 
 

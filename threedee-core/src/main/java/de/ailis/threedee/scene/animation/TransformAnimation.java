@@ -5,7 +5,7 @@
 
 package de.ailis.threedee.scene.animation;
 
-import de.ailis.threedee.math.Matrix4f;
+import de.ailis.gramath.Matrix4f;
 import de.ailis.threedee.sampling.Sampler;
 import de.ailis.threedee.scene.SceneNode;
 

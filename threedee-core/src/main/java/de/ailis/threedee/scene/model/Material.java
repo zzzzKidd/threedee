@@ -5,7 +5,8 @@
 
 package de.ailis.threedee.scene.model;
 
-import de.ailis.threedee.scene.Color;
+import de.ailis.gramath.Color4f;
+import de.ailis.gramath.ImmutableColor4f;
 
 
 
@@ -24,19 +25,19 @@ public class Material
     private final String id;
 
     /** The emission color */
-    private final Color emissionColor;
+    private final Color4f emissionColor;
 
     /** The ambient color */
-    private final Color ambientColor;
+    private final Color4f ambientColor;
 
     /** The diffuse color */
-    private final Color diffuseColor;
+    private final Color4f diffuseColor;
 
     /** The diffuse texture */
     private final String diffuseTexture;
 
     /** The specular color */
-    private final Color specularColor;
+    private final Color4f specularColor;
 
     /** The shininess */
     private final float shininess;
@@ -48,8 +49,8 @@ public class Material
 
     private Material()
     {
-        this("DEFAULT", new Color(0.2f, 0.2f, 0.2f),
-                new Color(0.8f, 0.8f, 0.8f), Color.BLACK, Color.BLACK, 0, null);
+        this("DEFAULT", new ImmutableColor4f(0.2f, 0.2f, 0.2f, 1f),
+                new ImmutableColor4f(0.8f, 0.8f, 0.8f, 1f), Color4f.BLACK, Color4f.BLACK, 0, null);
     }
 
 
@@ -72,17 +73,17 @@ public class Material
      *            The diffuse texture
      */
 
-    public Material(final String id, final Color ambientColor,
-            final Color diffuseColor, final Color specularColor,
-            final Color emissionColor, final float shininess,
+    public Material(final String id, final Color4f ambientColor,
+            final Color4f diffuseColor, final Color4f specularColor,
+            final Color4f emissionColor, final float shininess,
             final String diffuseTexture)
     {
         this.id = id;
-        this.ambientColor = ambientColor;
-        this.diffuseColor = diffuseColor;
+        this.ambientColor = new ImmutableColor4f(ambientColor);
+        this.diffuseColor = new ImmutableColor4f(diffuseColor);
         this.diffuseTexture = diffuseTexture;
-        this.specularColor = specularColor;
-        this.emissionColor = emissionColor;
+        this.specularColor = new ImmutableColor4f(specularColor);
+        this.emissionColor = new ImmutableColor4f(emissionColor);
         this.shininess = shininess;
     }
 
@@ -105,7 +106,7 @@ public class Material
      * @return The emission color
      */
 
-    public Color getEmissionColor()
+    public Color4f getEmissionColor()
     {
         return this.emissionColor;
     }
@@ -117,7 +118,7 @@ public class Material
      * @return The ambient color
      */
 
-    public Color getAmbientColor()
+    public Color4f getAmbientColor()
     {
         return this.ambientColor;
     }
@@ -129,7 +130,7 @@ public class Material
      * @return The diffuse color
      */
 
-    public Color getDiffuseColor()
+    public Color4f getDiffuseColor()
     {
         return this.diffuseColor;
     }
@@ -141,7 +142,7 @@ public class Material
      * @return The specular color
      */
 
-    public Color getSpecularColor()
+    public Color4f getSpecularColor()
     {
         return this.specularColor;
     }

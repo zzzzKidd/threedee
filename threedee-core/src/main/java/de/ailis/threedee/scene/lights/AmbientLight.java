@@ -7,7 +7,7 @@ package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.scene.Color;
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 
@@ -31,7 +31,7 @@ public class AmbientLight extends Light
 
     public AmbientLight()
     {
-        this(Color.WHITE);
+        this(Color4f.WHITE);
         this.position = ambientLightPosition;
     }
 
@@ -43,9 +43,9 @@ public class AmbientLight extends Light
      *            The color of the light
      */
 
-    public AmbientLight(final Color color)
+    public AmbientLight(final Color4f color)
     {
-        super(color, Color.BLACK, Color.BLACK);
+        super(color, Color4f.BLACK, Color4f.BLACK);
         this.position = ambientLightPosition;
     }
 
@@ -61,8 +61,8 @@ public class AmbientLight extends Light
      *            The diffuse color
      */
 
-    public AmbientLight(final Color ambientColor, final Color specularColor,
-            final Color diffuseColor)
+    public AmbientLight(final Color4f ambientColor, final Color4f specularColor,
+            final Color4f diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
         this.position = ambientLightPosition;

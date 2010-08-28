@@ -7,7 +7,7 @@ package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.scene.Color;
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 
@@ -44,7 +44,7 @@ public class PointLight extends Light
      *            The color of the light
      */
 
-    public PointLight(final Color color)
+    public PointLight(final Color4f color)
     {
         super(color);
         this.position = pointLightPosition;
@@ -62,8 +62,8 @@ public class PointLight extends Light
      *            The diffuse color
      */
 
-    public PointLight(final Color ambientColor, final Color specularColor,
-            final Color diffuseColor)
+    public PointLight(final Color4f ambientColor, final Color4f specularColor,
+            final Color4f diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
         this.position = pointLightPosition;

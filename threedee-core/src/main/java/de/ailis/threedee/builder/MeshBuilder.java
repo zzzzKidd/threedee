@@ -9,9 +9,11 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ailis.gramath.MutableVector2f;
+import de.ailis.gramath.MutableVector3f;
+import de.ailis.gramath.Vector2f;
+import de.ailis.gramath.Vector3f;
 import de.ailis.threedee.exceptions.ModelBuilderException;
-import de.ailis.threedee.math.Vector2f;
-import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.scene.model.Mesh;
 import de.ailis.threedee.scene.model.MeshPolygons;
 import de.ailis.threedee.utils.FloatBufferBuilder;
@@ -28,7 +30,7 @@ import de.ailis.threedee.utils.ShortBufferBuilder;
 public class MeshBuilder
 {
     /** The vertex geometry vectors */
-    private final List<Vector3f> vertices = new ArrayList<Vector3f>();
+    private final List<MutableVector3f> vertices = new ArrayList<MutableVector3f>();
 
     /** Returns the number of vertexes in the list */
     private int vertexCount = 0;
@@ -99,7 +101,7 @@ public class MeshBuilder
 
     public int addVertex(final float x, final float y, final float z)
     {
-        return addVertex(new Vector3f(x, y, z));
+        return addVertex(new MutableVector3f(x, y, z));
     }
 
 
@@ -111,7 +113,7 @@ public class MeshBuilder
      * @return The index of the added vertex
      */
 
-    public int addVertex(final Vector3f vertex)
+    public int addVertex(final MutableVector3f vertex)
     {
         this.vertices.add(vertex);
         return this.vertexCount++;
@@ -146,7 +148,7 @@ public class MeshBuilder
 
     public int addNormal(final float x, final float y, final float z)
     {
-        return addNormal(new Vector3f(x, y, z));
+        return addNormal(new MutableVector3f(x, y, z));
     }
 
 
@@ -177,7 +179,7 @@ public class MeshBuilder
 
     public int addTexCoord(final float u, final float v)
     {
-        return addTexCoord(new Vector2f(u, v));
+        return addTexCoord(new MutableVector2f(u, v));
     }
 
 
@@ -313,12 +315,12 @@ public class MeshBuilder
         if (!useNormals && vertexCount >= 3)
         {
             final int[] normals = new int[vertexCount];
-            final Vector3f p1 = this.vertices.get(vertices[0]);
-            final Vector3f p2 = this.vertices.get(vertices[1]);
-            final Vector3f p3 = this.vertices.get(vertices[2]);
-            final Vector3f v1 = p2.copy().sub(p1);
-            final Vector3f v2 = p3.copy().sub(p1);
-            final Vector3f normal = v1.cross(v2).normalize();
+            final MutableVector3f p1 = this.vertices.get(vertices[0]);
+            final MutableVector3f p2 = this.vertices.get(vertices[1]);
+            final MutableVector3f p3 = this.vertices.get(vertices[2]);
+            final MutableVector3f v1 = p2.clone().sub(p1);
+            final MutableVector3f v2 = p3.clone().sub(p1);
+            final MutableVector3f normal = v1.cross(v2).normalize();
             for (int i = 0; i < vertexCount; i++)
                 normals[i] = addNormal(normal);
             useNormals(normals);

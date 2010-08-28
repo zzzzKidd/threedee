@@ -7,8 +7,8 @@ package de.ailis.threedee.scene.properties;
 
 import java.nio.FloatBuffer;
 
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.rendering.GL;
-import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -25,7 +25,7 @@ public class AmbientLight implements NodeProperty
             .createDirectFloatBuffer(16);
 
     /** The ambient color */
-    private final Color intensity;
+    private final Color4f intensity;
 
     /**
      * Constructor.
@@ -34,9 +34,9 @@ public class AmbientLight implements NodeProperty
      *            The ambient light intensity
      */
 
-    public AmbientLight(final Color intensity)
+    public AmbientLight(final Color4f intensity)
     {
-        this.intensity = intensity;
+        this.intensity = intensity.asImmutable();
     }
 
 

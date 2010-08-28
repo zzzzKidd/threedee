@@ -23,6 +23,10 @@
       <groupId>de.ailis.threedee</groupId>
       <artifactId>threedee-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>de.ailis.gramath</groupId>
+      <artifactId>gramath</artifactId>
+    </dependency>
   </dependencies> 
 
 </project>

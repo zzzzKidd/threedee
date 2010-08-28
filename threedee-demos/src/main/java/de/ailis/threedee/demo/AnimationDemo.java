@@ -10,8 +10,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import de.ailis.gramath.Matrix4f;
+import de.ailis.gramath.MutableMatrix4f;
 import de.ailis.threedee.jogl.SceneCanvas;
-import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.sampling.Interpolation;
 import de.ailis.threedee.sampling.Sampler;
 import de.ailis.threedee.sampling.SamplerValue;
@@ -64,7 +65,7 @@ public class AnimationDemo
         final Sampler<Matrix4f> sampler = new Sampler<Matrix4f>();
         for (int i = 0; i <= 360; i += 10)
         {
-            sampler.addSample((float) i / 90, new SamplerValue<Matrix4f>(Matrix4f.identity().translateZ(0 * -i / 10).rotateY((float) Math.PI * i / 180).rotateX((float) Math.PI * i / 180), Interpolation.LINEAR));
+            sampler.addSample((float) i / 90, new SamplerValue<Matrix4f>(MutableMatrix4f.identity().translateZ(0 * -i / 10).rotateY((float) Math.PI * i / 180).rotateX((float) Math.PI * i / 180), Interpolation.LINEAR));
         }
         final Animation animation = new TransformAnimation(sampler);
         animation.addNode(model);

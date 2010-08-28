@@ -540,9 +540,9 @@ public class ColladaParserTest
         assertEquals("cup_3500_polys_photo_and_ground", node.getId());
         assertEquals(0, node.getNodes().size());
 
-        final Transformations transformations = node.getTransformations();
+        final Transformations transformations = node.getTransforms();
         assertEquals(1, transformations.size());
-        final Transformation transformation = transformations.get(0);
+        final Transform transformation = transformations.get(0);
         assertTrue(transformation instanceof MatrixTransformation);
         final MatrixTransformation matrix = (MatrixTransformation) transformation;
         final float[] values = matrix.getValues();

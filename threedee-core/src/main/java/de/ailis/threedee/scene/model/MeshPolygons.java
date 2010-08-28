@@ -8,8 +8,8 @@ package de.ailis.threedee.scene.model;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import de.ailis.threedee.math.Bounds;
-import de.ailis.threedee.math.Vector3f;
+import de.ailis.gramath.MutableVector3f;
+import de.ailis.threedee.mathold.Bounds;
 import de.ailis.threedee.utils.BufferIterator;
 
 
@@ -74,7 +74,7 @@ public class MeshPolygons
         // Create bounding box
         this.bounds = new Bounds();
         final BufferIterator iterator = new BufferIterator(this.indices);
-        final Vector3f v = new Vector3f();
+        final MutableVector3f v = new MutableVector3f();
         while (iterator.hasNext())
         {
             final int index = iterator.next().intValue();

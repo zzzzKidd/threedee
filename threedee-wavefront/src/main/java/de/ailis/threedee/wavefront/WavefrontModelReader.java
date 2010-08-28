@@ -15,12 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import de.ailis.gramath.Color4f;
+import de.ailis.gramath.ImmutableColor4f;
 import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.ModelReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
-import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.model.Material;
 import de.ailis.threedee.scene.model.Mesh;
@@ -332,7 +333,7 @@ public class WavefrontModelReader extends ModelReader
      * @return The parsed color
      */
 
-    private Color parseColor(final StringTokenizer tokenizer)
+    private Color4f parseColor(final StringTokenizer tokenizer)
     {
         if (tokenizer.countTokens() != 3)
         {
@@ -342,9 +343,9 @@ public class WavefrontModelReader extends ModelReader
 
         try
         {
-            return new Color(Float.parseFloat(tokenizer.nextToken()), Float
+            return new ImmutableColor4f(Float.parseFloat(tokenizer.nextToken()), Float
                     .parseFloat(tokenizer.nextToken()), Float
-                    .parseFloat(tokenizer.nextToken()));
+                    .parseFloat(tokenizer.nextToken()), 1f);
         }
         catch (final NumberFormatException e)
         {

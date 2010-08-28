@@ -8,6 +8,7 @@ package de.ailis.threedee.scene;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.exceptions.LightException;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
@@ -36,13 +37,13 @@ public abstract class Light extends SceneNode
             .createDirectFloatBuffer(3).put(0).put(0).put(-1).rewind();
 
     /** The ambient color of the light */
-    private Color ambientColor = Color.BLACK;
+    private Color4f ambientColor = Color4f.BLACK;
 
     /** The specular color of the light */
-    private Color specularColor = Color.WHITE;
+    private Color4f specularColor = Color4f.WHITE;
 
     /** The diffuse color of the light */
-    private Color diffuseColor = Color.WHITE;
+    private Color4f diffuseColor = Color4f.WHITE;
 
     /** The light position */
     protected FloatBuffer position;
@@ -54,7 +55,7 @@ public abstract class Light extends SceneNode
 
     public Light()
     {
-        this(Color.BLACK, Color.WHITE, Color.WHITE);
+        this(Color4f.BLACK, Color4f.WHITE, Color4f.WHITE);
     }
 
 
@@ -65,9 +66,9 @@ public abstract class Light extends SceneNode
      *            The color of the light
      */
 
-    public Light(final Color color)
+    public Light(final Color4f color)
     {
-        this(Color.BLACK, color, color);
+        this(Color4f.BLACK, color, color);
     }
 
 
@@ -82,12 +83,12 @@ public abstract class Light extends SceneNode
      *            The diffuse color
      */
 
-    public Light(final Color ambientColor, final Color specularColor,
-            final Color diffuseColor)
+    public Light(final Color4f ambientColor, final Color4f specularColor,
+            final Color4f diffuseColor)
     {
-        this.ambientColor = ambientColor;
-        this.specularColor = specularColor;
-        this.diffuseColor = diffuseColor;
+        this.ambientColor = ambientColor.asImmutable();
+        this.specularColor = specularColor.asImmutable();
+        this.diffuseColor = diffuseColor.asImmutable();
     }
 
 
@@ -97,7 +98,7 @@ public abstract class Light extends SceneNode
      * @return The ambient color
      */
 
-    public Color getAmbientColor()
+    public Color4f getAmbientColor()
     {
         return this.ambientColor;
     }
@@ -110,9 +111,9 @@ public abstract class Light extends SceneNode
      *            The ambient color to set
      */
 
-    public void setAmbientColor(final Color ambientColor)
+    public void setAmbientColor(final Color4f ambientColor)
     {
-        this.ambientColor = ambientColor;
+        this.ambientColor = ambientColor.asImmutable();
     }
 
 
@@ -122,7 +123,7 @@ public abstract class Light extends SceneNode
      * @return The specular color
      */
 
-    public Color getSpecularColor()
+    public Color4f getSpecularColor()
     {
         return this.specularColor;
     }
@@ -135,9 +136,9 @@ public abstract class Light extends SceneNode
      *            The specularColor to set
      */
 
-    public void setSpecularColor(final Color specularColor)
+    public void setSpecularColor(final Color4f specularColor)
     {
-        this.specularColor = specularColor;
+        this.specularColor = specularColor.asImmutable();
     }
 
 
@@ -147,7 +148,7 @@ public abstract class Light extends SceneNode
      * @return The diffuse color
      */
 
-    public Color getDiffuseColor()
+    public Color4f getDiffuseColor()
     {
         return this.diffuseColor;
     }
@@ -160,9 +161,9 @@ public abstract class Light extends SceneNode
      *            The diffuse color to set
      */
 
-    public void setDiffuseColor(final Color diffuseColor)
+    public void setDiffuseColor(final Color4f diffuseColor)
     {
-        this.diffuseColor = diffuseColor;
+        this.diffuseColor = diffuseColor.asImmutable();
     }
 
 
@@ -174,11 +175,11 @@ public abstract class Light extends SceneNode
      *            The color to set
      */
 
-    public void setColor(final Color color)
+    public void setColor(final Color4f color)
     {
-        setAmbientColor(Color.BLACK);
+        setAmbientColor(Color4f.BLACK);
         setDiffuseColor(color);
-        setSpecularColor(Color.BLACK);
+        setSpecularColor(Color4f.BLACK);
     }
 
 

@@ -7,7 +7,7 @@ package de.ailis.threedee.scene.lights;
 
 import java.nio.FloatBuffer;
 
-import de.ailis.threedee.scene.Color;
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.utils.BufferUtils;
 
@@ -44,7 +44,7 @@ public class DirectionalLight extends Light
      *            The color of the light
      */
 
-    public DirectionalLight(final Color color)
+    public DirectionalLight(final Color4f color)
     {
         super(color);
         this.position = directionalLightPosition;
@@ -62,8 +62,8 @@ public class DirectionalLight extends Light
      *            The diffuse color
      */
 
-    public DirectionalLight(final Color ambientColor, final Color specularColor,
-            final Color diffuseColor)
+    public DirectionalLight(final Color4f ambientColor, final Color4f specularColor,
+            final Color4f diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
         this.position = directionalLightPosition;
