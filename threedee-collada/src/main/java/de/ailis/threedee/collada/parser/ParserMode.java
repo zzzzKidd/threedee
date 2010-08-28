@@ -46,6 +46,27 @@ enum ParserMode {
     /** Parser is in profile_COMMON element */
     PROFILE_COMMON("profile_COMMON"),
 
+    /** Parser is in newparam element */
+    NEWPARAM("newparam"),
+
+    /** Parser is in surface element */
+    SURFACE("surface"),
+
+    /** Parser is in surface init_from element */
+    SURFACE_INIT_FROM("init_from"),
+
+    /** Parser is in sampler 2D element */
+    SAMPLER2D("sampler2D"),
+
+    /** Parser is in sampler 2D source element */
+    SAMPLER2D_SOURCE("source"),
+
+    /** Parser is in sampler 2D minfilter element */
+    SAMPLER2D_MINFILTER("minfilter"),
+
+    /** Parser is in sampler 2D magfilter element */
+    SAMPLER2D_MAGFILTER("magfilter"),
+
     /** Parser is in technique element */
     TECHNIQUE_COMMON("technique"),
 
@@ -100,11 +121,23 @@ enum ParserMode {
     /** Parser is in mesh element */
     MESH("mesh"),
 
-    /** Parser is in data source element */
-    DATA_SOURCE("source"),
+    /** Parser is in mesh data source element */
+    MESH_DATA_SOURCE("source"),
 
     /** Parser is in float_array element */
     FLOAT_ARRAY("float_array"),
+
+    /** Parser is in Name_array element */
+    NAME_ARRAY("Name_array"),
+
+    /** Parser is in source technique_common element */
+    SOURCE_TECHNIQUE_COMMON("technique_common"),
+
+    /** Parser is in accessor element */
+    ACCESSOR("accessor"),
+
+    /** Parser is in param element */
+    PARAM("param"),
 
     /** Parser is in vertices element */
     VERTICES("vertices"),
@@ -120,6 +153,27 @@ enum ParserMode {
 
     /** Parser is in polygons p element */
     POLYGONS_P("p"),
+
+    /** Parser is in triangles element */
+    TRIANGLES("triangles"),
+
+    /** Parser is in triangles p element */
+    TRIANGLES_P("p"),
+
+    /** Parser is in library_animations element */
+    LIBRARY_ANIMATIONS("library_animations"),
+
+    /** Parser is in animation element */
+    ANIMATION("animation"),
+
+    /** Parser is in animation data source element */
+    ANIMATION_DATA_SOURCE("source"),
+
+    /** Parser is in sampler element */
+    SAMPLER("sampler"),
+
+    /** Parser is in channel element */
+    CHANNEL("channel"),
 
     /** Parser is in library_lights element */
     LIBRARY_LIGHTS("library_lights"),
@@ -192,6 +246,9 @@ enum ParserMode {
 
     /** Parser is in matrix element */
     MATRIX("matrix"),
+
+    /** Parser is in translate element */
+    TRANSLATE("translate"),
 
     /** Parser is in instance_geometry element */
     INSTANCE_GEOMETRY("instance_geometry"),

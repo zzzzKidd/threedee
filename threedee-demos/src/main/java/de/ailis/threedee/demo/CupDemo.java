@@ -13,22 +13,21 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 
 import de.ailis.threedee.entities.Asset;
-import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.io.resources.ClasspathResourceProvider;
-import de.ailis.threedee.jogl.swing.SceneCanvas;
+import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.math.Vector3f;
 import de.ailis.threedee.model.Model;
 import de.ailis.threedee.model.reader.ModelReader;
-import de.ailis.threedee.physics.Physics;
 import de.ailis.threedee.reader.AssetReader;
 import de.ailis.threedee.scene.Camera;
-import de.ailis.threedee.scene.ModelNode;
+import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.OrbitCamera;
+import de.ailis.threedee.scene.Scene;
+import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.lights.PointLight;
+import de.ailis.threedee.scene.physics.Physics;
 
 
 /**
@@ -90,7 +89,7 @@ public class CupDemo
         final Model cup = ModelReader.read("cup2.dae",
                 new ClasspathResourceProvider());
 //        System.exit(0);
-        final ModelNode cupNode = new ModelNode(cup);
+        final Model cupNode = new Model(cup);
         root.appendChild(cupNode);
 
         // Create an orbiter node

@@ -7,7 +7,7 @@ package de.ailis.threedee.collada.entities;
 
 
 /**
- * A transformatin matrix
+ * A transformation matrix
  *
  * @author Klaus Reimer (k@ailis.de)
  */

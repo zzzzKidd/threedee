@@ -17,16 +17,24 @@ import java.io.InputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.ailis.threedee.collada.entities.ColladaAmbientLight;
+import de.ailis.threedee.collada.entities.Accessor;
 import de.ailis.threedee.collada.entities.COLLADA;
+import de.ailis.threedee.collada.entities.Channel;
+import de.ailis.threedee.collada.entities.Channels;
+import de.ailis.threedee.collada.entities.ColladaAmbientLight;
+import de.ailis.threedee.collada.entities.ColladaAnimation;
+import de.ailis.threedee.collada.entities.ColladaAnimations;
 import de.ailis.threedee.collada.entities.ColladaCamera;
 import de.ailis.threedee.collada.entities.ColladaColor;
 import de.ailis.threedee.collada.entities.ColladaDirectionalLight;
 import de.ailis.threedee.collada.entities.ColladaLight;
 import de.ailis.threedee.collada.entities.ColladaMaterial;
 import de.ailis.threedee.collada.entities.ColladaMesh;
+import de.ailis.threedee.collada.entities.ColladaSampler;
+import de.ailis.threedee.collada.entities.ColladaSamplers;
 import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.ColladaSpotLight;
+import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.ColorOrTexture;
 import de.ailis.threedee.collada.entities.CommonProfile;
 import de.ailis.threedee.collada.entities.CommonTechnique;
@@ -35,6 +43,7 @@ import de.ailis.threedee.collada.entities.DataArray;
 import de.ailis.threedee.collada.entities.DataSource;
 import de.ailis.threedee.collada.entities.DataSources;
 import de.ailis.threedee.collada.entities.Effect;
+import de.ailis.threedee.collada.entities.Filter;
 import de.ailis.threedee.collada.entities.Geometry;
 import de.ailis.threedee.collada.entities.Image;
 import de.ailis.threedee.collada.entities.InstanceCamera;
@@ -46,6 +55,7 @@ import de.ailis.threedee.collada.entities.InstanceLights;
 import de.ailis.threedee.collada.entities.InstanceMaterial;
 import de.ailis.threedee.collada.entities.InstanceMaterials;
 import de.ailis.threedee.collada.entities.InstanceVisualScene;
+import de.ailis.threedee.collada.entities.LibraryAnimations;
 import de.ailis.threedee.collada.entities.LibraryCameras;
 import de.ailis.threedee.collada.entities.LibraryEffects;
 import de.ailis.threedee.collada.entities.LibraryGeometries;
@@ -57,23 +67,29 @@ import de.ailis.threedee.collada.entities.MatrixTransformation;
 import de.ailis.threedee.collada.entities.Node;
 import de.ailis.threedee.collada.entities.Nodes;
 import de.ailis.threedee.collada.entities.Optic;
+import de.ailis.threedee.collada.entities.Param;
+import de.ailis.threedee.collada.entities.ParamType;
+import de.ailis.threedee.collada.entities.Params;
 import de.ailis.threedee.collada.entities.PerspectiveOptic;
 import de.ailis.threedee.collada.entities.Phong;
 import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.PrimitiveGroups;
 import de.ailis.threedee.collada.entities.Primitives;
 import de.ailis.threedee.collada.entities.PrimitivesType;
+import de.ailis.threedee.collada.entities.ProfileParam;
+import de.ailis.threedee.collada.entities.ProfileParams;
 import de.ailis.threedee.collada.entities.Profiles;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
-import de.ailis.threedee.collada.entities.ColladaTexture;
 import de.ailis.threedee.collada.entities.Transformation;
 import de.ailis.threedee.collada.entities.Transformations;
 import de.ailis.threedee.collada.entities.UnsharedInput;
 import de.ailis.threedee.collada.entities.UnsharedInputs;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
+import de.ailis.threedee.collada.entities.profileparams.Sampler2DParam;
+import de.ailis.threedee.collada.entities.profileparams.SurfaceParam;
 
 
 /**
@@ -188,7 +204,7 @@ public class ColladaParserTest
         final Profiles profiles = effect.getProfiles();
         assertNotNull(profiles);
         assertEquals(1, profiles.size());
-        final CommonProfile profile = profiles.getCommonProfile();
+        CommonProfile profile = profiles.getCommonProfile();
         assertNotNull(profile);
         final CommonTechniques techniques = profile.getTechniques();
         assertEquals(1, techniques.size());
@@ -250,6 +266,22 @@ public class ColladaParserTest
 
         effect = effects.get("cup-fx");
         assertNotNull(effect);
+        profile = effect.getProfiles().getCommonProfile();
+        final ProfileParams params = profile.getParams();
+        ProfileParam param = params.get("bricks_jpg-sampler");
+        assertNotNull(param);
+        assertTrue(param instanceof Sampler2DParam);
+        final Sampler2DParam samplerParam = (Sampler2DParam) param;
+        assertEquals("bricks_jpg", samplerParam.getSource());
+        assertEquals(Filter.LINEAR_MIPMAP_LINEAR, samplerParam.getMinFilter());
+        assertEquals(Filter.LINEAR, samplerParam.getMagFilter());
+        param = params.get("bricks_jpg");
+        assertNotNull(param);
+        assertTrue(param instanceof SurfaceParam);
+        final SurfaceParam surfaceParam = (SurfaceParam) param;
+        assertEquals("bricks_jpg-img", surfaceParam.getImageId());
+        assertEquals("bricks_jpg-sampler", profile.getTechniques().get(0)
+            .getPhong().getDiffuse().getTexture().getTexture());
     }
 
 
@@ -319,6 +351,98 @@ public class ColladaParserTest
         assertEquals(Integer.valueOf(0), polyInput.getSet());
         assertEquals("cup_3500_polys_photo_and_ground-lib-UV0", polyInput
                 .getSource().getFragment());
+    }
+
+
+    /**
+     * Tests the library animations.
+     */
+
+    @Test
+    public void testLibraryAnimations()
+    {
+        final LibraryAnimations animations = collada
+                .getLibraryAnimations();
+        assertEquals(4, animations.size());
+
+        ColladaAnimation animation = animations.get("invalid");
+        assertNull(animation);
+
+        animation = animations.get("camera-anim");
+        assertNotNull(animation);
+        final ColladaAnimations subAnims = animation.getAnimations();
+        assertEquals(1, subAnims.size());
+
+        animation = subAnims.get(0);
+        final DataSources sources = animation.getSources();
+        assertEquals(3, sources.size());
+
+        DataSource source = sources
+                .get("camera-Matrix-animation-input");
+        DataArray data = source.getData();
+        assertNotNull(data);
+        assertEquals("camera-Matrix-animation-input-array", data
+                .getId());
+        assertEquals(61, data.getCount());
+        assertTrue(data.isFloatData());
+        final float[] array = data.getFloatData();
+        assertEquals(61, array.length);
+        assertEquals(0, array[0], 0.000001f);
+        assertEquals(2, array[60], 0.000001f);
+
+        final Accessor accessor = source.getAccessor();
+        assertNotNull(accessor);
+        assertEquals("camera-Matrix-animation-input-array", accessor
+            .getSource().getFragment());
+        assertEquals(61, accessor.getCount());
+        final Params params = accessor.getParams();
+        assertNotNull(params);
+        assertEquals(1, params.size());
+        final Param param = params.get(0);
+        assertNotNull(param);
+        assertEquals(ParamType.FLOAT, param.getType());
+
+        source = sources
+                .get("camera-Interpolations");
+        data = source.getData();
+        assertNotNull(data);
+        assertEquals("camera-Interpolations-array", data
+                .getId());
+        assertEquals(61, data.getCount());
+        assertTrue(data.isStringData());
+        final String[] strArray = data.getStringData();
+        assertEquals(61, strArray.length);
+        assertEquals("LINEAR", strArray[0]);
+        assertEquals("STEP", strArray[60]);
+
+        final ColladaSamplers samplers = animation.getSamplers();
+        assertEquals(1, samplers.size());
+        final ColladaSampler sampler = samplers.get(0);
+        assertNotNull(sampler);
+        final UnsharedInputs inputs = sampler.getInputs();
+        assertNotNull(inputs);
+        assertEquals(3, inputs.size());
+        UnsharedInput input = inputs.get(0);
+        assertEquals(Semantic.INPUT, input.getSemantic());
+        assertEquals("camera-Matrix-animation-input", input.getSource()
+            .getFragment());
+        input = inputs.get(1);
+        assertEquals(Semantic.OUTPUT, input.getSemantic());
+        assertEquals("camera-Matrix-animation-output-transform", input
+            .getSource().getFragment());
+        input = inputs.get(2);
+        assertEquals(Semantic.INTERPOLATION, input.getSemantic());
+        assertEquals("camera-Interpolations", input.getSource().getFragment());
+
+        final Channels channels = animation.getChannels();
+        assertNotNull(channels);
+        assertEquals(1, channels.size());
+
+        final Channel channel = channels.get(0);
+        assertNotNull(channel);
+        assertEquals("camera-Matrix-animation-transform", channel.getSource()
+            .getFragment());
+        assertEquals("camera/matrix", channel.getTarget());
     }
 
 

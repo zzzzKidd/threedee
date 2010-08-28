@@ -10,17 +10,15 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import de.ailis.threedee.entities.Camera;
-import de.ailis.threedee.entities.CameraNode;
-import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.LightInstance;
-import de.ailis.threedee.entities.Mesh;
-import de.ailis.threedee.entities.MeshInstance;
-import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
-import de.ailis.threedee.entities.SpotLight;
-import de.ailis.threedee.jogl.swing.SceneCanvas;
-import de.ailis.threedee.model.Cube;
+import de.ailis.threedee.jogl.SceneCanvas;
+import de.ailis.threedee.scene.Camera;
+import de.ailis.threedee.scene.Color;
+import de.ailis.threedee.scene.Model;
+import de.ailis.threedee.scene.Scene;
+import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.lights.SpotLight;
+import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.model.MeshFactory;
 
 
 /**
@@ -54,49 +52,42 @@ public class Test3
         final Scene scene = canvas.getScene();
         final SceneNode root = scene.getRootNode();
 
-        final Mesh cube = Cube.buildCube(1f, 1f, 1f);
+        final Mesh cube = MeshFactory.createBox(1, 1, 1);
 
         final int size = 50;
         for (int x = -size; x < size; x++)
         {
             for (int z = -size; z < size; z++)
             {
-                final SceneNode node = new SceneNode();
+                final Model node = new Model(cube);
                 node.translateZ(z * 2);
                 node.translateX(x * 2);
                 root.appendChild(node);
-                node.addMesh(new MeshInstance(cube));
             }
         }
 
-        final SpotLight spotLight = new SpotLight(Color.BLACK, Color.RED, Color.RED);
-        final LightInstance light = new LightInstance(spotLight);
-        final SceneNode lightNode = new SceneNode();
-        lightNode.addLight(light);
+        final SpotLight lightNode = new SpotLight(Color.BLACK, Color.RED, Color.RED);
+        lightNode.setCutOff(5);
         lightNode.translateZ(50f);
         lightNode.translateY(250f);
         lightNode.translateX(50f);
         lightNode.rotateX((float) Math.toRadians(-90f));
 //        lightNode.getPhysics().getVelocity().setZ(10);
         root.appendChild(lightNode);
-        root.enableLight(light);
+        root.addLight(lightNode);
 
-        final SpotLight spotLight2 = new SpotLight(Color.BLACK, Color.BLUE, Color.BLUE);
-        final LightInstance light2 = new LightInstance(spotLight2);
-        final SceneNode lightNode2 = new SceneNode();
-        lightNode2.addLight(light2);
+        final SpotLight lightNode2 = new SpotLight(Color.BLACK, Color.BLUE, Color.BLUE);
+        lightNode2.setCutOff(5);
         lightNode2.translateZ(50f);
         lightNode2.translateY(250f);
         lightNode2.translateX(-50f);
         lightNode2.rotateX((float) Math.toRadians(-90f));
 //        lightNode.getPhysics().getVelocity().setZ(10);
         root.appendChild(lightNode2);
-        root.enableLight(light2);
+        root.addLight(lightNode2);
 
-        final SpotLight spotLight3 = new SpotLight(Color.BLACK, Color.GREEN, Color.GREEN);
-        final LightInstance light3 = new LightInstance(spotLight3);
-        final SceneNode lightNode3 = new SceneNode();
-        lightNode3.addLight(light3);
+        final SpotLight lightNode3 = new SpotLight(Color.BLACK, Color.GREEN, Color.GREEN);
+        lightNode3.setCutOff(5);
         lightNode3.translateZ(-50f);
         lightNode3.translateY(250f);
         lightNode3.translateX(0f);
@@ -104,12 +95,11 @@ public class Test3
         lightNode3.rotateX((float) Math.toRadians(-90f));
         //lightNode3.getPhysics().getSpin().setX((float) Math.toRadians(180f));
         root.appendChild(lightNode3);
-        root.enableLight(light3);
+        root.addLight(lightNode3);
 
 
 
-       final Camera camera = new Camera();
-        final CameraNode cameraNode = new CameraNode(camera);
+       final Camera cameraNode = new Camera();
         cameraNode.rotateX((float) Math.toRadians(-90f));
         cameraNode.translateZ(350f);
         cameraNode.translateY(0f);

@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.0">
+  <asset>
+    <contributor>
+      <author>Lightwave FBX Exporter</author>
+      <authoring_tool>FBX COLLADA exporter</authoring_tool>
+      <comments>Lightwave Scene export</comments>
+    </contributor>
+    <created>2010-06-28T13:57:59Z</created>
+    <modified>2010-06-28T13:57:59Z</modified>
+    <revision>rev. 1.0</revision>
+    <title></title>
+    <subject>FBX Scene</subject>
+    <keywords>Scene</keywords>
+    <unit meter="0.010000"/>
+    <up_axis>Y_UP</up_axis>
+  </asset>
+  <library_materials>
+    <material id="blue" name="blue">
+      <instance_effect url="#blue-fx"/>
+    </material>
+    <material id="cyan" name="cyan">
+      <instance_effect url="#cyan-fx"/>
+    </material>
+    <material id="green" name="green">
+      <instance_effect url="#green-fx"/>
+    </material>
+    <material id="magenta" name="magenta">
+      <instance_effect url="#magenta-fx"/>
+    </material>
+    <material id="red" name="red">
+      <instance_effect url="#red-fx"/>
+    </material>
+    <material id="yellow" name="yellow">
+      <instance_effect url="#yellow-fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="blue-fx" name="blue">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.000000  0.000000 1.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="cyan-fx" name="cyan">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.000000  1.000000 1.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="green-fx" name="green">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.000000  1.000000 0.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="magenta-fx" name="magenta">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">1.000000  0.000000 1.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="red-fx" name="red">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.784314  0.000000 0.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="yellow-fx" name="yellow">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.200000  0.200000 0.200000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">1.000000  1.000000 0.000000 1.000000</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.200000  0.200000 0.200000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">20.000000</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent>
+              <color sid="transparent">0.000000  0.000000 0.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="box-lib" name="boxMesh">
+      <mesh>
+        <source id="box-lib-Position">
+          <float_array id="box-lib-Position-array" count="24">
+-52.499998 -52.499998 69.999999
+52.499998 -52.499998 69.999999
+52.499998 -52.499998 -69.999999
+-52.499998 -52.499998 -69.999999
+-52.499998 52.499998 69.999999
+52.499998 52.499998 69.999999
+52.499998 52.499998 -69.999999
+-52.499998 52.499998 -69.999999
+</float_array>
+          <technique_common>
+            <accessor source="#box-lib-Position-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="box-lib-Normal0">
+          <float_array id="box-lib-Normal0-array" count="108">
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 -1.000000 0.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+0.000000 0.000000 1.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+1.000000 0.000000 0.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+0.000000 0.000000 -1.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+0.000000 1.000000 0.000000
+</float_array>
+          <technique_common>
+            <accessor source="#box-lib-Normal0-array" count="36" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="box-lib-Vertex">
+          <input semantic="POSITION" source="#box-lib-Position"/>
+        </vertices>
+        <polygons material="blue" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>7 18 6 19 2 20</p>
+          <p>2 21 3 22 7 23</p>
+        </polygons>
+        <polygons material="cyan" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>4 24 7 25 3 26</p>
+          <p>3 27 0 28 4 29</p>
+        </polygons>
+        <polygons material="green" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>3 0 2 1 1 2</p>
+          <p>1 3 0 4 3 5</p>
+        </polygons>
+        <polygons material="magenta" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>2 12 6 13 5 14</p>
+          <p>5 15 1 16 2 17</p>
+        </polygons>
+        <polygons material="red" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>1 6 5 7 4 8</p>
+          <p>4 9 0 10 1 11</p>
+        </polygons>
+        <polygons material="yellow" count="2">
+          <input semantic="VERTEX" offset="0" source="#box-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#box-lib-Normal0"/>
+          <p>5 30 6 31 7 32</p>
+          <p>7 33 4 34 5 35</p>
+        </polygons>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_animations>
+    <animation id="box-anim" name="box">
+      <animation>
+        <source id="box-Matrix-animation-input">
+          <float_array id="box-Matrix-animation-input-array" count="61">
+
+0.000000 0.033333 0.066667 0.100000 0.133333 0.166667 0.200000 0.233333 0.266667 0.300000 0.333333 0.366667 0.400000 0.433333 0.466667 0.500000
+0.533333 0.566667 0.600000 0.633333 0.666667 0.700000 0.733333 0.766667 0.800000 0.833333 0.866667 0.900000 0.933333 0.966667 1.000000 1.033333
+1.066667 1.100000 1.133333 1.166667 1.200000 1.233333 1.266667 1.300000 1.333333 1.366667 1.400000 1.433333 1.466667 1.500000 1.533333 1.566667
+1.600000 1.633333 1.666667 1.700000 1.733333 1.766667 1.800000 1.833333 1.866667 1.900000 1.933333 1.966667 2.000000</float_array>
+          <technique_common>
+            <accessor source="#box-Matrix-animation-input-array" count="61">
+              <param name="TIME" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="box-Matrix-animation-output-transform">
+          <float_array id="box-Matrix-animation-output-transform-array" count="976">
+
+0.707107 -0.707107 -0.000000 0.000000 0.500000 0.500000 0.707107 0.000000 -0.500000 -0.500000 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000
+0.793829 -0.590985 -0.143432 0.000000 0.500000 0.500000 0.707107 0.000000 -0.346173 -0.633038 0.692407 0.000000 0.000000 0.000000 0.000000 1.000000
+0.845700 -0.457756 -0.274318 0.000000 0.500000 0.500000 0.707107 0.000000 -0.186523 -0.735160 0.651728 0.000000 0.000000 0.000000 0.000000 1.000000
+0.865562 -0.315227 -0.389146 0.000000 0.500000 0.500000 0.707107 0.000000 -0.028326 -0.806618 0.590395 0.000000 0.000000 0.000000 0.000000 1.000000
+0.857281 -0.170025 -0.485964 0.000000 0.500000 0.500000 0.707107 0.000000 0.122756 -0.849171 0.513653 0.000000 0.000000 0.000000 0.000000 1.000000
+0.825248 -0.027489 -0.564101 0.000000 0.500000 0.500000 0.707107 0.000000 0.262613 -0.865589 0.426369 0.000000 0.000000 0.000000 0.000000 1.000000
+0.773983 0.108308 -0.623874 0.000000 0.500000 0.500000 0.707107 0.000000 0.388522 -0.859226 0.332838 0.000000 0.000000 0.000000 0.000000 1.000000
+0.707852 0.234459 -0.666314 0.000000 0.500000 0.500000 0.707107 0.000000 0.498945 -0.833684 0.236696 0.000000 0.000000 0.000000 0.000000 1.000000
+0.630868 0.349080 -0.692928 0.000000 0.500000 0.500000 0.707107 0.000000 0.593301 -0.792555 0.140894 0.000000 0.000000 0.000000 0.000000 1.000000
+0.546585 0.451135 -0.705494 0.000000 0.500000 0.500000 0.707107 0.000000 0.671748 -0.739241 0.047725 0.000000 0.000000 0.000000 0.000000 1.000000
+0.458039 0.540269 -0.705910 0.000000 0.500000 0.500000 0.707107 0.000000 0.734983 -0.676838 -0.041115 0.000000 0.000000 0.000000 0.000000 1.000000
+0.367747 0.616644 -0.696069 0.000000 0.500000 0.500000 0.707107 0.000000 0.784068 -0.608071 -0.124448 0.000000 0.000000 0.000000 0.000000 1.000000
+0.277722 0.680800 -0.677777 0.000000 0.500000 0.500000 0.707107 0.000000 0.820287 -0.535268 -0.201539 0.000000 0.000000 0.000000 0.000000 1.000000
+0.189523 0.733531 -0.652697 0.000000 0.500000 0.500000 0.707107 0.000000 0.845033 -0.460362 -0.272004 0.000000 0.000000 0.000000 0.000000 1.000000
+0.104307 0.775783 -0.622318 0.000000 0.500000 0.500000 0.707107 0.000000 0.859721 -0.384916 -0.335738 0.000000 0.000000 0.000000 0.000000 1.000000
+0.022887 0.808582 -0.587938 0.000000 0.500000 0.500000 0.707107 0.000000 0.865723 -0.310153 -0.392847 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.054211 0.832966 -0.550663 0.000000 0.500000 0.500000 0.707107 0.000000 0.864327 -0.236998 -0.443588 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.126695 0.849944 -0.511414 0.000000 0.500000 0.500000 0.707107 0.000000 0.856708 -0.166120 -0.488319 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.194454 0.860466 -0.470942 0.000000 0.500000 0.500000 0.707107 0.000000 0.843912 -0.097971 -0.527460 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.257519 0.865403 -0.429839 0.000000 0.500000 0.500000 0.707107 0.000000 0.826852 -0.032826 -0.561461 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.316025 0.865533 -0.388562 0.000000 0.500000 0.500000 0.707107 0.000000 0.806305 0.029182 -0.590779 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.370179 0.861539 -0.347444 0.000000 0.500000 0.500000 0.707107 0.000000 0.782922 0.088034 -0.615859 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.420240 0.854004 -0.306717 0.000000 0.500000 0.500000 0.707107 0.000000 0.757231 0.143796 -0.637122 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.466491 0.843416 -0.266526 0.000000 0.500000 0.500000 0.707107 0.000000 0.729648 0.196596 -0.654953 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.509228 0.830172 -0.226942 0.000000 0.500000 0.500000 0.707107 0.000000 0.700491 0.246607 -0.669700 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.548745 0.814582 -0.187975 0.000000 0.500000 0.500000 0.707107 0.000000 0.669984 0.294034 -0.681664 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.585327 0.796879 -0.149590 0.000000 0.500000 0.500000 0.707107 0.000000 0.638273 0.339093 -0.691103 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.619234 0.777219 -0.111713 0.000000 0.500000 0.500000 0.707107 0.000000 0.605434 0.382008 -0.698227 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.650703 0.755694 -0.074240 0.000000 0.500000 0.500000 0.707107 0.000000 0.571477 0.422996 -0.703199 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.679938 0.732333 -0.037048 0.000000 0.500000 0.500000 0.707107 0.000000 0.536361 0.462265 -0.706136 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.707107 0.707107 -0.000000 0.000000 0.500000 0.500000 0.707107 0.000000 0.500000 0.500000 -0.707107 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.732332 0.679939 0.037048 0.000000 0.500000 0.500000 0.707107 0.000000 0.462265 0.536361 -0.706136 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.755694 0.650703 0.074240 0.000000 0.500000 0.500000 0.707107 0.000000 0.422997 0.571476 -0.703199 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.777219 0.619234 0.111713 0.000000 0.500000 0.500000 0.707107 0.000000 0.382008 0.605433 -0.698227 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.796879 0.585327 0.149590 0.000000 0.500000 0.500000 0.707107 0.000000 0.339094 0.638273 -0.691103 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.814582 0.548746 0.187975 0.000000 0.500000 0.500000 0.707107 0.000000 0.294035 0.669984 -0.681664 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.830171 0.509228 0.226941 0.000000 0.500000 0.500000 0.707107 0.000000 0.246608 0.700490 -0.669700 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.843416 0.466491 0.266526 0.000000 0.500000 0.500000 0.707107 0.000000 0.196596 0.729648 -0.654953 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.854004 0.420240 0.306717 0.000000 0.500000 0.500000 0.707107 0.000000 0.143796 0.757231 -0.637122 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.861539 0.370180 0.347444 0.000000 0.500000 0.500000 0.707107 0.000000 0.088035 0.782922 -0.615860 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.865534 0.316025 0.388561 0.000000 0.500000 0.500000 0.707107 0.000000 0.029183 0.806305 -0.590779 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.865403 0.257519 0.429839 0.000000 0.500000 0.500000 0.707107 0.000000 -0.032826 0.826852 -0.561461 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.860466 0.194454 0.470941 0.000000 0.500000 0.500000 0.707107 0.000000 -0.097971 0.843912 -0.527460 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.849944 0.126696 0.511414 0.000000 0.500000 0.500000 0.707107 0.000000 -0.166120 0.856708 -0.488320 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.832966 0.054212 0.550662 0.000000 0.500000 0.500000 0.707107 0.000000 -0.236998 0.864327 -0.443589 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.808582 -0.022887 0.587938 0.000000 0.500000 0.500000 0.707107 0.000000 -0.310152 0.865723 -0.392848 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.775784 -0.104307 0.622318 0.000000 0.500000 0.500000 0.707107 0.000000 -0.384916 0.859721 -0.335738 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.733530 -0.189523 0.652698 0.000000 0.500000 0.500000 0.707107 0.000000 -0.460362 0.845033 -0.272004 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.680800 -0.277721 0.677777 0.000000 0.500000 0.500000 0.707107 0.000000 -0.535267 0.820287 -0.201540 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.616644 -0.367747 0.696069 0.000000 0.500000 0.500000 0.707107 0.000000 -0.608071 0.784068 -0.124449 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.540269 -0.458039 0.705911 0.000000 0.500000 0.500000 0.707107 0.000000 -0.676838 0.734983 -0.041115 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.451135 -0.546585 0.705494 0.000000 0.500000 0.500000 0.707107 0.000000 -0.739241 0.671748 0.047725 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.349080 -0.630868 0.692928 0.000000 0.500000 0.500000 0.707107 0.000000 -0.792555 0.593301 0.140894 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.234460 -0.707851 0.666315 0.000000 0.500000 0.500000 0.707107 0.000000 -0.833684 0.498946 0.236696 0.000000 0.000000 0.000000 0.000000 1.000000
+-0.108308 -0.773983 0.623874 0.000000 0.500000 0.500000 0.707107 0.000000 -0.859226 0.388522 0.332838 0.000000 0.000000 0.000000 0.000000 1.000000
+0.027489 -0.825248 0.564101 0.000000 0.500000 0.500000 0.707107 0.000000 -0.865589 0.262613 0.426369 0.000000 0.000000 0.000000 0.000000 1.000000
+0.170024 -0.857281 0.485964 0.000000 0.500000 0.500000 0.707107 0.000000 -0.849171 0.122757 0.513653 0.000000 0.000000 0.000000 0.000000 1.000000
+0.315226 -0.865562 0.389146 0.000000 0.500000 0.500000 0.707107 0.000000 -0.806618 -0.028325 0.590394 0.000000 0.000000 0.000000 0.000000 1.000000
+0.457756 -0.845700 0.274319 0.000000 0.500000 0.500000 0.707107 0.000000 -0.735160 -0.186523 0.651728 0.000000 0.000000 0.000000 0.000000 1.000000
+0.590985 -0.793829 0.143432 0.000000 0.500000 0.500000 0.707107 0.000000 -0.633038 -0.346173 0.692407 0.000000 0.000000 0.000000 0.000000 1.000000
+0.707107 -0.707107 0.000000 0.000000 0.500000 0.500000 0.707107 0.000000 -0.500000 -0.500000 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000</float_array>
+          <technique_common>
+            <accessor source="#box-Matrix-animation-output-transform-array" count="61" stride="16">
+              <param type="float4x4"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="box-Interpolations">
+          <Name_array id="box-Interpolations-array" count="61">
+ LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR
+LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR
+LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR
+LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR
+LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR LINEAR
+LINEAR LINEAR</Name_array>
+          <technique_common>
+            <accessor source="#box-Interpolations-array" count="61">
+              <param type="name"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <sampler id="box-Matrix-animation-transform">
+          <input semantic="INPUT" source="#box-Matrix-animation-input"/>
+          <input semantic="OUTPUT" source="#box-Matrix-animation-output-transform"/>
+          <input semantic="INTERPOLATION" source="#box-Interpolations"/>
+        </sampler>
+        <channel source="#box-Matrix-animation-transform" target="box/matrix"/>
+      </animation>
+    </animation>
+    <animation id="Light-anim" name="Light">
+      <animation>
+        <source id="Light-Matrix-animation-input">
+          <float_array id="Light-Matrix-animation-input-array" count="0">
+</float_array>
+          <technique_common>
+            <accessor source="#Light-Matrix-animation-input-array" count="0">
+              <param name="TIME" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Light-Matrix-animation-output-transform">
+          <float_array id="Light-Matrix-animation-output-transform-array" count="0">
+</float_array>
+          <technique_common>
+            <accessor source="#Light-Matrix-animation-output-transform-array" count="0" stride="16">
+              <param type="float4x4"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Light-Interpolations">
+          <Name_array id="Light-Interpolations-array" count="0">
+</Name_array>
+          <technique_common>
+            <accessor source="#Light-Interpolations-array" count="0">
+              <param type="name"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <sampler id="Light-Matrix-animation-transform">
+          <input semantic="INPUT" source="#Light-Matrix-animation-input"/>
+          <input semantic="OUTPUT" source="#Light-Matrix-animation-output-transform"/>
+          <input semantic="INTERPOLATION" source="#Light-Interpolations"/>
+        </sampler>
+        <channel source="#Light-Matrix-animation-transform" target="Light/matrix"/>
+      </animation>
+    </animation>
+    <animation id="Camera-anim" name="Camera">
+      <animation>
+        <source id="Camera-Matrix-animation-input">
+          <float_array id="Camera-Matrix-animation-input-array" count="0">
+</float_array>
+          <technique_common>
+            <accessor source="#Camera-Matrix-animation-input-array" count="0">
+              <param name="TIME" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Camera-Matrix-animation-output-transform">
+          <float_array id="Camera-Matrix-animation-output-transform-array" count="0">
+</float_array>
+          <technique_common>
+            <accessor source="#Camera-Matrix-animation-output-transform-array" count="0" stride="16">
+              <param type="float4x4"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Camera-Interpolations">
+          <Name_array id="Camera-Interpolations-array" count="0">
+</Name_array>
+          <technique_common>
+            <accessor source="#Camera-Interpolations-array" count="0">
+              <param type="name"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <sampler id="Camera-Matrix-animation-transform">
+          <input semantic="INPUT" source="#Camera-Matrix-animation-input"/>
+          <input semantic="OUTPUT" source="#Camera-Matrix-animation-output-transform"/>
+          <input semantic="INTERPOLATION" source="#Camera-Interpolations"/>
+        </sampler>
+        <channel source="#Camera-Matrix-animation-transform" target="Camera/matrix"/>
+      </animation>
+    </animation>
+  </library_animations>
+  <library_lights>
+    <light id="Light-lib" name="LightMesh">
+      <technique_common>
+        <directional>
+          <color sid="color">1.000000 1.000000 1.000000</color>
+        </directional>
+      </technique_common>
+      <technique profile="MAYA">
+        <intensity sid="intensity">1.000000</intensity>
+      </technique>
+    </light>
+    <light id="SceneAmbient-lib" name="SceneAmbientMesh">
+      <technique_common>
+        <ambient>
+          <color>0.4 0.4 0.4</color>
+        </ambient>
+      </technique_common>
+    </light>
+  </library_lights>
+  <library_cameras>
+    <camera id="Camera-lib" name="CameraMesh">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov sid="xfov">45.239729</xfov>
+            <aspect_ratio>1.000000</aspect_ratio>
+            <znear sid="znear">10.000000</znear>
+            <zfar sid="zfar">4000.000000</zfar>
+          </perspective>
+        </technique_common>
+        <technique profile="MAYA">
+          <vertical_aperture>1.499990</vertical_aperture>
+          <horizontal_aperture sid="haperture">1.499990</horizontal_aperture>
+          <lens_squeeze sid="lenssqueeze">1.000000</lens_squeeze>
+        </technique>
+      </optics>
+    </camera>
+  </library_cameras>
+  <library_visual_scenes>
+    <visual_scene id="RootNode" name="RootNode">
+      <node id="box" name="box">
+        <matrix sid="matrix">0.707107 -0.707107 -0.000000 0.000000 0.500000 0.500000 0.707107 0.000000 -0.500000 -0.500000 0.707107 0.000000 0.000000 0.000000 0.000000 1.000000</matrix>
+        <instance_geometry url="#box-lib">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="blue" target="#blue"/>
+              <instance_material symbol="cyan" target="#cyan"/>
+              <instance_material symbol="green" target="#green"/>
+              <instance_material symbol="magenta" target="#magenta"/>
+              <instance_material symbol="red" target="#red"/>
+              <instance_material symbol="yellow" target="#yellow"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node id="Light" name="Light">
+        <matrix sid="matrix">0.707107 0.405580 -0.579228 -200.000000 0.000000 0.819152 0.573576 200.000000 0.707107 -0.405580 0.579228 200.000000 0.000000 0.000000 0.000000 1.000000</matrix>
+        <instance_light url="#Light-lib"/>
+        <instance_light url="#SceneAmbient-lib"/>
+      </node>
+      <node id="Camera" name="Camera">
+        <matrix sid="matrix">1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 338.799988 0.000000 0.000000 0.000000 1.000000</matrix>
+        <instance_camera url="#Camera-lib"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#RootNode"/>
+  </scene>
+</COLLADA>
+

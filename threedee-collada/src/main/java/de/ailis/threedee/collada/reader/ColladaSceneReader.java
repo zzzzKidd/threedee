@@ -7,6 +7,7 @@ package de.ailis.threedee.collada.reader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,10 @@ import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.collada.entities.Blinn;
 import de.ailis.threedee.collada.entities.COLLADA;
+import de.ailis.threedee.collada.entities.Channel;
+import de.ailis.threedee.collada.entities.Channels;
 import de.ailis.threedee.collada.entities.ColladaAmbientLight;
+import de.ailis.threedee.collada.entities.ColladaAnimation;
 import de.ailis.threedee.collada.entities.ColladaCamera;
 import de.ailis.threedee.collada.entities.ColladaColor;
 import de.ailis.threedee.collada.entities.ColladaDirectionalLight;
@@ -22,11 +26,14 @@ import de.ailis.threedee.collada.entities.ColladaLight;
 import de.ailis.threedee.collada.entities.ColladaMaterial;
 import de.ailis.threedee.collada.entities.ColladaMesh;
 import de.ailis.threedee.collada.entities.ColladaPointLight;
+import de.ailis.threedee.collada.entities.ColladaSampler;
 import de.ailis.threedee.collada.entities.ColladaScene;
 import de.ailis.threedee.collada.entities.ColladaSpotLight;
 import de.ailis.threedee.collada.entities.ColladaTexture;
+import de.ailis.threedee.collada.entities.CommonProfile;
 import de.ailis.threedee.collada.entities.CommonTechnique;
 import de.ailis.threedee.collada.entities.DataSource;
+import de.ailis.threedee.collada.entities.DataSources;
 import de.ailis.threedee.collada.entities.Effect;
 import de.ailis.threedee.collada.entities.GeometricElement;
 import de.ailis.threedee.collada.entities.Geometry;
@@ -35,6 +42,7 @@ import de.ailis.threedee.collada.entities.InstanceGeometry;
 import de.ailis.threedee.collada.entities.InstanceLight;
 import de.ailis.threedee.collada.entities.InstanceMaterial;
 import de.ailis.threedee.collada.entities.InstanceVisualScene;
+import de.ailis.threedee.collada.entities.LibraryAnimations;
 import de.ailis.threedee.collada.entities.LibraryVisualScenes;
 import de.ailis.threedee.collada.entities.MatrixTransformation;
 import de.ailis.threedee.collada.entities.Node;
@@ -43,17 +51,28 @@ import de.ailis.threedee.collada.entities.PerspectiveOptic;
 import de.ailis.threedee.collada.entities.Phong;
 import de.ailis.threedee.collada.entities.Polygons;
 import de.ailis.threedee.collada.entities.Primitives;
+import de.ailis.threedee.collada.entities.Profile;
 import de.ailis.threedee.collada.entities.Semantic;
 import de.ailis.threedee.collada.entities.Shading;
 import de.ailis.threedee.collada.entities.SharedInput;
 import de.ailis.threedee.collada.entities.SharedInputs;
 import de.ailis.threedee.collada.entities.Transformation;
+import de.ailis.threedee.collada.entities.TranslateTransformation;
+import de.ailis.threedee.collada.entities.Triangles;
+import de.ailis.threedee.collada.entities.UnsharedInputs;
 import de.ailis.threedee.collada.entities.Vertices;
 import de.ailis.threedee.collada.entities.VisualScene;
+import de.ailis.threedee.collada.entities.profileparams.Sampler2DParam;
+import de.ailis.threedee.collada.entities.profileparams.SurfaceParam;
 import de.ailis.threedee.collada.parser.ColladaParser;
+import de.ailis.threedee.exceptions.ParserException;
 import de.ailis.threedee.exceptions.ReaderException;
 import de.ailis.threedee.io.SceneReader;
 import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.math.Matrix4f;
+import de.ailis.threedee.sampling.Interpolation;
+import de.ailis.threedee.sampling.Sampler;
+import de.ailis.threedee.sampling.SamplerValue;
 import de.ailis.threedee.scene.Camera;
 import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Group;
@@ -61,6 +80,9 @@ import de.ailis.threedee.scene.Light;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.animation.Animation;
+import de.ailis.threedee.scene.animation.AnimationGroup;
+import de.ailis.threedee.scene.animation.TransformAnimation;
 import de.ailis.threedee.scene.lights.AmbientLight;
 import de.ailis.threedee.scene.lights.DirectionalLight;
 import de.ailis.threedee.scene.lights.PointLight;
@@ -170,6 +192,10 @@ public class ColladaSceneReader extends SceneReader
         {
             appendNode(rootNode, node);
         }
+
+        // Process animations
+        processAnimations(scene);
+
         return scene;
     }
 
@@ -201,6 +227,12 @@ public class ColladaSceneReader extends SceneReader
                         m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11],
                         m[15]);
             }
+            else if (transformation instanceof TranslateTransformation)
+            {
+                final float[] m = ((TranslateTransformation) transformation)
+                        .getValues();
+                sceneNode.translate(m[0], m[1], m[2]);
+            }
         }
 
         // Process the meshes
@@ -218,7 +250,8 @@ public class ColladaSceneReader extends SceneReader
                 model.bindMaterial(instanceMaterial.getSymbol(),
                         buildMaterial(instanceMaterial));
             }
-            for (final Map.Entry<String, ImageTexture> entry: this.textures.entrySet())
+            for (final Map.Entry<String, ImageTexture> entry : this.textures
+                .entrySet())
             {
                 model.bindTexture(entry.getKey(), entry.getValue());
             }
@@ -253,6 +286,150 @@ public class ColladaSceneReader extends SceneReader
 
 
     /**
+     * Processes all animations and adds them to the specified scene.
+     *
+     * @param scene
+     *            The scene to add the animations to
+     */
+
+    private void processAnimations(final Scene scene)
+    {
+        final LibraryAnimations animations = this.collada
+            .getLibraryAnimations();
+        for (final ColladaAnimation animation : animations)
+        {
+            final Animation anim = processAnimation(animation);
+            if (anim != null) scene.addAnimation(anim);
+        }
+    }
+
+
+    /**
+     * Converts a Collada animation into a ThreeDee animation.
+     *
+     * @param colladaAnimation
+     *            The Collada animation
+     * @return The ThreeDee animation
+     */
+
+    private Animation processAnimation(final ColladaAnimation colladaAnimation)
+    {
+        final Channels channels = colladaAnimation.getChannels();
+        final Animation group = new AnimationGroup(colladaAnimation.getId());
+        for (final Channel channel : channels)
+        {
+            final URI uri = channel.getSource();
+            final String target = channel.getTarget();
+            final SceneNode node = getNodeByTarget(this.scene, target);
+            final String animTarget = getAnimationTarget(target);
+            final ColladaSampler colladaSampler = colladaAnimation
+                .getSamplers().get(uri.getFragment());
+            final UnsharedInputs inputs = colladaSampler.getInputs();
+            final DataSources sources = colladaAnimation.getSources();
+
+            if (animTarget.equals("matrix"))
+            {
+                final String inputId = inputs.get(Semantic.INPUT).getSource()
+                    .getFragment();
+                final String outputId = inputs.get(Semantic.OUTPUT).getSource()
+                    .getFragment();
+                final String interpolationId = inputs
+                    .get(Semantic.INTERPOLATION).getSource().getFragment();
+                final float[] inputData = sources.get(inputId).getData()
+                    .getFloatData();
+                if (inputData.length > 0)
+                {
+                    final Matrix4f[] outputData = getMatrixData(sources
+                        .get(outputId).getData().getFloatData());
+                    final String[] interpolationData = sources
+                        .get(interpolationId)
+                        .getData().getStringData();
+
+                    final Sampler<Matrix4f> sampler = new Sampler<Matrix4f>();
+                    for (int i = 0, max = inputData.length; i < max; i++)
+                    {
+                        sampler
+                            .addSample(inputData[i], new SamplerValue<Matrix4f>(
+                                outputData[i], Interpolation
+                                    .valueOf(interpolationData[i])));
+                    }
+
+                    final Animation animation = new TransformAnimation(
+                        colladaAnimation.getId(), sampler);
+                    animation.addNode(node);
+
+                    group.addAnimation(animation);
+                }
+            }
+            else
+            {
+                throw new ParserException("Unknown animation target: "
+                    + animTarget);
+            }
+        }
+
+        // Process sub animations
+        for (final ColladaAnimation subAnim : colladaAnimation
+            .getAnimations())
+            group.addAnimation(processAnimation(subAnim));
+
+        return group;
+    }
+
+    /**
+     * Creates a matrix array from the specified float array.
+     *
+     * @param values
+     *            The matrix values (16 per matrix)
+     * @return The matrix array
+     */
+
+    private Matrix4f[] getMatrixData(final float[] values)
+    {
+        final int max = values.length / 16;
+        final Matrix4f[] matrixData = new Matrix4f[max];
+        for (int i = 0; i < max; i++)
+            matrixData[i] = new Matrix4f(values, i * 16).transpose();
+        return matrixData;
+    }
+
+
+    /**
+     * Extracts the animation target from the target string.
+     *
+     * @param target
+     *            The target string
+     * @return The animation target
+     */
+
+    private String getAnimationTarget(final String target)
+    {
+        final String[] parts = target.split("/", 2);
+        return parts[1];
+    }
+
+
+    /**
+     * Returns the targeted node.
+     *
+     * @param scene
+     *            The scene
+     * @param target
+     *            The target
+     * @return The node. Never null
+     */
+
+    private SceneNode getNodeByTarget(final Scene scene, final String target)
+    {
+        final String[] parts = target.split("/", 2);
+        final SceneNode node = scene.getNodeById(parts[0]);
+        if (node == null)
+            throw new ParserException("Can't find node for target " + target);
+        return node;
+    }
+
+
+    /**
      * Builds a ThreeDee material from a Collada material.
      *
      * @param instanceMaterial
@@ -268,23 +445,25 @@ public class ColladaSceneReader extends SceneReader
                         instanceMaterial.getTarget().getFragment());
         final Effect effect = this.collada.getLibraryEffects().get(
                 colladaMaterial.getEffectURI().getFragment());
-        final CommonTechnique technique = effect.getProfiles()
-                .getCommonProfile().getTechniques().get(0);
+        final CommonProfile profile = effect.getProfiles().getCommonProfile();
+        final CommonTechnique technique = profile.getTechniques().get(0);
         final Phong phong = technique.getPhong();
         final Blinn blinn = technique.getBlinn();
-        return buildMaterial(phong == null ? blinn : phong);
+        return buildMaterial(profile, phong == null ? blinn : phong);
     }
 
 
     /**
      * Builds a ThreeDee material from Collada shading information.
      *
+     * @param profile
+     *            The effect profile
      * @param shading
      *            The Collada shading information
      * @return The ThreeDee material
      */
 
-    private Material buildMaterial(final Shading shading)
+    private Material buildMaterial(final Profile profile, final Shading shading)
     {
         final MaterialBuilder builder = new MaterialBuilder();
         if (shading.getAmbient().isColor())
@@ -301,8 +480,9 @@ public class ColladaSceneReader extends SceneReader
                     .setDiffuseColor(buildColor(shading.getDiffuse().getColor()));
         if (shading.getDiffuse().isTexture())
         {
-            final ColladaTexture colladaTexture = shading.getDiffuse().getTexture();
-            final ImageTexture texture = buildTexture(colladaTexture);
+            final ColladaTexture colladaTexture = shading.getDiffuse()
+                .getTexture();
+            final ImageTexture texture = buildTexture(profile, colladaTexture);
             final String textureName = colladaTexture.getTexture();
             this.textures.put(textureName, texture);
             builder.setDiffuseTexture(textureName);
@@ -313,18 +493,31 @@ public class ColladaSceneReader extends SceneReader
         return builder.build();
     }
 
+
     /**
      * Bulds a ThreeDee texture from a Collada texture.
      *
+     * @param profile
+     *            The effect profile
      * @param texture
      *            The collada Texture
      * @return The ThreeDee texture
      */
 
-    private ImageTexture buildTexture(final ColladaTexture texture)
+    private ImageTexture buildTexture(final Profile profile,
+        final ColladaTexture texture)
     {
-        return new ImageTexture(this.collada.getLibraryImages().get(texture.getTexture())
-                .getURI().getPath());
+        String id = texture.getTexture();
+        final Sampler2DParam sampler = (Sampler2DParam) profile.getParams()
+            .get(id);
+        if (sampler != null)
+        {
+            final SurfaceParam surface = (SurfaceParam) profile.getParams()
+                .get(sampler.getSource());
+            id = surface.getImageId();
+        }
+        return new ImageTexture(this.collada.getLibraryImages()
+            .get(id).getURI().getPath());
     }
 
 
@@ -421,10 +614,12 @@ public class ColladaSceneReader extends SceneReader
      * @return The ThreeDee ambient light
      */
 
-    private AmbientLight buildAmbientLight(final ColladaAmbientLight colladaLight)
+    private AmbientLight buildAmbientLight(
+        final ColladaAmbientLight colladaLight)
     {
         final ColladaColor color = colladaLight.getColor();
-        return new AmbientLight(new Color(color.getRed(), color.getGreen(), color
+        return new AmbientLight(new Color(color.getRed(), color.getGreen(),
+            color
                 .getBlue()));
     }
 
@@ -457,7 +652,8 @@ public class ColladaSceneReader extends SceneReader
     private SpotLight buildSpotLight(final ColladaSpotLight colladaLight)
     {
         final ColladaColor color = colladaLight.getColor();
-        final SpotLight spotLight = new SpotLight(new Color(color.getRed(), color.getGreen(), color
+        final SpotLight spotLight = new SpotLight(new Color(color.getRed(),
+            color.getGreen(), color
                 .getBlue()));
         final Float falloffAngle = colladaLight.getFalloffAngle();
         if (falloffAngle != null) spotLight.setCutOff(falloffAngle / 2);
@@ -547,6 +743,10 @@ public class ColladaSceneReader extends SceneReader
         {
             processPolygons(builder, mesh, (Polygons) primitives);
         }
+        else if (primitives instanceof Triangles)
+        {
+            processTriangles(builder, mesh, (Triangles) primitives);
+        }
         else
             throw new ReaderException("Unknown primitives type: "
                     + primitives.getClass());
@@ -626,8 +826,77 @@ public class ColladaSceneReader extends SceneReader
 
 
     /**
-     * Returns the offset for the specified input semantic. Returns -1 if
-     * the input was not found.
+     * Processes triangles.
+     *
+     * @param builder
+     *            The mesh builder
+     * @param mesh
+     *            The collada mesh
+     * @param triangles
+     *            The triangles to process
+     */
+
+    private void processTriangles(final MeshBuilder builder,
+            final ColladaMesh mesh, final Triangles triangles)
+    {
+        // Process all the data inputs
+        processSources(builder, mesh, triangles.getInputs());
+
+        // Get block size of the indices array
+        final int blockSize = getBlockSize(mesh, triangles);
+
+        // Get the offsets into the indices array
+        final int vertexOffset = getOffset(triangles, Semantic.VERTEX);
+        final int normalOffset = getOffset(triangles, Semantic.NORMAL);
+        final int texCoordOffset = getOffset(triangles, Semantic.TEXCOORD);
+
+        // Check what we have
+        final boolean hasNormals = normalOffset != -1;
+        final boolean hasTexCoords = texCoordOffset != -1;
+
+        // Process indices
+        final int[] indices = triangles.getIndices();
+        final int[] pIndices = indices;
+        final int size = pIndices.length / blockSize;
+
+        final int[] vertices = new int[size];
+        final int[] normals = hasNormals ? new int[size] : null;
+        final int[] texCoords = hasTexCoords ? new int[size] : null;
+
+        // Check if normals/texCoords are used (this state can be
+        // disabled during polygon processing when an illegal
+        // index was found)
+        boolean useNormals = hasNormals;
+        boolean useTexCoords = hasTexCoords;
+
+        // Process the indices of a single polygon
+        for (int i = 0; i < size; i++)
+        {
+            vertices[i] = pIndices[i * blockSize + vertexOffset];
+
+            if (hasNormals)
+            {
+                normals[i] = pIndices[i * blockSize + normalOffset];
+                useNormals &= normals[i] >= 0;
+            }
+
+            if (hasTexCoords)
+            {
+                texCoords[i] = pIndices[i * blockSize + texCoordOffset];
+                useTexCoords &= texCoords[i] >= 0;
+            }
+        }
+
+        // Add polygon to the mesh builder
+        if (useNormals) builder.useNormals(normals);
+        if (useTexCoords) builder.useTexCoords(texCoords);
+        builder.addElement(3, vertices);
+    }
+
+
+    /**
+     * Returns the offset for the specified input semantic. Returns -1 if the
+     * input was not found.
      *
      * @param primitives
      *            The primitives

@@ -128,7 +128,7 @@ class TextureReference
 
         // Setup texture wrap mode
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S,
-                GL.GL_REPEAT);
+                GL.GL_CLAMP);
         gl
                 .glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T,
                     GL.GL_REPEAT);

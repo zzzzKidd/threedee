@@ -40,6 +40,39 @@ public class Matrix4f
 
 
     /**
+     * Constructs a new matrix with the specified values.
+     *
+     * @param values
+     *            The matrix values (Must have at least 16 values)
+     */
+
+    public Matrix4f(final float[] values)
+    {
+        this(values, 0);
+    }
+
+
+    /**
+     * Constructs a new matrix with values read from the specified array
+     * beginning at the given index.
+     *
+     * @param values
+     *            The matrix values (Must have at least index+16 values)
+     * @param index
+     *            The start index
+     */
+
+    public Matrix4f(final float[] values, final int index)
+    {
+        this();
+        for (int i = 0; i < 16; i++)
+        {
+            this.m[i] = values[index + i];
+        }
+    }
+
+
+    /**
      * Returns the float buffer used to store the matrix. This buffer can be
      * used for GL commands.
      *
@@ -1039,5 +1072,21 @@ public class Matrix4f
                 + "[ " + m[8] + ", " + m[9] + ", " + m[10] + ", " + m[11]
                 + "], " + "[ " + m[12] + ", " + m[13] + ", " + m[14] + ", "
                 + m[15] + "]]";
+    }
+
+    /**
+     * Transpose the matrix.
+     *
+     * @return This matrix for chaining
+     */
+
+    public Matrix4f transpose()
+    {
+        final float[] m = this.m;
+        return this.set(
+            m[0], m[4], m[8], m[12],
+            m[1], m[5], m[9], m[13],
+            m[2], m[6], m[10], m[14],
+            m[3], m[7], m[11], m[15]);
     }
 }

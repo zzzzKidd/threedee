@@ -12,16 +12,16 @@ import javax.swing.JFrame;
 
 import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
-import de.ailis.threedee.entities.Color;
-import de.ailis.threedee.entities.DirectionalLight;
 import de.ailis.threedee.entities.Light;
-import de.ailis.threedee.entities.LightInstance;
-import de.ailis.threedee.entities.Material;
-import de.ailis.threedee.entities.Mesh;
-import de.ailis.threedee.entities.MeshInstance;
-import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
-import de.ailis.threedee.jogl.swing.SceneCanvas;
+import de.ailis.threedee.jogl.SceneCanvas;
+import de.ailis.threedee.scene.Color;
+import de.ailis.threedee.scene.Light;
+import de.ailis.threedee.scene.Scene;
+import de.ailis.threedee.scene.SceneNode;
+import de.ailis.threedee.scene.lights.DirectionalLight;
+import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.scene.model.Mesh;
+import de.ailis.threedee.scene.model.MeshInstance;
 
 
 /**
@@ -61,7 +61,7 @@ public class CubeDemo
         final Light light = new DirectionalLight(Color.DARK_GRAY, Color.WHITE,
                 Color.WHITE);
         final SceneNode lightNode = new SceneNode();
-        final LightInstance lightInstance = new LightInstance(light);
+        final Light lightInstance = new Light(light);
         lightNode.addLight(lightInstance);
         root.enableLight(lightInstance);
         root.appendChild(lightNode);

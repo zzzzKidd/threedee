@@ -25,6 +25,9 @@ public class DataSource implements Identifiable
     /** The data array */
     private DataArray data;
 
+    /** The data accessor */
+    private Accessor accessor;
+
 
     /**
      * Constructs a source with the given id.
@@ -88,5 +91,30 @@ public class DataSource implements Identifiable
     public DataArray getData()
     {
         return this.data;
+    }
+
+
+    /**
+     * Returns the data accessor.
+     *
+     * @return The data accessor
+     */
+
+    public Accessor getAccessor()
+    {
+        return this.accessor;
+    }
+
+
+    /**
+     * Sets the data accessor.
+     *
+     * @param accessor
+     *            The data accessor to set
+     */
+
+    public void setAccessor(final Accessor accessor)
+    {
+        this.accessor = accessor;
     }
 }

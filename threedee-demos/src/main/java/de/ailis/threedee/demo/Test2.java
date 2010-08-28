@@ -11,10 +11,9 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import de.ailis.threedee.collada.reader.ColladaSceneReader;
-import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.io.resources.ClasspathResourceProvider;
-import de.ailis.threedee.jogl.swing.SceneCanvas;
+import de.ailis.threedee.jogl.SceneCanvas;
+import de.ailis.threedee.scene.Scene;
 
 
 /**
@@ -43,43 +42,43 @@ public class Test2
         // Load the asset
         //final String filename = "lightscene_trippled.dae";
 //        final String filename = "lightscene_with_lights.dae";
-        final String filename = "cup.dae";
+        //final String filename = "cup.dae";
+        //final String filename = "test.dae";
+        //final String filename = "lightscene_with_FBX_thirdparty.dae";
+//        final String filename = "lightscene_ascii_3cups.dae";
+        final String filename = "weapon.dae";
         final Scene scene = new ColladaSceneReader(
                 new ClasspathResourceProvider()).read(filename);
 
         // Create the canvas component displaying the scene
         final SceneCanvas canvas = new SceneCanvas(scene);
-        canvas.setPreferredSize(new Dimension(1024, 768));
+        canvas.setPreferredSize(new Dimension(512, 512));
         frame.getContentPane().add(canvas);
-
-        final SceneNode root = scene.getRootNode();
-/*
-
-        final PointLight spotLight = new PointLight(Color.BLACK, Color.BLACK, Color.WHITE);
-        final LightInstance light = new LightInstance(spotLight);
-        final SceneNode lightNode = new SceneNode();
-        lightNode.addLight(light);
-        lightNode.translateZ(0f);
-        lightNode.translateY(50f);
-        //lightNode.rotateX((float) Math.toRadians(-90f));
-        lightNode.getPhysics().getVelocity().setZ(20);
-        root.appendChild(lightNode);
-        root.enableLight(light);
-*/
-
-
-/*
-       final Camera camera = new Camera();
-        final CameraNode cameraNode = new CameraNode(camera);
-        cameraNode.rotateX((float) Math.toRadians(-65f));
-        cameraNode.translateZ(440f);
-        cameraNode.translateX(10f);
-        scene.getRootNode().appendChild(cameraNode);
-        scene.setCameraNode(cameraNode);
-*/
 
         // Display the frame
         frame.pack();
         frame.setVisible(true);
+
+/*
+        final Model box = new Model(MeshFactory.createBox(1, 1, 1));
+        final Model model = ((Model) scene.getRootNode().getFirstChild().getFirstChild());
+        for (final MeshPolygons polygons: model.getMesh().getPolygons())
+        {
+            System.out.println(polygons.getIndexCount());
+        }*/
+//model.setShowBounds(true);
+//model.setShowNormals(true);
+        //scene.getRootNode().appendChild(box);
+
+        /*
+        final Camera camera = new Camera();
+        scene.getRootNode().appendChild(camera);
+        camera.rotateX((float) Math.PI * 4);
+        camera.translateZ(10);
+        scene.setCameraNode(camera);
+*/
+        //System.out.println(scene.getRootNode());
+
+//        scene.getNodeById("box").getPhysics().getSpin().setX(0.5f).setY(0.75f);
     }
 }

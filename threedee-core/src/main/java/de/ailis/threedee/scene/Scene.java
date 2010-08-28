@@ -14,6 +14,7 @@ import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
+import de.ailis.threedee.scene.animation.Animation;
 import de.ailis.threedee.scene.properties.Lighting;
 import de.ailis.threedee.scene.textures.TextureManager;
 
@@ -44,6 +45,9 @@ public class Scene
 
     /** The ID-to-node mapping */
     private final Map<String, SceneNode> nodes = new HashMap<String, SceneNode>();
+
+    /** The list with animations */
+    private List<Animation> animations = null;
 
 
     /**
@@ -135,6 +139,15 @@ public class Scene
         // Update nodes and update the changed-flag if needed
         if (this.rootNode != null)
             changed |= this.rootNode.update(delta);
+
+        // Update animations if present
+        if (this.animations != null && !this.animations.isEmpty())
+        {
+            for (final Animation animation: this.animations)
+                animation.update(delta);
+            changed = true;
+        }
+
 
         // Update textures and update the changed-flag if needed
         changed |= TextureManager.getInstance().update(delta);
@@ -365,5 +378,34 @@ public class Scene
     public SceneNode getNodeById(final String id)
     {
         return this.nodes.get(id);
+    }
+
+
+    /**
+     * Adds an animation.
+     *
+     * @param animation
+     *            The animation to add
+     */
+
+    public void addAnimation(final Animation animation)
+    {
+        if (this.animations == null)
+            this.animations = new ArrayList<Animation>();
+        this.animations.add(animation);
+    }
+
+
+    /**
+     * Removes an animation.
+     *
+     * @param animation
+     *            The animation to remove.
+     */
+
+    public void removeAnimation(final Animation animation)
+    {
+        if (this.animations == null) return;
+        this.animations.remove(animation);
     }
 }

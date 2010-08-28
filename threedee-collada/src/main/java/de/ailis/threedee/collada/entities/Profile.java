@@ -22,6 +22,9 @@ public abstract class Profile implements Identifiable
     /** The id */
     private String id;
 
+    /** The profile paramerters */
+    private final ProfileParams params = new ProfileParams();
+
 
     /**
      * Returns the ID
@@ -46,5 +49,17 @@ public abstract class Profile implements Identifiable
     public void setId(final String id)
     {
         this.id = id;
+    }
+
+
+    /**
+     * Returns the parameters
+     *
+     * @return The parameters
+     */
+
+    public ProfileParams getParams()
+    {
+        return this.params;
     }
 }

@@ -11,11 +11,11 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import de.ailis.threedee.entities.Asset;
-import de.ailis.threedee.entities.Scene;
-import de.ailis.threedee.entities.SceneNode;
 import de.ailis.threedee.io.resources.ClasspathResourceProvider;
-import de.ailis.threedee.jogl.swing.SceneCanvas;
+import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.reader.AssetReader;
+import de.ailis.threedee.scene.Scene;
+import de.ailis.threedee.scene.SceneNode;
 
 
 /**

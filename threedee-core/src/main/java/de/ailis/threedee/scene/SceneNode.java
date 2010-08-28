@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.ailis.threedee.animation.Animation;
 import de.ailis.threedee.events.NodeListener;
 import de.ailis.threedee.math.Matrix4f;
 import de.ailis.threedee.math.Vector3f;
@@ -64,9 +63,6 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
     /** The node properties */
     private List<NodeProperty> properties;
-
-    /** The animations */
-    private List<Animation> animations;
 
     /** The list with node listeners */
     private List<NodeListener> nodeListeners;
@@ -355,14 +351,6 @@ public abstract class SceneNode implements Iterable<SceneNode>
 
         boolean changed = false;
         if (this.physics != null) changed |= this.physics.update(this, delta);
-
-        // Animate the node if animations are present
-        if (this.animations != null && !this.animations.isEmpty())
-        {
-            for (final Animation animation: this.animations)
-                animation.animate(this, delta);
-            changed = true;
-        }
 
         for (final SceneNode childNode : this)
             changed |= childNode.update(delta);
@@ -1012,34 +1000,5 @@ public abstract class SceneNode implements Iterable<SceneNode>
         final String oldId = this.id;
         this.id = id;
         if (this.scene != null) this.scene.reregisterNode(this, oldId);
-    }
-
-
-    /**
-     * Adds an animation.
-     *
-     * @param animation
-     *            The animation to add
-     */
-
-    public void addAnimation(final Animation animation)
-    {
-        if (this.animations == null)
-            this.animations = new ArrayList<Animation>();
-        this.animations.add(animation);
-    }
-
-
-    /**
-     * Removes an animation.
-     *
-     * @param animation
-     *            The animation to remove.
-     */
-
-    public void removeAnimation(final Animation animation)
-    {
-        if (this.properties == null) return;
-        this.animations.remove(animation);
     }
 }

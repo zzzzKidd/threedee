@@ -25,6 +25,9 @@ public class DataArray implements Identifiable
     /** The float data */
     private float[] floatData;
 
+    /** The string data */
+    private String[] stringData;
+
     /** The data */
     private Object data;
 
@@ -103,6 +106,18 @@ public class DataArray implements Identifiable
 
 
     /**
+     * Checks if data is string data.
+     *
+     * @return True if data is string data, false if not
+     */
+
+    public boolean isStringData()
+    {
+        return this.stringData != null;
+    }
+
+
+    /**
      * Returns the float data of the array.
      *
      * @return The float data
@@ -120,15 +135,49 @@ public class DataArray implements Identifiable
 
 
     /**
+     * Returns the string data of the array.
+     *
+     * @return The string data
+     * @throws IllegalStateException
+     *             When data array does not contain string data
+     */
+
+    public String[] getStringData()
+    {
+        if (this.stringData == null)
+            throw new IllegalStateException(
+                    "Data array does not contain string data");
+        return this.stringData;
+    }
+
+
+    /**
      * Sets float data.
      *
-     * @param data The float data to set
+     * @param data
+     *            The float data to set
      */
 
     public void setData(final float[] data)
     {
         this.data = data;
         this.floatData = data;
+        this.stringData = null;
+    }
+
+
+    /**
+     * Sets string data.
+     *
+     * @param data
+     *            The string data to set
+     */
+
+    public void setData(final String[] data)
+    {
+        this.data = data;
+        this.floatData = null;
+        this.stringData = data;
     }
 
 
@@ -141,6 +190,7 @@ public class DataArray implements Identifiable
     public int getCount()
     {
         if (this.floatData != null) return this.floatData.length;
+        if (this.stringData != null) return this.stringData.length;
         return 0;
     }
 }

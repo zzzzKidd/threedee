@@ -267,6 +267,9 @@ public interface GL
     public static final int GL_TEXTURE_WRAP_T = 0x2803;
 
     /** Repeat */
+    public static final int GL_CLAMP = 0x2900;
+
+    /** Repeat */
     public static final int GL_REPEAT = 0x2901;
 
     /** Color buffer */

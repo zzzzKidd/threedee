@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+    
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <param name="Threshold" value="ALL" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %x [%c{1}] %m%n" />
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="WARN" />
+        </filter>        
+    </appender>
+    
+    <appender name="stderr" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.err" />
+        <param name="Threshold" value="ERROR" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %x [%c{1}] %m%n" />
+        </layout>
+    </appender>
+
+
+    <!-- Enable DEBUG output for ThreeDee classes -->
+    <category name="de.ailis.threedee">
+        <priority value="DEBUG" />
+    </category>
+
+    <!-- The root logger -->                   
+    <root>
+       <priority value="INFO" />
+       <appender-ref ref="stdout" />
+       <appender-ref ref="stderr" />
+    </root>
+
+</log4j:configuration>

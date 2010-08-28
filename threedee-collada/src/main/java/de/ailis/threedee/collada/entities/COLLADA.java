@@ -31,6 +31,9 @@ public class COLLADA implements Serializable
     /** The library geometries */
     private final LibraryGeometries geometries = new LibraryGeometries();
 
+    /** The library animations */
+    private final LibraryAnimations animations = new LibraryAnimations();
+
     /** The library lights */
     private final LibraryLights lights = new LibraryLights();
 
@@ -89,6 +92,18 @@ public class COLLADA implements Serializable
     public LibraryGeometries getLibraryGeometries()
     {
         return this.geometries;
+    }
+
+
+    /**
+     * Returns the library animations.
+     *
+     * @return The library animations
+     */
+
+    public LibraryAnimations getLibraryAnimations()
+    {
+        return this.animations;
     }
 
 

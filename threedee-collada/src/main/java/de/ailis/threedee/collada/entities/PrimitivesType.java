@@ -15,5 +15,8 @@ package de.ailis.threedee.collada.entities;
 public enum PrimitivesType
 {
     /** Primitives in form of polygons */
-    POLYGONS
+    POLYGONS,
+
+    /** Primitives in form of triangles */
+    TRIANGLES
 }

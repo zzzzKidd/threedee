@@ -24,5 +24,14 @@ public enum Semantic
     VERTEX,
 
     /** TexCoord semantic */
-    TEXCOORD
+    TEXCOORD,
+
+    /** Input semantic */
+    INPUT,
+
+    /** Output semantic */
+    OUTPUT,
+
+    /** Interpolation semantic */
+    INTERPOLATION
 }
