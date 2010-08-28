@@ -71,6 +71,11 @@
       <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee/</url>
     </site>
   </distributionManagement>
+
+  <properties>
+    <jogl.version>1.1.1a</jogl.version>
+    <gluegen.version>1.0b06</gluegen.version>
+  </properties>
   
   <dependencyManagement>
     <dependencies>
@@ -121,5 +126,34 @@
   	<module>threedee-wavefront</module>
   	<module>threedee-java2d</module>
   </modules>
+  
+  <profiles>
+    <profile>
+      <id>windows-amd64</id>
+      <activation>
+        <os>
+          <arch>amd64</arch>
+          <family>Windows</family>
+        </os>
+      </activation>
+      <properties>
+        <gluegen.classifier>natives-windows-amd64</gluegen.classifier>
+        <jogl.classifier>win64-natives</jogl.classifier>
+      </properties>
+    </profile>
+    <profile>
+      <id>linux-amd64</id>
+      <activation>
+        <os>
+          <arch>amd64</arch>
+          <family>Linux</family>
+        </os>
+      </activation>
+      <properties>
+        <gluegen.classifier>natives-linux-amd64</gluegen.classifier>
+        <jogl.classifier>linux64-natives</jogl.classifier>
+      </properties>
+    </profile>
+  </profiles>
   
 </project>
