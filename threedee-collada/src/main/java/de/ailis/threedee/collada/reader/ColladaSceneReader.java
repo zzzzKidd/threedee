@@ -76,15 +76,15 @@ import de.ailis.threedee.scene.textures.ImageTexture;
 
 
 /**
- * Scene reader for collada files.
+ * Scene reader for COLLADA files.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
 
 public class ColladaSceneReader extends SceneReader
 {
-    /** The collada document which is currently processed */
-    private Document collada;
+    /** The COLLADA document which is currently processed */
+    private Document doc;
 
     /** The mesh cache */
     private Map<String, Mesh> meshes;
@@ -116,7 +116,7 @@ public class ColladaSceneReader extends SceneReader
     @Override
     public Scene read(final InputStream stream) throws IOException
     {
-        this.collada = new ColladaReader().read(stream);
+        this.doc = new ColladaReader().read(stream);
         this.meshes = new HashMap<String, Mesh>();
         try
         {
@@ -124,7 +124,7 @@ public class ColladaSceneReader extends SceneReader
         }
         finally
         {
-            this.collada = null;
+            this.doc = null;
             this.meshes = null;
         }
     }
@@ -139,19 +139,19 @@ public class ColladaSceneReader extends SceneReader
     private Scene buildScene()
     {
         // If active scene is set then return this one
-        final de.ailis.jollada.model.Scene colladaScene = this.collada
+        final de.ailis.jollada.model.Scene colladaScene = this.doc
                 .getScene();
         if (colladaScene != null)
         {
             final VisualSceneInstance sceneInstance = colladaScene
                     .getVisualSceneInstance();
             if (sceneInstance != null)
-                return buildScene((VisualScene) this.collada.getById(
+                return buildScene((VisualScene) this.doc.getById(
                         sceneInstance.getUrl().getFragment()));
         }
 
         // No active scene set, so return the first scene if there is one
-        final VisualSceneLibraries sceneLibs = this.collada
+        final VisualSceneLibraries sceneLibs = this.doc
                 .getVisualSceneLibraries();
         if (sceneLibs.size() > 0)
         {
@@ -159,7 +159,7 @@ public class ColladaSceneReader extends SceneReader
             if (scenes.size() > 0) return buildScene(scenes.get(0));
         }
 
-        throw new ReaderException("No scene found in collada document");
+        throw new ReaderException("No scene found in COLLADA document");
     }
 
 
@@ -215,7 +215,7 @@ public class ColladaSceneReader extends SceneReader
                 .getGeometryInstances())
         {
             this.textures = new HashMap<String, ImageTexture>();
-            final Geometry geometry = (Geometry) this.collada.getById(
+            final Geometry geometry = (Geometry) this.doc.getById(
                     instanceGeometry.getUrl().getFragment());
             final Mesh mesh = buildMesh(geometry);
             final Model model = new Model(mesh);
@@ -237,7 +237,7 @@ public class ColladaSceneReader extends SceneReader
         // Process the lights
         for (final LightInstance instanceLight : node.getLightInstances())
         {
-            final de.ailis.jollada.model.Light colladaLight = (de.ailis.jollada.model.Light) this.collada
+            final de.ailis.jollada.model.Light colladaLight = (de.ailis.jollada.model.Light) this.doc
                     .getById(
                     instanceLight.getUrl().getFragment());
             final Light light = buildLight(colladaLight);
@@ -248,7 +248,7 @@ public class ColladaSceneReader extends SceneReader
         // Process the cameras
         for (final CameraInstance instanceCamera : node.getCameraInstances())
         {
-            final de.ailis.jollada.model.Camera colladaCamera = (de.ailis.jollada.model.Camera) this.collada
+            final de.ailis.jollada.model.Camera colladaCamera = (de.ailis.jollada.model.Camera) this.doc
                     .getById(
                             instanceCamera.getUrl().getFragment());
             final Camera camera = buildCamera(colladaCamera);
@@ -421,10 +421,10 @@ public class ColladaSceneReader extends SceneReader
     private Material buildMaterial(final MaterialInstance instanceMaterial)
     {
         // if (1==1) return Material.DEFAULT;
-        final de.ailis.jollada.model.Material colladaMaterial = (de.ailis.jollada.model.Material) this.collada
+        final de.ailis.jollada.model.Material colladaMaterial = (de.ailis.jollada.model.Material) this.doc
                 .getById(
                         instanceMaterial.getTarget().getFragment());
-        final Effect effect = (Effect) this.collada.getById(
+        final Effect effect = (Effect) this.doc.getById(
                 colladaMaterial.getEffectInstance().getUrl().getFragment());
         final CommonEffectProfile profile = effect.getProfiles()
                 .getCommonProfile();
@@ -488,12 +488,12 @@ public class ColladaSceneReader extends SceneReader
 
 
     /**
-     * Bulds a ThreeDee texture from a Collada texture.
+     * Builds a ThreeDee texture from a COLLADA texture.
      *
      * @param profile
      *            The effect profile
      * @param texture
-     *            The collada Texture
+     *            The COLLADA Texture
      * @return The ThreeDee texture
      */
 
@@ -737,7 +737,7 @@ public class ColladaSceneReader extends SceneReader
      * @param builder
      *            The mesh builder
      * @param mesh
-     *            The collada mesh
+     *            The COLLADA mesh
      * @param primitives
      *            The primitives to process
      */
@@ -839,7 +839,7 @@ public class ColladaSceneReader extends SceneReader
      * @param builder
      *            The mesh builder
      * @param mesh
-     *            The collada mesh
+     *            The COLLADA mesh
      * @param triangles
      *            The triangles to process
      */
@@ -1038,17 +1038,17 @@ public class ColladaSceneReader extends SceneReader
                             .getSource().getFragment();
 
                 processVertexSource(builder,
-                    (DataFlowSource) this.collada.getById(id));
+                    (DataFlowSource) this.doc.getById(id));
             }
             else if (semantic.equals("NORMAL"))
             {
                 processNormalSource(builder,
-                    (DataFlowSource) this.collada.getById(id));
+                    (DataFlowSource) this.doc.getById(id));
             }
             else if (semantic.equals("TEXCOORD"))
             {
                 processTexCoordSource(builder,
-                    (DataFlowSource) this.collada.getById(id));
+                    (DataFlowSource) this.doc.getById(id));
             }
         }
     }
