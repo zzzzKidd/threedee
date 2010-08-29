@@ -10,9 +10,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import de.ailis.gramath.Color4f;
 import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.scene.Camera;
-import de.ailis.threedee.scene.Color;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
@@ -66,7 +66,7 @@ public class Test3
             }
         }
 
-        final SpotLight lightNode = new SpotLight(Color.BLACK, Color.RED, Color.RED);
+        final SpotLight lightNode = new SpotLight(Color4f.BLACK, Color4f.RED, Color4f.RED);
         lightNode.setCutOff(5);
         lightNode.translateZ(50f);
         lightNode.translateY(250f);
@@ -76,7 +76,7 @@ public class Test3
         root.appendChild(lightNode);
         root.addLight(lightNode);
 
-        final SpotLight lightNode2 = new SpotLight(Color.BLACK, Color.BLUE, Color.BLUE);
+        final SpotLight lightNode2 = new SpotLight(Color4f.BLACK, Color4f.BLUE, Color4f.BLUE);
         lightNode2.setCutOff(5);
         lightNode2.translateZ(50f);
         lightNode2.translateY(250f);
@@ -86,7 +86,7 @@ public class Test3
         root.appendChild(lightNode2);
         root.addLight(lightNode2);
 
-        final SpotLight lightNode3 = new SpotLight(Color.BLACK, Color.GREEN, Color.GREEN);
+        final SpotLight lightNode3 = new SpotLight(Color4f.BLACK, Color4f.GREEN, Color4f.GREEN);
         lightNode3.setCutOff(5);
         lightNode3.translateZ(-50f);
         lightNode3.translateY(250f);

@@ -12,18 +12,16 @@ import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
-import de.ailis.threedee.entities.Asset;
+import de.ailis.gramath.ImmutableColor4f;
+import de.ailis.gramath.ImmutableVector3f;
+import de.ailis.gramath.Vector3f;
+import de.ailis.threedee.collada.reader.ColladaSceneReader;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.io.resources.ClasspathResourceProvider;
 import de.ailis.threedee.jogl.SceneCanvas;
-import de.ailis.threedee.math.Vector3f;
-import de.ailis.threedee.model.Model;
-import de.ailis.threedee.model.reader.ModelReader;
-import de.ailis.threedee.reader.AssetReader;
 import de.ailis.threedee.scene.Camera;
-import de.ailis.threedee.scene.Color;
-import de.ailis.threedee.scene.OrbitCamera;
+import de.ailis.threedee.scene.Group;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.lights.PointLight;
@@ -53,11 +51,8 @@ public class CupDemo
         final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Load the asset
-        final Asset asset = AssetReader.read("/dae/duck.dae", new ClasspathResourceProvider());
-
         // Create the canvas component displaying the scene
-        final SceneCanvas canvas = new SceneCanvas(asset.getActiveScene());
+        final SceneCanvas canvas = new SceneCanvas(new ColladaSceneReader(new ClasspathResourceProvider()).read("cup.dae"));
         canvas.setPreferredSize(new Dimension(512, 512));
         frame.getContentPane().add(canvas);
 
@@ -73,35 +68,28 @@ public class CupDemo
 
         // Add another light
         final PointLight light2 = new PointLight();
-        light2.setDiffuseColor(new Color(0.5f, 0.5f, 0.5f));
+        light2.setDiffuseColor(new ImmutableColor4f(0.5f, 0.5f, 0.5f, 1));
         light2.translate(50, 50, -50);
         root.appendChild(light2);
         root.addLight(light2);
 
         // Add another light
         final PointLight light3 = new PointLight();
-        light3.setDiffuseColor(new Color(0.5f, 0.5f, 0.5f));
+        light3.setDiffuseColor(new ImmutableColor4f(0.5f, 0.5f, 0.5f, 1));
         light3.translate(0, 50, -50);
         root.appendChild(light3);
         root.addLight(light3);
 
-        // Create the cup node
-        final Model cup = ModelReader.read("cup2.dae",
-                new ClasspathResourceProvider());
-//        System.exit(0);
-        final Model cupNode = new Model(cup);
-        root.appendChild(cupNode);
-
         // Create an orbiter node
-        final SceneNode orbitter = new SceneNode();
-        cupNode.appendChild(orbitter);
+        final SceneNode orbitter = new Group();
+        root.appendChild(orbitter);
 
-        final SceneNode evaluator = new SceneNode();
+        final SceneNode evaluator = new Group();
         orbitter.appendChild(evaluator);
         //evaluator.translateZ(0.2f);
 
         // Setup the camera
-        final OrbitCamera orbitCamera = new OrbitCamera();
+        //final OrbitCamera orbitCamera = new OrbitCamera();
         final Camera camera = new Camera();
         camera.translateZ(20.5f);
         //camera.translateY(0.1f);
@@ -112,7 +100,7 @@ public class CupDemo
 
         // Add another light
         final PointLight camLight = new PointLight();
-        camLight.setDiffuseColor(new Color(0.5f, 0.5f, 0.5f));
+        camLight.setDiffuseColor(new ImmutableColor4f(0.5f, 0.5f, 0.5f, 1));
         camLight.translate(50, 50, -50);
         camera.appendChild(camLight);
         root.addLight(camLight);
@@ -121,10 +109,10 @@ public class CupDemo
         //cupNode.getPhysics().getSpin().setX(0.5f).setY(0.25f);
         final Physics physics = orbitter.getPhysics();
         //physics.getSpin().setZ(0.01f);
-        physics.getSpin().getDeceleration().set(5f, 5f, 5f);
+        physics.getSpinDeceleration().set(5f, 5f, 5f);
 
         final Physics physics2 = evaluator.getPhysics();
-        physics2.getSpin().getDeceleration().set(5f, 5f, 5f);
+        physics2.getSpinDeceleration().set(5f, 5f, 5f);
 
         scene.addTouchListener(new TouchListener()
         {
@@ -175,13 +163,13 @@ public class CupDemo
                         final float speedX = (float) diff * 25 / 100;
                         lastY = y;
 
-                        final Vector3f v = new Vector3f(speedX, speedY, 0);
+                        final Vector3f v = new ImmutableVector3f(speedX, speedY, 0);
 
                         //v.multiply(cupNode.getSceneTransform().copy().invert());
                         //physics.getSpin().set(v.getX(), v.getY(), v.getZ());
 
-                        physics.getSpin().setY(-speedY);
-                        physics2.getSpin().setX(-speedX);
+                        physics.getSpinVelocity().setY(-speedY);
+                        physics2.getSpinVelocity().setX(-speedX);
 
 //                        physics.getSpin().setX(speedX);
                         //physics.getSpin().setY(speedY);
