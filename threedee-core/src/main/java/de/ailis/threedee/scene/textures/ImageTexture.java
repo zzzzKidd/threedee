@@ -62,41 +62,6 @@ public class ImageTexture implements Texture
 
 
     /**
-     * @see java.lang.Object#hashCode()
-     */
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((this.filename == null) ? 0 : this.filename.hashCode());
-        return result;
-    }
-
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        final ImageTexture other = (ImageTexture) obj;
-        if (this.filename == null)
-        {
-            if (other.filename != null) return false;
-        }
-        else if (!this.filename.equals(other.filename)) return false;
-        return true;
-    }
-
-
-    /**
      * @see Texture#load(GL, ResourceProvider)
      */
 
@@ -122,5 +87,16 @@ public class ImageTexture implements Texture
             throw new TextureException("Unable to load texture '"
                     + this.filename + "': " + e, e);
         }
+    }
+
+
+    /**
+     * @see de.ailis.threedee.scene.textures.Texture#getId()
+     */
+
+    @Override
+    public String getId()
+    {
+        return this.filename;
     }
 }

@@ -14,7 +14,6 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JComponent;
 
-
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
@@ -37,7 +36,7 @@ public class SceneCanvas extends JComponent
     private final GLCanvas canvas;
 
     /** The scene to display */
-    final Scene scene;
+    Scene scene;
 
     /** The animator thread */
     Animator animator;
@@ -47,6 +46,9 @@ public class SceneCanvas extends JComponent
 
     /** The renderer */
     Viewport viewport;
+
+    /** The current touch adapter. */
+    private SceneTouchAdapter touchAdapter;
 
 
     /**
@@ -63,15 +65,11 @@ public class SceneCanvas extends JComponent
      * Constructs a new scene canvas with the specified scene.
      *
      * @param scene
-     *            The scene to display
+     *            The scene to display. Null to start without a scene.
      */
 
     public SceneCanvas(final Scene scene)
     {
-        if (scene == null)
-            throw new IllegalArgumentException("scene must be set");
-        this.scene = scene;
-
         setLayout(new BorderLayout());
         final GLCapabilities capabilities = new GLCapabilities();
         capabilities.setSampleBuffers(true);
@@ -108,6 +106,8 @@ public class SceneCanvas extends JComponent
             @Override
             public void display(final GLAutoDrawable drawable)
             {
+                final Scene scene = getScene();
+                if (scene == null) return;
                 scene.render(viewport);
                 final boolean animate = scene.update();
                 if (animate && !SceneCanvas.this.animator.isAnimating())
@@ -116,12 +116,7 @@ public class SceneCanvas extends JComponent
                     SceneCanvas.this.animator.stop();
             }
         });
-
-        // Install mouse event handler
-        final SceneTouchAdapter touchAdapter = new SceneTouchAdapter(
-                this.scene, this.viewport);
-        this.canvas.addMouseListener(touchAdapter);
-        this.canvas.addMouseMotionListener(touchAdapter);
+        setScene(scene);
     }
 
     /**
@@ -133,6 +128,38 @@ public class SceneCanvas extends JComponent
     public Scene getScene()
     {
         return this.scene;
+    }
+
+
+    /**
+     * Sets a new scene.
+     *
+     * @param scene
+     *            The scene to render. Null to unset.
+     */
+
+    public void setScene(final Scene scene)
+    {
+        // Do nothing if scene has not changed
+        if (scene == this.scene) return;
+
+        // Uninstall old touch adapter if needed
+        if (this.touchAdapter != null)
+        {
+            this.canvas.removeMouseListener(this.touchAdapter);
+            this.canvas.removeMouseMotionListener(this.touchAdapter);
+            this.touchAdapter = null;
+        }
+
+        this.scene = scene;
+
+        // Install new touch adapter
+        if (scene != null)
+        {
+            this.touchAdapter = new SceneTouchAdapter(scene, this.viewport);
+            this.canvas.addMouseListener(this.touchAdapter);
+            this.canvas.addMouseMotionListener(this.touchAdapter);
+        }
     }
 
 

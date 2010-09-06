@@ -236,6 +236,24 @@ public interface GL
     /** Smooth */
     public static final int GL_SMOOTH = 0x1d01;
 
+    /** Replace */
+    public static final int GL_REPLACE = 0x1e01;
+
+    /** Module */
+    public static final int GL_MODULATE = 0x2100;
+
+    /** Decal */
+    public static final int GL_DECAL = 0x2101;
+
+    /** Texture env color */
+    public static final int GL_TEXTURE_ENV_COLOR = 0x2201;
+
+    /** Texture env mode */
+    public static final int GL_TEXTURE_ENV_MODE = 0x2200;
+
+    /** Texture env */
+    public static final int GL_TEXTURE_ENV = 0x2300;
+
     /** Nearest */
     public static final int GL_NEAREST = 0x2600;
 
@@ -1118,4 +1136,20 @@ public interface GL
      */
 
     public boolean glIsTexture(int texture);
+
+
+    /**
+     * Set texture environment parameters.
+     *
+     * @param target
+     *            Specifies a texture environment. Must be GL_TEXTURE_ENV.
+     * @param pname
+     *            Specifies the symbolic name of a single-valued texture
+     *            environment parameter. Must be GL_TEXTURE_ENV_MODE.
+     * @param param
+     *            Specifies a single symbolic constant, one of GL_MODULATE,
+     *            GL_DECAL, GL_BLEND, or GL_REPLACE.
+     */
+
+    public void glTexEnvi(int target, int pname, int param);
 }

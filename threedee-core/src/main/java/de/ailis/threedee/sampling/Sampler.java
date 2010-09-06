@@ -47,6 +47,22 @@ public class Sampler<T>
 
 
     /**
+     * Calculates a coorect modulo.
+     *
+     * @param a
+     *            The value.
+     * @param b
+     *            The modulo.
+     * @return The result.
+     */
+
+    public float mod(final float a, final float b)
+    {
+        return ((a % b) + b) % b;
+    }
+
+
+    /**
      * Returns the sample for the specified input.
      *
      * @param input
@@ -60,14 +76,17 @@ public class Sampler<T>
         if (this.data.isEmpty()) return null;
 
         // If data only contains one value then return this one
-        if (this.data.size() == 1) return this.data.firstEntry().getValue().getValue();
+        if (this.data.size() == 1)
+            return this.data.firstEntry().getValue().getValue();
 
         // Trim input value
-        float trimmedInput = this.minInput + (input - this.minInput) % (this.maxInput - this.minInput);
+        float trimmedInput = this.minInput + mod((input - this.minInput)
+            , (this.maxInput - this.minInput));
         if (trimmedInput < this.minInput) trimmedInput += this.minInput;
 
         // Get the floor entry
-        final Map.Entry<Float, SamplerValue<T>> floor = this.data.floorEntry(trimmedInput);
+        final Map.Entry<Float, SamplerValue<T>> floor = this.data
+            .floorEntry(trimmedInput);
         final SamplerValue<T> floorValue = floor.getValue();
         final float inputA = floor.getKey();
         final T a = floorValue.getValue();
@@ -78,7 +97,8 @@ public class Sampler<T>
         if (interpolation == Interpolation.STEP) return a;
 
         // Get the next entry. If not found then use the first value
-        Map.Entry<Float, SamplerValue<T>> next = this.data.higherEntry(floor.getKey());
+        Map.Entry<Float, SamplerValue<T>> next = this.data.higherEntry(floor
+            .getKey());
         if (next == null) next = this.data.firstEntry();
         final SamplerValue<T> nextValue = next.getValue();
         final float inputB = next.getKey();

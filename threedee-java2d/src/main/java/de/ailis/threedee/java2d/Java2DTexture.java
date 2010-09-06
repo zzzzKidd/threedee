@@ -62,6 +62,8 @@ public class Java2DTexture extends DynamicTexture<Java2DTexture>
     /**
      * Creates a new texture.
      *
+     * @param id
+     * The texture ID.
      * @param width
      *            The texture width
      * @param height
@@ -70,8 +72,10 @@ public class Java2DTexture extends DynamicTexture<Java2DTexture>
      *            If texture should be alphatransparent
      */
 
-    public Java2DTexture(final int width, final int height, final boolean alpha)
+    public Java2DTexture(final String id, final int width, final int height, final boolean alpha)
     {
+        super(id);
+
         this.width = width;
         this.height = height;
 

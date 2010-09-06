@@ -32,7 +32,10 @@ public final class TextureManager
     private static final TextureManager instance = new TextureManager();
 
     /** The cached textures */
-    private final Map<Texture, TextureReference> textures = new HashMap<Texture, TextureReference>();
+    private final Map<String, TextureReference> textures = new HashMap<String, TextureReference>();
+
+    /** The dynamic textures. */
+    private final Map<String, DynamicTexture<?>> dynamicTextures = new HashMap<String, DynamicTexture<?>>();
 
     /** The resource provider */
     public ResourceProvider resourceProvider = new ClasspathResourceProvider();
@@ -45,6 +48,31 @@ public final class TextureManager
     private TextureManager()
     {
         // Empty
+    }
+
+
+    /**
+     * Sets the resource provider.
+     *
+     * @param resourceProvider
+     *            The resource provider to set
+     */
+
+    public void setResourceProvider(final ResourceProvider resourceProvider)
+    {
+        this.resourceProvider = resourceProvider;
+    }
+
+
+    /**
+     * Returns the resource provider.
+     *
+     * @return The resource provider.
+     */
+
+    public ResourceProvider getResourceProvider()
+    {
+        return this.resourceProvider;
     }
 
 
@@ -85,16 +113,19 @@ public final class TextureManager
 
     public void referenceTexture(final Texture texture)
     {
-        TextureReference ref = this.textures.get(texture);
+        final String id = texture.getId();
+        TextureReference ref = this.textures.get(id);
         if (ref == null)
         {
             ref = new TextureReference(texture);
-            this.textures.put(texture, ref);
-            log.debug("Cached texture: " + texture);
+            this.textures.put(id, ref);
+            if (texture instanceof DynamicTexture<?>)
+                this.dynamicTextures.put(id, (DynamicTexture<?>) texture);
+            log.debug("Cached texture: " + id);
         }
         ref.addReference();
 
-        log.debug("Referenced texture: " + texture);
+        log.debug("Referenced texture: " + id);
     }
 
 
@@ -107,12 +138,13 @@ public final class TextureManager
 
     public void dereferenceTexture(final Texture texture)
     {
-        final TextureReference ref = this.textures.get(texture);
+        final String id = texture.getId();
+        final TextureReference ref = this.textures.get(id);
         if (ref == null)
             throw new IllegalStateException(
                     "Tried to dereference unknown texture");
         ref.removeReference();
-        log.debug("Dereferenced texture: " + texture);
+        log.debug("Dereferenced texture: " + id);
     }
 
 
@@ -126,9 +158,10 @@ public final class TextureManager
 
     public TextureReference get(final Texture texture)
     {
-        final TextureReference ref = this.textures.get(texture);
+        final String id = texture.getId();
+        final TextureReference ref = this.textures.get(id);
         if (ref == null)
-            throw new IllegalStateException("Unknown texture: " + texture);
+            throw new IllegalStateException("Unknown texture: " + id);
         return ref;
     }
 
@@ -147,18 +180,19 @@ public final class TextureManager
 
     public void cleanUp(final GL gl)
     {
-        final Iterator<Map.Entry<Texture, TextureReference>> iterator = this.textures
+        final Iterator<Map.Entry<String, TextureReference>> iterator = this.textures
                 .entrySet().iterator();
         while (iterator.hasNext())
         {
-            final Map.Entry<Texture, TextureReference> entry = iterator.next();
-            final Texture texture = entry.getKey();
+            final Map.Entry<String, TextureReference> entry = iterator.next();
+            final String id = entry.getKey();
             final TextureReference ref = entry.getValue();
             if (!ref.isReferenced())
             {
                 if (ref.isLoaded()) ref.unload(gl);
                 iterator.remove();
-                log.debug("Removed texture " + texture);
+                this.dynamicTextures.remove(id);
+                log.debug("Removed texture " + id);
             }
         }
     }
@@ -176,7 +210,7 @@ public final class TextureManager
     public boolean update(final float delta)
     {
         boolean changed = false;
-        for (final Texture texture : this.textures.keySet())
+        for (final Texture texture : this.dynamicTextures.values())
         {
             if (texture instanceof DynamicTexture<?>)
             {
@@ -201,10 +235,11 @@ public final class TextureManager
 
     public void bind(final GL gl, final Texture texture)
     {
-        final TextureReference ref = this.textures.get(texture);
+        final String id = texture.getId();
+        final TextureReference ref = this.textures.get(id);
         if (ref == null)
             throw new IllegalStateException("Tried to bind unknown texture: "
-                    + texture);
+                    + id);
 
         // If texture is not loaded then load it now.
         if (!ref.isLoaded()) ref.load(gl, this.resourceProvider);

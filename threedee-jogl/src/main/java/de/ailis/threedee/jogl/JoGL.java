@@ -573,4 +573,15 @@ public class JoGL extends Java2DGL
     {
         return this.gl.glIsTexture(texture);
     }
+
+
+    /**
+     * @see de.ailis.threedee.rendering.GL#glTexEnvi(int, int, int)
+     */
+
+    @Override
+    public void glTexEnvi(final int target, final int pname, final int param)
+    {
+        this.gl.glTexEnvi(target, pname, param);
+    }
 }

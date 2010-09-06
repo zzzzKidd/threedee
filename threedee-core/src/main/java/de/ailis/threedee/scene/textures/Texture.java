@@ -18,6 +18,16 @@ import de.ailis.threedee.rendering.GL;
 public interface Texture
 {
     /**
+     * Returns the texture id. For image textures this can be the filename.
+     * The ID is used as key in the texture cache.
+     *
+     * @return The texture ID.
+     */
+
+    public String getId();
+
+
+    /**
      * Load the texture into the specified GL context. This must call
      * the glTexImage2D command to update the texture data in video memory.
      *

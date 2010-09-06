@@ -26,7 +26,7 @@ public class ClasspathResourceProvider implements ResourceProvider
     public InputStream openForRead(final String filename)
             throws FileNotFoundException
     {
-        final InputStream stream = getClass().getClassLoader()
+        final InputStream stream = getClass()
                 .getResourceAsStream(filename);
         if (stream == null) throw new FileNotFoundException(filename);
         return stream;

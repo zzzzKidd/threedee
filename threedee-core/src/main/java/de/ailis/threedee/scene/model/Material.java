@@ -9,7 +9,6 @@ import de.ailis.gramath.Color4f;
 import de.ailis.gramath.ImmutableColor4f;
 
 
-
 /**
  * A material.
  *
@@ -23,6 +22,9 @@ public class Material
 
     /** Material ID */
     private final String id;
+
+    /** If material is influenced by light. */
+    private final boolean lighting;
 
     /** The emission color */
     private final Color4f emissionColor;
@@ -50,7 +52,8 @@ public class Material
     private Material()
     {
         this("DEFAULT", new ImmutableColor4f(0.2f, 0.2f, 0.2f, 1f),
-                new ImmutableColor4f(0.8f, 0.8f, 0.8f, 1f), Color4f.BLACK, Color4f.BLACK, 0, null);
+                new ImmutableColor4f(0.8f, 0.8f, 0.8f, 1f), Color4f.BLACK,
+            Color4f.BLACK, 0, null, false);
     }
 
 
@@ -71,12 +74,14 @@ public class Material
      *            The shininess
      * @param diffuseTexture
      *            The diffuse texture
+     * @param lighting
+     *            If material is influenced by lighting or not.
      */
 
     public Material(final String id, final Color4f ambientColor,
             final Color4f diffuseColor, final Color4f specularColor,
             final Color4f emissionColor, final float shininess,
-            final String diffuseTexture)
+            final String diffuseTexture, final boolean lighting)
     {
         this.id = id;
         this.ambientColor = new ImmutableColor4f(ambientColor);
@@ -85,6 +90,7 @@ public class Material
         this.specularColor = new ImmutableColor4f(specularColor);
         this.emissionColor = new ImmutableColor4f(emissionColor);
         this.shininess = shininess;
+        this.lighting = lighting;
     }
 
 
@@ -169,6 +175,18 @@ public class Material
     public String getDiffuseTexture()
     {
         return this.diffuseTexture;
+    }
+
+
+    /**
+     * Checks if material is influenced by lighting.
+     *
+     * @return True if influenced by lighting, false if not.
+     */
+
+    public boolean getLighting()
+    {
+        return this.lighting;
     }
 
 

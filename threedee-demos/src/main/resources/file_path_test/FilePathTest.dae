@@ -1,0 +1,669 @@
+<?xml version="1.0"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.5.0">
+    <asset>
+        <contributor>
+            <author>gcorson</author>
+            <authoring_tool>Maya 8.0 | ColladaMaya v2.04 | FCollada v1.14</authoring_tool>
+            <comments>Collada Maya Export Options: bakeTransforms=0;exportPolygonMeshes=1;bakeLighting=0;isSampling=0;
+curveConstrainSampling=0;exportCameraAsLookat=0;
+exportLights=1;exportCameras=1;exportJointsAndSkin=1;
+exportAnimations=1;exportTriangles=1;exportInvisibleNodes=0;
+exportNormals=1;exportTexCoords=1;exportVertexColors=1;exportTangents=0;
+exportTexTangents=0;exportConstraints=1;exportPhysics=1;exportXRefs=1;
+dereferenceXRefs=0;cameraXFov=0;cameraYFov=1</comments>
+            <copyright>
+Copyright 2006 Sony Computer Entertainment Inc.
+Licensed under the SCEA Shared Source License, Version 1.0 (the
+&quot;License&quot;); you may not use this file except in compliance with the
+License. You may obtain a copy of the License at:
+http://research.scea.com/scea_shared_source_license.html 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</copyright>
+            <source_data>file:///C:/vs2005/sample_data/FilePathTest/maya%20original.mb</source_data>
+        </contributor>
+        <created>2006-11-16T01:19:01Z</created>
+        <modified>2006-11-16T01:19:01Z</modified>
+        <unit meter="0.01" name="centimeter"/>
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_physics_scenes>
+        <physics_scene id="MayaNativePhysicsScene">
+            <technique_common>
+                <gravity>0 -980 0</gravity>
+                <time_step>0.083</time_step>
+            </technique_common>
+        </physics_scene>
+    </library_physics_scenes>
+    <library_images>
+        <image id="file1" name="file1" depth="1">
+            <init_from><ref>textures/WithoutSpaces/relativenospace.jpg</ref></init_from>
+        </image>
+        <image id="file2" name="file2" depth="1">
+            <init_from><ref>./textures/With%20Spaces/relativepercentspaces.jpg</ref></init_from>
+        </image>
+        <image id="file3" name="file3" depth="1">
+            <init_from><ref>../file_path_test/textures/With%20%53%70aces/relativepercenttext.jpg</ref></init_from>
+        </image>
+        <image id="file4" name="file4" depth="1">
+            <init_from><ref>/file_path_test/textures/WithoutSpaces/absolutenospaces.jpg</ref></init_from>
+        </image>
+        <image id="file5" name="file5" depth="1">
+            <init_from><ref>/file_path_test/textures/With%20Spaces/absolutepercentspaces.jpg</ref></init_from>
+        </image>
+        <image id="file6" name="file6" depth="1">
+            <init_from><ref>/file_path_test/textures/With%20%53%70aces/absolutepercenttext.jpg</ref></init_from>
+        </image>
+    </library_images>
+    <library_materials>
+        <material id="lambert2" name="lambert2">
+            <instance_effect url="#lambert2-fx"/>
+        </material>
+        <material id="lambert3" name="lambert3">
+            <instance_effect url="#lambert3-fx"/>
+        </material>
+        <material id="lambert4" name="lambert4">
+            <instance_effect url="#lambert4-fx"/>
+        </material>
+        <material id="lambert5" name="lambert5">
+            <instance_effect url="#lambert5-fx"/>
+        </material>
+        <material id="lambert6" name="lambert6">
+            <instance_effect url="#lambert6-fx"/>
+        </material>
+        <material id="lambert7" name="lambert7">
+            <instance_effect url="#lambert7-fx"/>
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="lambert2-fx">
+            <profile_COMMON>
+                <newparam sid="file1-sampler">
+                    <sampler2D>
+                        <instance_image url="#file1" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file1-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="lambert3-fx">
+            <profile_COMMON>
+                <newparam sid="file2-sampler">
+                    <sampler2D>
+                        <instance_image url="#file2" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file2-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="lambert4-fx">
+            <profile_COMMON>
+                <newparam sid="file3-sampler">
+                    <sampler2D>
+                        <instance_image url="#file3" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file3-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="lambert5-fx">
+            <profile_COMMON>
+                <newparam sid="file4-sampler">
+                    <sampler2D>
+                        <instance_image url="#file4" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file4-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="lambert6-fx">
+            <profile_COMMON>
+                <newparam sid="file5-sampler">
+                    <sampler2D>
+                        <instance_image url="#file5" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file5-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="lambert7-fx">
+            <profile_COMMON>
+                <newparam sid="file6-sampler">
+                    <sampler2D>
+                        <instance_image url="#file6" />
+                        <minfilter>LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <lambert>
+                        <emission>
+                            <color>0 0 0 1</color>
+                        </emission>
+                        <ambient>
+                            <color>0 0 0 1</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="file6-sampler" texcoord="TEX0"/>
+                        </diffuse>
+                        <reflective>
+                            <color>1 1 1 1</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1</float>
+                        </reflectivity>
+                        <transparent opaque="RGB_ZERO">
+                            <color>0 0 0 1</color>
+                        </transparent>
+                        <transparency>
+                            <float>1</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0</float>
+                        </index_of_refraction>
+                    </lambert>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="pPlaneShape1-lib" name="pPlaneShape1">
+            <mesh>
+                <source id="pPlaneShape1-lib-positions" name="position">
+                    <float_array id="pPlaneShape1-lib-positions-array" count="12">-28.2522 0 25.0717 28.2522 0 25.0717 -28.2522 0 -25.0717 28.2522 0 -25.0717</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape1-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape1-lib-normals" name="normal">
+                    <float_array id="pPlaneShape1-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape1-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape1-lib-map1" name="map1">
+                    <float_array id="pPlaneShape1-lib-map1-array" count="8">0 0 1 0 0 0.887425 1 0.887425</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape1-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape1-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape1-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape1-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert2SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape1-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape1-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="pPlaneShape2-lib" name="pPlaneShape2">
+            <mesh>
+                <source id="pPlaneShape2-lib-positions" name="position">
+                    <float_array id="pPlaneShape2-lib-positions-array" count="12">-30.231 0 25.1223 30.231 0 25.1223 -30.231 0 -25.1223 30.231 0 -25.1223</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape2-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape2-lib-normals" name="normal">
+                    <float_array id="pPlaneShape2-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape2-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape2-lib-map1" name="map1">
+                    <float_array id="pPlaneShape2-lib-map1-array" count="8">0 0 1 0 0 0.83101 1 0.83101</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape2-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape2-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape2-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape2-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert3SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape2-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape2-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="pPlaneShape3-lib" name="pPlaneShape3">
+            <mesh>
+                <source id="pPlaneShape3-lib-positions" name="position">
+                    <float_array id="pPlaneShape3-lib-positions-array" count="12">-35.3231 0 30.8688 35.3231 0 30.8688 -35.3231 0 -30.8688 35.3231 0 -30.8688</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape3-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape3-lib-normals" name="normal">
+                    <float_array id="pPlaneShape3-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape3-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape3-lib-map1" name="map1">
+                    <float_array id="pPlaneShape3-lib-map1-array" count="8">0 0 1 0 0 0.873898 1 0.873898</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape3-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape3-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape3-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape3-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert4SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape3-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape3-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="pPlaneShape4-lib" name="pPlaneShape4">
+            <mesh>
+                <source id="pPlaneShape4-lib-positions" name="position">
+                    <float_array id="pPlaneShape4-lib-positions-array" count="12">-35.3231 0 30.8688 35.3231 0 30.8688 -35.3231 0 -30.8688 35.3231 0 -30.8688</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape4-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape4-lib-normals" name="normal">
+                    <float_array id="pPlaneShape4-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape4-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape4-lib-map1" name="map1">
+                    <float_array id="pPlaneShape4-lib-map1-array" count="8">0 0 1 0 0 0.873898 1 0.873898</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape4-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape4-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape4-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape4-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert5SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape4-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape4-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="pPlaneShape5-lib" name="pPlaneShape5">
+            <mesh>
+                <source id="pPlaneShape5-lib-positions" name="position">
+                    <float_array id="pPlaneShape5-lib-positions-array" count="12">-35.3231 0 30.8688 35.3231 0 30.8688 -35.3231 0 -30.8688 35.3231 0 -30.8688</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape5-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape5-lib-normals" name="normal">
+                    <float_array id="pPlaneShape5-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape5-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape5-lib-map1" name="map1">
+                    <float_array id="pPlaneShape5-lib-map1-array" count="8">0 0 1 0 0 0.873898 1 0.873898</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape5-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape5-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape5-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape5-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert6SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape5-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape5-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="pPlaneShape6-lib" name="pPlaneShape6">
+            <mesh>
+                <source id="pPlaneShape6-lib-positions" name="position">
+                    <float_array id="pPlaneShape6-lib-positions-array" count="12">-35.3231 0 30.8688 35.3231 0 30.8688 -35.3231 0 -30.8688 35.3231 0 -30.8688</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape6-lib-positions-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape6-lib-normals" name="normal">
+                    <float_array id="pPlaneShape6-lib-normals-array" count="12">0 1 0 0 1 0 0 1 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape6-lib-normals-array" stride="3">
+                            <param name="X" type="float"/>
+                            <param name="Y" type="float"/>
+                            <param name="Z" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="pPlaneShape6-lib-map1" name="map1">
+                    <float_array id="pPlaneShape6-lib-map1-array" count="8">0 0 1 0 0 0.873898 1 0.873898</float_array>
+                    <technique_common>
+                        <accessor count="4" offset="0" source="#pPlaneShape6-lib-map1-array" stride="2">
+                            <param name="S" type="float"/>
+                            <param name="T" type="float"/>
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="pPlaneShape6-lib-vertices">
+                    <input semantic="POSITION" source="#pPlaneShape6-lib-positions"/>
+                    <input semantic="NORMAL" source="#pPlaneShape6-lib-normals"/>
+                </vertices>
+                <triangles count="2" material="lambert7SG">
+                    <input offset="0" semantic="VERTEX" source="#pPlaneShape6-lib-vertices"/>
+                    <input offset="1" semantic="TEXCOORD" source="#pPlaneShape6-lib-map1" set="0"/>
+                    <p>0 0 1 1 2 2 2 2 1 1 3 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="VisualSceneNode" name="maya_original">
+            <node id="pPlane1" name="pPlane1">
+                <translate sid="translate">-79.4121 0 -38.3837</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape1-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert2SG" target="#lambert2">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="pPlane2" name="pPlane2">
+                <translate sid="translate">-16.6872 0 -36.1083</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape2-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert3SG" target="#lambert3">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="pPlane3" name="pPlane3">
+                <translate sid="translate">57.2928 0 -41.4732</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape3-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert4SG" target="#lambert4">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="pPlane4" name="pPlane4">
+                <translate sid="translate">-76.0513 0 44.3715</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape4-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert5SG" target="#lambert5">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="pPlane5" name="pPlane5">
+                <translate sid="translate">0.886209 0 43.7455</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape5-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert6SG" target="#lambert6">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="pPlane6" name="pPlane6">
+                <translate sid="translate">86.3036 0 42.6602</translate>
+                <rotate sid="rotateZ">0 0 1 0</rotate>
+                <rotate sid="rotateY">0 1 0 0</rotate>
+                <rotate sid="rotateX">1 0 0 0</rotate>
+                <instance_geometry url="#pPlaneShape6-lib">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="lambert7SG" target="#lambert7">
+                                <bind_vertex_input semantic="TEX0" input_semantic="TEXCOORD" input_set="0"/>
+                            </instance_material>
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_physics_scene url="#MayaNativePhysicsScene"/>
+        <instance_visual_scene url="#VisualSceneNode"/>
+    </scene>
+</COLLADA>

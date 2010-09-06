@@ -16,6 +16,7 @@ import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.animation.Animation;
+import de.ailis.threedee.scene.animation.AnimationInputType;
 import de.ailis.threedee.scene.properties.Lighting;
 import de.ailis.threedee.scene.textures.TextureManager;
 
@@ -144,9 +145,14 @@ public class Scene
         // Update animations if present
         if (this.animations != null && !this.animations.isEmpty())
         {
-            for (final Animation animation: this.animations)
-                animation.update(delta);
-            changed = true;
+            for (final Animation animation : this.animations)
+            {
+                if (animation.getInputType() == AnimationInputType.TIME)
+                {
+                    animation.update(delta);
+                    changed = true;
+                }
+            }
         }
 
 
@@ -167,8 +173,12 @@ public class Scene
 
     public void setRootNode(final SceneNode rootNode)
     {
-        this.rootNode = rootNode;
-        this.rootNode.setScene(this);
+        if (rootNode != this.rootNode)
+        {
+            if (this.rootNode != null) this.rootNode.setScene(null);
+            this.rootNode = rootNode;
+            if (rootNode != null) rootNode.setScene(this);
+        }
     }
 
 
@@ -408,5 +418,21 @@ public class Scene
     {
         if (this.animations == null) return;
         this.animations.remove(animation);
+    }
+
+
+    /**
+     * Returns the animation with the specified ID.
+     *
+     * @param id
+     *            The animation ID.
+     * @return The animation or null if not found.
+     */
+
+    public Animation getAnimationById(final String id)
+    {
+        for (final Animation animation : this.animations)
+            if (id.equals(animation.getId())) return animation;
+        return null;
     }
 }

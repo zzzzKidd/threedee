@@ -8,6 +8,7 @@ package de.ailis.threedee.wavefront;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,6 +48,9 @@ public class WavefrontModelReader extends ModelReader
     /** The materials */
     private Map<String, Material> materials;
 
+    /** The base directory for loading referenced files. */
+    private String baseDir;
+
 
     /**
      * Constructs a new OBJ file reader.
@@ -63,13 +67,15 @@ public class WavefrontModelReader extends ModelReader
 
 
     /**
-     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream, String)
      */
 
     @Override
-    public Model read(final InputStream stream) throws IOException
+    public Model read(final InputStream stream, final String baseDir) throws IOException
     {
         final MeshBuilder builder = new MeshBuilder();
+
+        this.baseDir = baseDir;
 
         // Reset counters
         this.vertexCount = 0;
@@ -172,7 +178,10 @@ public class WavefrontModelReader extends ModelReader
 
     private void loadMaterials(final String filename) throws IOException
     {
-        final InputStream stream = this.resourceProvider.openForRead(filename);
+        String realFilename = filename;
+        if (this.baseDir != null && !new File(filename).isAbsolute())
+            realFilename = new File(this.baseDir, filename).getPath();
+        final InputStream stream = this.resourceProvider.openForRead(realFilename);
         try
         {
             loadMaterials(stream);

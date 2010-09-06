@@ -52,7 +52,7 @@ public class BeetleDemo
         final SceneNode root = scene.getRootNode();
 
         // Load the model
-        final String filename = "beetle.obj";
+        final String filename = "/beetle.obj";
         final Model model = new WavefrontModelReader(new ClasspathResourceProvider()).read(filename);
 
         // Append model to scene

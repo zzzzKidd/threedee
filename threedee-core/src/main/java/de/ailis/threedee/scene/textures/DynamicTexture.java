@@ -29,6 +29,21 @@ public abstract class DynamicTexture<T extends DynamicTexture<T>> implements
     /** The texture listeners */
     private final List<TextureListener<T>> listeners = new ArrayList<TextureListener<T>>();
 
+    /** The texture id. */
+    private final String id;
+
+    /**
+     * Constructor.
+     *
+     * @param id
+     *            The texture id.
+     */
+
+    public DynamicTexture(final String id)
+    {
+        this.id = id;
+    }
+
 
     /**
      * Updates the texture with the specified time delta.
@@ -114,5 +129,29 @@ public abstract class DynamicTexture<T extends DynamicTexture<T>> implements
     public void removeTextureListener(final TextureListener<T> listener)
     {
         this.listeners.remove(listener);
+    }
+
+
+    /**
+     * Returns the texture ID.
+     *
+     * @return The texture ID.
+     */
+
+    @Override
+    public String getId()
+    {
+        return this.id;
+    }
+
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+
+    @Override
+    public String toString()
+    {
+        return this.id + " (Dynamic)";
     }
 }

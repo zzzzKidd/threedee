@@ -28,6 +28,9 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     /** The viewport */
     private final Viewport viewport;
 
+    /** The pressed states of the four buttons. */
+    private final boolean[] pressed = { false, false, false };
+
 
     /**
      * Constructs a new scene touch adapter.
@@ -52,8 +55,14 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mouseDragged(final MouseEvent e)
     {
-        this.scene.touchMove(new TouchEvent(0, e.getX() - this.viewport.getWidth()
-                / 2, this.viewport.getHeight() / 2 - e.getY()));
+        for (int i = 0; i < 3; i++)
+        {
+            final boolean pressed = this.pressed[i];
+            if (pressed)
+                this.scene.touchMove(new TouchEvent(i, e.getX()
+                    - this.viewport.getWidth()
+                    / 2, this.viewport.getHeight() / 2 - e.getY()));
+        }
     }
 
 
@@ -108,7 +117,10 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mousePressed(final MouseEvent e)
     {
-        this.scene.touchDown(new TouchEvent(0, e.getX() - this.viewport.getWidth()
+        final int id = e.getButton() - 1;
+        this.pressed[id] = true;
+        this.scene.touchDown(new TouchEvent(id, e.getX()
+            - this.viewport.getWidth()
                 / 2, this.viewport.getHeight() / 2 - e.getY()));
     }
 
@@ -120,7 +132,9 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mouseReleased(final MouseEvent e)
     {
-        this.scene.touchRelease(new TouchEvent(0, e.getX()
+        final int id = e.getButton() - 1;
+        this.pressed[id] = false;
+        this.scene.touchRelease(new TouchEvent(id, e.getX()
                 - this.viewport.getWidth() / 2, this.viewport.getHeight() / 2
                 - e.getY()));
     }

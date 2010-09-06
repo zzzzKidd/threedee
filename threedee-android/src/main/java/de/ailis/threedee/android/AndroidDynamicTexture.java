@@ -40,14 +40,18 @@ public class AndroidDynamicTexture extends
     /**
      * Creates a new texture.
      *
+     * @param id
+     *            The texture ID.
      * @param width
      *            The texture width
      * @param height
      *            The texture height
      */
 
-    public AndroidDynamicTexture(final int width, final int height)
+    public AndroidDynamicTexture(final String id, final int width,
+        final int height)
     {
+        super(id);
         this.bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
         this.canvas = new Canvas(this.bitmap);
         this.canvas.translate(0, height);

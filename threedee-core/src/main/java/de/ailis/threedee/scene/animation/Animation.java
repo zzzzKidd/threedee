@@ -28,8 +28,29 @@ public abstract class Animation
     /** The sub animations */
     private final List<Animation> animations = new ArrayList<Animation>();
 
-    /** The current time index */
-    private float time;
+    /** The current animation index. */
+    private float index;
+
+    /** If animation is running. */
+    private boolean running = true;
+
+    /** The animation input type. */
+    private AnimationInputType inputType = AnimationInputType.TIME;
+
+    /** The animation speed. (1==Normal, -1=Reverse, 0=Stop, ...) */
+    private float speed = 1;
+
+    /** The acceleration. */
+    private float acceleration = 0;
+
+    /** The deceleration. */
+    private float deceleration = 0;
+
+    /** The maximum speed. */
+    private float maxSpeed = Float.POSITIVE_INFINITY;
+
+    /** The minimum speed. */
+    private float minSpeed = Float.NEGATIVE_INFINITY;
 
 
     /**
@@ -52,7 +73,7 @@ public abstract class Animation
     public Animation(final String id)
     {
         this.id = id;
-        this.time = 0;
+        this.index = 0;
     }
 
 
@@ -65,11 +86,31 @@ public abstract class Animation
 
     public void update(final float delta)
     {
-        this.time += delta;
+        // Do nothing if animation is not running
+        if (!this.running) return;
+
+        // Apply acceleration
+        if (this.acceleration != 0)
+            this.speed += this.acceleration * delta;
+
+        // Apply deceleration
+        if (this.deceleration != 0)
+            if (this.speed < 0)
+                this.speed = Math
+                    .min(0, this.speed + this.deceleration * delta);
+            else if (this.speed > 0)
+                this.speed = Math
+                    .max(0, this.speed - this.deceleration * delta);
+
+        this.speed = Math.min(this.maxSpeed, Math.max(this.minSpeed, this.speed));
+
+        final float realDelta = delta * this.speed;
+
+        this.index += realDelta;
         for (final SceneNode node : this.nodes)
-            animate(node, this.time);
+            animate(node, this.index);
         for (final Animation animation : this.animations)
-            animation.update(delta);
+            animation.update(realDelta);
     }
 
 
@@ -145,5 +186,188 @@ public abstract class Animation
     public void addAnimation(final Animation animation)
     {
         this.animations.add(animation);
+    }
+
+
+    /**
+     * Checks if animation us running.
+     *
+     * @return True if animation is running, false if not.
+     */
+
+    public boolean isRunning()
+    {
+        return this.running;
+    }
+
+
+    /**
+     * Starts the animation.
+     */
+
+    public void start()
+    {
+        this.running = true;
+    }
+
+
+    /**
+     * Stops the animation.
+     */
+
+    public void stop()
+    {
+        this.running = false;
+    }
+
+
+    /**
+     * Returns the animation input type.
+     *
+     * @return The animation input type. Never null.
+     */
+
+    public AnimationInputType getInputType()
+    {
+        return this.inputType;
+    }
+
+
+    /**
+     * Sets the animation input type.
+     *
+     * @param inputType
+     *            The animation input type to set. Must not be null.
+     */
+
+    public void setInputType(final AnimationInputType inputType)
+    {
+        this.inputType = inputType;
+    }
+
+
+    /**
+     * Returns the current animation speed.
+     *
+     * @return The current animation speed.
+     */
+
+    public float getSpeed()
+    {
+        return this.speed;
+    }
+
+
+    /**
+     * Sets the animation speed. Some examples: 1 means normal speed, 0 means
+     * stop, -1 means reverse speed.
+     *
+     * @param speed
+     *            The speed to set
+     */
+
+    public void setSpeed(final float speed)
+    {
+        this.speed = speed;
+    }
+
+
+    /**
+     * Returns the acceleration.
+     *
+     * @return The acceleration
+     */
+
+    public float getAcceleration()
+    {
+        return this.acceleration;
+    }
+
+
+    /**
+     * Sets the acceleration.
+     *
+     * @param acceleration
+     *            The acceleration to set
+     */
+
+    public void setAcceleration(final float acceleration)
+    {
+        this.acceleration = acceleration;
+    }
+
+
+    /**
+     * Returns the deceleration.
+     *
+     * @return The deceleration
+     */
+
+    public float getDeceleration()
+    {
+        return this.deceleration;
+    }
+
+
+    /**
+     * Sets the deceleration.
+     *
+     * @param deceleration
+     *            The deceleration to set
+     */
+
+    public void setDeceleration(final float deceleration)
+    {
+        this.deceleration = deceleration;
+    }
+
+
+    /**
+     * Returns the maximum speed.
+     *
+     * @return The maximum speed
+     */
+
+    public float getMaxSpeed()
+    {
+        return this.maxSpeed;
+    }
+
+
+    /**
+     * Sets the maximum speed.
+     *
+     * @param maxSpeed
+     *            The maximum speed to set
+     */
+
+    public void setMaxSpeed(final float maxSpeed)
+    {
+        this.maxSpeed = maxSpeed;
+    }
+
+
+    /**
+     * Returns the minimum speed.
+     *
+     * @return The minimum speed
+     */
+
+    public float getMinSpeed()
+    {
+        return this.minSpeed;
+    }
+
+
+    /**
+     * Sets the minimum speed.
+     *
+     * @param minSpeed
+     *            The minimum speed to set
+     */
+
+    public void setMinSpeed(final float minSpeed)
+    {
+        this.minSpeed = minSpeed;
     }
 }

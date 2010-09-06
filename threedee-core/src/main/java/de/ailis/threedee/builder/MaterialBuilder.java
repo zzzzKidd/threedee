@@ -38,6 +38,9 @@ public class MaterialBuilder
     /** The shininess */
     private float shininess;
 
+    /** The lighting flag. */
+    private boolean lighting;
+
 
     /**
      * Constructs a new material builder.
@@ -174,8 +177,8 @@ public class MaterialBuilder
 
     /**
      * Builds the material. The builder stays untouched so you can continue
-     * changing values and building additional materials with it. To reset
-     * the builder use the reset() method.
+     * changing values and building additional materials with it. To reset the
+     * builder use the reset() method.
      *
      * @return The build material
      */
@@ -184,6 +187,19 @@ public class MaterialBuilder
     {
         return new Material(this.id, this.ambientColor, this.diffuseColor,
                 this.specularColor, this.emissionColor, this.shininess,
-                this.diffuseTexture);
+                this.diffuseTexture, this.lighting);
+    }
+
+
+    /**
+     * Sets the lighting flag.
+     *
+     * @param lighting
+     *            The lighting flag to set.
+     */
+
+    public void setLighting(final boolean lighting)
+    {
+        this.lighting = lighting;
     }
 }

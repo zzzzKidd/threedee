@@ -36,7 +36,7 @@ public class TransformTest
     public static void main(final String args[]) throws IOException
     {
         // Load the scene
-        final String filename = "transform_test/Transform_Test.dae";
+        final String filename = "/transform_test/Transform_Test.dae";
         final Scene scene = new ColladaSceneReader(new ClasspathResourceProvider()).read(filename);
 
         // Create the frame

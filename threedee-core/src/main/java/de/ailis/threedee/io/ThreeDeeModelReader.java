@@ -109,11 +109,11 @@ public class ThreeDeeModelReader extends ModelReader
 
 
     /**
-     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream)
+     * @see de.ailis.threedee.io.ModelReader#read(java.io.InputStream, String)
      */
 
     @Override
-    public Model read(final InputStream stream) throws IOException
+    public Model read(final InputStream stream, final String baseDir) throws IOException
     {
         this.reader = new StreamReader(stream);
         return read();
@@ -241,7 +241,7 @@ public class ThreeDeeModelReader extends ModelReader
         final int len = this.reader.readByte();
         final String texture = len == 0 ? null : this.reader.readString(len);
         return new Material(null, ambientColor, diffuseColor, specularColor,
-                emissionColor, shininess, texture);
+                emissionColor, shininess, texture, true);
     }
 
 

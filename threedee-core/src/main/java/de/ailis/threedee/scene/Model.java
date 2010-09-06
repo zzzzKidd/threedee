@@ -115,9 +115,9 @@ public class Model extends SceneNode
 
 
     /**
-     * Returns the material for the specified material index. If no material
-     * was bound to this index or the index is invalid then the default
-     * material is returned.
+     * Returns the material for the specified material index. If no material was
+     * bound to this index or the index is invalid then the default material is
+     * returned.
      *
      * @param index
      *            The material index
@@ -134,8 +134,8 @@ public class Model extends SceneNode
 
 
     /**
-     * Returns the material index of the material with the specified id.
-     * Returns -1 if no material with this id was found.
+     * Returns the material index of the material with the specified id. Returns
+     * -1 if no material with this id was found.
      *
      * @param id
      *            The material id
@@ -226,8 +226,8 @@ public class Model extends SceneNode
 
 
     /**
-     * Modifies the model offset so it the node center is in the middle of
-     * the model.
+     * Modifies the model offset so it the node center is in the middle of the
+     * model.
      */
 
     public void centerModel()
@@ -316,6 +316,12 @@ public class Model extends SceneNode
         // Apply material
         final Material material = (materialIndex == -1) ? Material.DEFAULT
                 : getMaterial(materialIndex);
+        boolean oldLighting = true;
+        if (!material.getLighting())
+        {
+            oldLighting = gl.glIsEnabled(GL.GL_LIGHTING);
+            gl.glDisable(GL.GL_LIGHTING);
+        }
         applyMaterial(gl, material);
 
         // Draw polygons
@@ -323,6 +329,7 @@ public class Model extends SceneNode
 
         // Reset GL state
         removeMaterial(gl, material);
+        if (oldLighting && !material.getLighting()) gl.glEnable(GL.GL_LIGHTING);
         if (texCoords != null)
             gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
         if (normals != null) gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
@@ -374,7 +381,8 @@ public class Model extends SceneNode
         if (diffuseTexture != null)
         {
             final Texture texture = this.diffuseTexture = getTexture(diffuseTexture);
-            if (texture != null) TextureManager.getInstance().bind(gl, texture);
+            if (texture != null)
+                TextureManager.getInstance().bind(gl, texture);
         }
         else
             this.diffuseTexture = null;
@@ -465,9 +473,11 @@ public class Model extends SceneNode
             final FloatBuffer vertices = polygons.getVertices();
             while (vertices.hasRemaining())
             {
-                final MutableVector3f a = new MutableVector3f(vertices.get(), vertices.get(),
+                final MutableVector3f a = new MutableVector3f(vertices.get(),
+                    vertices.get(),
                         vertices.get());
-                final MutableVector3f b = new MutableVector3f(normals.get(), normals.get(),
+                final MutableVector3f b = new MutableVector3f(normals.get(),
+                    normals.get(),
                         normals.get());
                 b.scale(scale);
                 b.add(a);
@@ -546,9 +556,9 @@ public class Model extends SceneNode
 
 
     /**
-     * Enables or disabled the display of polygon group bounds. If set to
-     * true then setShowBounds must also be set to true or otherwise you
-     * won't see anything.
+     * Enables or disabled the display of polygon group bounds. If set to true
+     * then setShowBounds must also be set to true or otherwise you won't see
+     * anything.
      *
      * @param showGroupBounds
      *            True to enable, false to disable
