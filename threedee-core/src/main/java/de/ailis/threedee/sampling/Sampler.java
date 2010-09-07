@@ -5,7 +5,9 @@
 
 package de.ailis.threedee.sampling;
 
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 
@@ -20,7 +22,7 @@ import java.util.TreeMap;
 public class Sampler<T>
 {
     /** The sampler data */
-    public TreeMap<Float, SamplerValue<T>> data = new TreeMap<Float, SamplerValue<T>>();
+    public SortedMap<Float, SamplerValue<T>> data = new TreeMap<Float, SamplerValue<T>>();
 
     /** The minimum input value */
     private float minInput = Float.POSITIVE_INFINITY;
@@ -75,9 +77,14 @@ public class Sampler<T>
         // Return null if no data is available
         if (this.data.isEmpty()) return null;
 
+        final Iterator<Entry<Float, SamplerValue<T>>> iterator = this.data
+            .entrySet().iterator();
+        Entry<Float, SamplerValue<T>> current = iterator.next();
+        final Entry<Float, SamplerValue<T>> first = current;
+
         // If data only contains one value then return this one
         if (this.data.size() == 1)
-            return this.data.firstEntry().getValue().getValue();
+            return first.getValue().getValue();
 
         // Trim input value
         float trimmedInput = this.minInput + mod((input - this.minInput)
@@ -85,10 +92,10 @@ public class Sampler<T>
         if (trimmedInput < this.minInput) trimmedInput += this.minInput;
 
         // Get the floor entry
-        final Map.Entry<Float, SamplerValue<T>> floor = this.data
-            .floorEntry(trimmedInput);
-        final SamplerValue<T> floorValue = floor.getValue();
-        final float inputA = floor.getKey();
+        while (current.getKey() < trimmedInput)
+            current = iterator.next();
+        final SamplerValue<T> floorValue = current.getValue();
+        final float inputA = current.getKey();
         final T a = floorValue.getValue();
         final Interpolation interpolation = floorValue.getInterpolation();
 
@@ -97,11 +104,12 @@ public class Sampler<T>
         if (interpolation == Interpolation.STEP) return a;
 
         // Get the next entry. If not found then use the first value
-        Map.Entry<Float, SamplerValue<T>> next = this.data.higherEntry(floor
-            .getKey());
-        if (next == null) next = this.data.firstEntry();
-        final SamplerValue<T> nextValue = next.getValue();
-        final float inputB = next.getKey();
+        if (iterator.hasNext())
+            current = iterator.next();
+        else
+            current = first;
+        final SamplerValue<T> nextValue = current.getValue();
+        final float inputB = current.getKey();
         final T b = nextValue.getValue();
 
         // Calculate the interpolation position

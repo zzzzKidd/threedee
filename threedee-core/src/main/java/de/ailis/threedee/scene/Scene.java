@@ -149,8 +149,7 @@ public class Scene
             {
                 if (animation.getInputType() == AnimationInputType.TIME)
                 {
-                    animation.update(delta);
-                    changed = true;
+                    changed |= animation.update(delta);
                 }
             }
         }
@@ -431,6 +430,7 @@ public class Scene
 
     public Animation getAnimationById(final String id)
     {
+        if (this.animations == null) return null;
         for (final Animation animation : this.animations)
             if (id.equals(animation.getId())) return animation;
         return null;

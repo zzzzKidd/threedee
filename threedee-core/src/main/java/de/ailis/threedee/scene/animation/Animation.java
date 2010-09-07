@@ -82,12 +82,13 @@ public abstract class Animation
      *
      * @param delta
      *            The time delta since last call in seconds
+     * @return True if animation is running, false if not
      */
 
-    public void update(final float delta)
+    public boolean update(final float delta)
     {
         // Do nothing if animation is not running
-        if (!this.running) return;
+        if (!this.running) return false;
 
         // Apply acceleration
         if (this.acceleration != 0)
@@ -102,15 +103,21 @@ public abstract class Animation
                 this.speed = Math
                     .max(0, this.speed - this.deceleration * delta);
 
-        this.speed = Math.min(this.maxSpeed, Math.max(this.minSpeed, this.speed));
+        // Apply speed constraints
+        this.speed = Math.min(this.maxSpeed, Math
+            .max(this.minSpeed, this.speed));
+
+        // If no speed and no acceleration is present then do nothing more.
+        if (this.speed == 0 && this.acceleration == 0) return false;
 
         final float realDelta = delta * this.speed;
-
+        boolean changed = false;
         this.index += realDelta;
         for (final SceneNode node : this.nodes)
             animate(node, this.index);
         for (final Animation animation : this.animations)
-            animation.update(realDelta);
+            changed |= animation.update(realDelta);
+        return true;
     }
 
 
@@ -164,28 +171,14 @@ public abstract class Animation
 
 
     /**
-     * Removes a node from this animation.
+     * Returns the sub animations.
      *
-     * @param node
-     *            The node to remove
+     * @return The sub animations
      */
 
-    public void removeNode(final SceneNode node)
+    public List<Animation> getAnimations()
     {
-        this.nodes.remove(node);
-    }
-
-
-    /**
-     * Adds the specified animation
-     *
-     * @param animation
-     *            The animation to add
-     */
-
-    public void addAnimation(final Animation animation)
-    {
-        this.animations.add(animation);
+        return this.animations;
     }
 
 

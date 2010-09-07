@@ -219,7 +219,6 @@ public final class TextureManager
                 changed |= !dynamicTexture.isValid();
             }
         }
-        log.trace("Updated");
         return changed;
     }
 

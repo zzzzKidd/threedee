@@ -24,7 +24,7 @@ public abstract class DynamicTexture<T extends DynamicTexture<T>> implements
         Texture
 {
     /** If loaded texture is up-to-date */
-    private boolean valid;
+    private boolean valid = true;
 
     /** The texture listeners */
     private final List<TextureListener<T>> listeners = new ArrayList<TextureListener<T>>();

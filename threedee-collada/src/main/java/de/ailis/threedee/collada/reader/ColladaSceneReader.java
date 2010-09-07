@@ -368,9 +368,10 @@ public class ColladaSceneReader extends SceneReader
 
                     final Animation animation = new TransformAnimation(
                         colladaAnimation.getId(), sampler);
-                    animation.addNode(node);
+                    animation.getNodes().add(node);
 
-                    group.addAnimation(animation);
+                    System.out.println("ADD:" + colladaAnimation.getId());
+                    group.getAnimations().add(animation);
                 }
             }
             else
@@ -383,10 +384,15 @@ public class ColladaSceneReader extends SceneReader
         // Process sub animations
         for (final de.ailis.jollada.model.Animation subAnim : colladaAnimation
             .getAnimations())
-            group.addAnimation(processAnimation(subAnim));
+        {
+            final Animation subAnimation = processAnimation(subAnim);
+            if (subAnimation != null) group.getAnimations().add(subAnimation);
+        }
 
+        if (group.getAnimations().size() == 0) return null;
         return group;
     }
+
 
     /**
      * Creates a matrix array from the specified float array.
@@ -446,10 +452,10 @@ public class ColladaSceneReader extends SceneReader
 
 
     /**
-     * Builds a ThreeDee material from a Collada material.
+     * Builds a ThreeDee material from a COLLADA material.
      *
      * @param instanceMaterial
-     *            The Collada instance material
+     *            The COLLADA instance material
      * @return The ThreeDee material
      */
 
@@ -487,7 +493,6 @@ public class ColladaSceneReader extends SceneReader
         if (shading.getEmission().isColor())
             builder.setEmissionColor(buildColor(shading.getEmission()
                     .getColor()));
-        final FloatAttribute transparency = shading.getTransparency();
         if (shading instanceof DiffuseShader)
         {
             final DiffuseShader diffuseShader = (DiffuseShader) shading;
