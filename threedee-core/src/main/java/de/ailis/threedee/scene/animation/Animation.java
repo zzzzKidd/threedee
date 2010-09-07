@@ -8,6 +8,8 @@ package de.ailis.threedee.scene.animation;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ailis.threedee.assets.Asset;
+import de.ailis.threedee.assets.AssetType;
 import de.ailis.threedee.scene.SceneNode;
 
 
@@ -17,11 +19,8 @@ import de.ailis.threedee.scene.SceneNode;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public abstract class Animation
+public abstract class Animation extends Asset
 {
-    /** The animation id */
-    private final String id;
-
     /** The nodes to animate */
     private final List<SceneNode> nodes = new ArrayList<SceneNode>();
 
@@ -54,16 +53,6 @@ public abstract class Animation
 
 
     /**
-     * Constructs an animation without an id
-     */
-
-    public Animation()
-    {
-        this(null);
-    }
-
-
-    /**
      * Constructs an animation with the specified id
      *
      * @param id
@@ -72,7 +61,7 @@ public abstract class Animation
 
     public Animation(final String id)
     {
-        this.id = id;
+        super(id, AssetType.ANIMATION);
         this.index = 0;
     }
 
@@ -151,6 +140,7 @@ public abstract class Animation
      * @return The animation id
      */
 
+    @Override
     public String getId()
     {
         return this.id;

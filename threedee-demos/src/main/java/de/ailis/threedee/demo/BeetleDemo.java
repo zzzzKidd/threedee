@@ -18,7 +18,7 @@ import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.lights.DirectionalLight;
-import de.ailis.threedee.wavefront.WavefrontModelReader;
+import de.ailis.threedee.wavefront.WavefrontObjAssetReader;
 
 
 /**
@@ -53,7 +53,7 @@ public class BeetleDemo
 
         // Load the model
         final String filename = "/beetle.obj";
-        final Model model = new WavefrontModelReader(new ClasspathResourceProvider()).read(filename);
+        final Model model = new WavefrontObjAssetReader(new ClasspathResourceProvider()).read(filename);
 
         // Append model to scene
         root.appendChild(model);

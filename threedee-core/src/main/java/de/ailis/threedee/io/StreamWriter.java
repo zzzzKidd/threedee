@@ -16,6 +16,8 @@ import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 import java.nio.channels.Channels;
 
+import de.ailis.gramath.Color4f;
+
 
 /**
  * A writer with many specialized methods to write data to a stream.
@@ -48,8 +50,8 @@ public class StreamWriter
 
 
     /**
-     * Closes the stream used by the stream writer. You don't need to call
-     * this method if you close the stream yourself.
+     * Closes the stream used by the stream writer. You don't need to call this
+     * method if you close the stream yourself.
      *
      * @throws IOException
      *             When stream could not be closed
@@ -346,7 +348,7 @@ public class StreamWriter
      * @param string
      *            The string to write
      * @throws IOException
-     *            When write fails
+     *             When write fails
      */
 
     public void writeString(final String string) throws IOException
@@ -363,12 +365,30 @@ public class StreamWriter
      * @param charset
      *            The encoding to use
      * @throws IOException
-     *            When write fails
+     *             When write fails
      */
 
     public void writeString(final String string, final String charset)
             throws IOException
     {
         this.stream.write(string.getBytes(charset));
+    }
+
+
+    /**
+     * Writes a Color4f.
+     *
+     * @param color
+     *            The color to write
+     * @throws IOException
+     *             When write fails
+     */
+
+    public void writeColor4f(final Color4f color) throws IOException
+    {
+        writeByte((int) (color.getRed() * 255));
+        writeByte((int) (color.getGreen() * 255));
+        writeByte((int) (color.getBlue() * 255));
+        writeByte((int) (color.getAlpha() * 255));
     }
 }

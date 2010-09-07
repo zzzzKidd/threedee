@@ -12,8 +12,9 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.ailis.threedee.io.resources.ClasspathResourceProvider;
-import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.assets.AssetProvider;
+import de.ailis.threedee.assets.ClasspathAssetProvider;
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.rendering.GL;
 
 
@@ -38,7 +39,7 @@ public final class TextureManager
     private final Map<String, DynamicTexture<?>> dynamicTextures = new HashMap<String, DynamicTexture<?>>();
 
     /** The resource provider */
-    public ResourceProvider resourceProvider = new ClasspathResourceProvider();
+    public AssetProvider resourceProvider = new ClasspathAssetProvider();
 
 
     /**
@@ -58,7 +59,7 @@ public final class TextureManager
      *            The resource provider to set
      */
 
-    public void setResourceProvider(final ResourceProvider resourceProvider)
+    public void setResourceProvider(final AssetProvider resourceProvider)
     {
         this.resourceProvider = resourceProvider;
     }
@@ -70,7 +71,7 @@ public final class TextureManager
      * @return The resource provider.
      */
 
-    public ResourceProvider getResourceProvider()
+    public AssetProvider getResourceProvider()
     {
         return this.resourceProvider;
     }

@@ -14,15 +14,15 @@ import java.util.Map;
 import de.ailis.gramath.Color4f;
 import de.ailis.gramath.MutableVector3f;
 import de.ailis.gramath.Vector3f;
+import de.ailis.threedee.assets.Material;
+import de.ailis.threedee.assets.Mesh;
+import de.ailis.threedee.assets.MeshPolygons;
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.events.NodeAdapter;
 import de.ailis.threedee.rendering.BoundsRenderer;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
-import de.ailis.threedee.scene.model.Material;
-import de.ailis.threedee.scene.model.Mesh;
-import de.ailis.threedee.scene.model.MeshPolygons;
-import de.ailis.threedee.scene.textures.Texture;
 import de.ailis.threedee.scene.textures.TextureManager;
 
 
@@ -76,6 +76,7 @@ public class Model extends SceneNode
         this.mesh = mesh;
         this.materials = new Material[mesh.getMaterials().length];
         final Map<String, Texture> textures = this.textures;
+        final Material[] materials = this.materials;
         addNodeListener(new NodeAdapter()
         {
             @Override
@@ -84,6 +85,12 @@ public class Model extends SceneNode
                 final TextureManager manager = TextureManager.getInstance();
                 for (final Texture texture : textures.values())
                     manager.referenceTexture(texture);
+                for (final Material material : materials)
+                {
+                    final Texture texture = material.getDiffuseTexture();
+                    if (texture != null)
+                        manager.referenceTexture(texture);
+                }
             }
 
             @Override
@@ -92,6 +99,12 @@ public class Model extends SceneNode
                 final TextureManager manager = TextureManager.getInstance();
                 for (final Texture texture : textures.values())
                     manager.dereferenceTexture(texture);
+                for (final Material material : materials)
+                {
+                    final Texture texture = material.getDiffuseTexture();
+                    if (texture != null)
+                        manager.dereferenceTexture(texture);
+                }
             }
         });
     }
@@ -108,9 +121,47 @@ public class Model extends SceneNode
 
     public void bindMaterial(final String id, final Material material)
     {
+        unbindMaterial(id);
         final int index = getMaterialIndex(id);
         if (index == -1) return;
         this.materials[index] = material;
+        if (isInScene())
+        {
+            final Texture texture = material.getDiffuseTexture();
+            if (texture != null)
+            {
+                final TextureManager manager = TextureManager.getInstance();
+                manager.referenceTexture(texture);
+            }
+        }
+    }
+
+
+    /**
+     * Unbinds the material from the specified slot.
+     *
+     * @param id
+     *            The slot id
+     */
+
+    public void unbindMaterial(final String id)
+    {
+        final int index = getMaterialIndex(id);
+        if (index == -1) return;
+        final Material material = this.materials[index];
+        if (material != null)
+        {
+            if (isInScene())
+            {
+                final Texture texture = material.getDiffuseTexture();
+                if (texture != null)
+                {
+                    final TextureManager manager = TextureManager.getInstance();
+                    manager.dereferenceTexture(texture);
+                }
+            }
+            this.materials[index] = null;
+        }
     }
 
 
@@ -146,7 +197,7 @@ public class Model extends SceneNode
     {
         final String[] indices = this.mesh.getMaterials();
         for (int index = indices.length - 1; index >= 0; --index)
-            if (indices[index].equals(id)) return index;
+            if (id != null && id.equals(indices[index])) return index;
         return -1;
     }
 
@@ -329,7 +380,8 @@ public class Model extends SceneNode
 
         // Reset GL state
         removeMaterial(gl, material);
-        if (oldLighting && !material.getLighting()) gl.glEnable(GL.GL_LIGHTING);
+        if (oldLighting && !material.getLighting())
+            gl.glEnable(GL.GL_LIGHTING);
         if (texCoords != null)
             gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
         if (normals != null) gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
@@ -376,20 +428,16 @@ public class Model extends SceneNode
 
     private void applyMaterial(final GL gl, final Material material)
     {
-        final String diffuseTexture = material.getDiffuseTexture();
+        final de.ailis.threedee.assets.Texture diffuseTexture = material
+            .getDiffuseTexture();
 
         if (diffuseTexture != null)
-        {
-            final Texture texture = this.diffuseTexture = getTexture(diffuseTexture);
-            if (texture != null)
-                TextureManager.getInstance().bind(gl, texture);
-        }
-        else
-            this.diffuseTexture = null;
+            TextureManager.getInstance().bind(gl, diffuseTexture);
+        this.diffuseTexture = diffuseTexture;
 
         gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_SPECULAR, material
                 .getSpecularColor().getBuffer());
-        if (this.diffuseTexture == null)
+        if (diffuseTexture == null)
             gl.glMaterial(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, material
                     .getDiffuseColor().getBuffer());
         else
@@ -485,7 +533,7 @@ public class Model extends SceneNode
                         .addVertex(b));
             }
         }
-        final Mesh normalMesh = builder.build();
+        final Mesh normalMesh = builder.build(getId() + "-normalMesh");
 
         // Cache normal mesh and return it
         this.normalMesh = new SoftReference<Mesh>(normalMesh);
@@ -579,5 +627,17 @@ public class Model extends SceneNode
     public Material[] getMaterials()
     {
         return this.materials;
+    }
+
+
+    /**
+     * Returns the bound textures.
+     *
+     * @return The bound textures
+     */
+
+    public Map<String, Texture> getTextures()
+    {
+        return this.textures;
     }
 }

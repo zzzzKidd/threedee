@@ -6,7 +6,8 @@
 package de.ailis.threedee.builder;
 
 import de.ailis.gramath.Color4f;
-import de.ailis.threedee.scene.model.Material;
+import de.ailis.threedee.assets.Material;
+import de.ailis.threedee.assets.Texture;
 
 
 /**
@@ -30,7 +31,7 @@ public class MaterialBuilder
     private Color4f diffuseColor;
 
     /** The diffuse texture */
-    private String diffuseTexture;
+    private Texture diffuseTexture;
 
     /** The specular color */
     private Color4f specularColor;
@@ -139,7 +140,7 @@ public class MaterialBuilder
      * @return This builder for chaining
      */
 
-    public MaterialBuilder setDiffuseTexture(final String diffuseTexture)
+    public MaterialBuilder setDiffuseTexture(final Texture diffuseTexture)
     {
         this.diffuseTexture = diffuseTexture;
         return this;

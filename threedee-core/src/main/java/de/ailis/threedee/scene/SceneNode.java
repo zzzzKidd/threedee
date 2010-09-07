@@ -875,6 +875,7 @@ public abstract class SceneNode implements Iterable<SceneNode>
     }
 
 
+
     /**
      * Fires the nodeInserted event.
      */

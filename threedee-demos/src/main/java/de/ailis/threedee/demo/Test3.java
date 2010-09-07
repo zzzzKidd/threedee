@@ -11,13 +11,13 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import de.ailis.gramath.Color4f;
+import de.ailis.threedee.assets.Mesh;
 import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.scene.Camera;
 import de.ailis.threedee.scene.Model;
 import de.ailis.threedee.scene.Scene;
 import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.scene.lights.SpotLight;
-import de.ailis.threedee.scene.model.Mesh;
 import de.ailis.threedee.scene.model.MeshFactory;
 
 
@@ -52,7 +52,7 @@ public class Test3
         final Scene scene = canvas.getScene();
         final SceneNode root = scene.getRootNode();
 
-        final Mesh cube = MeshFactory.createBox(1, 1, 1);
+        final Mesh cube = MeshFactory.createBox("cube", 1, 1, 1);
 
         final int size = 50;
         for (int x = -size; x < size; x++)

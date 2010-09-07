@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.ailis.gramath.Color4f;
+import de.ailis.threedee.assets.Asset;
+import de.ailis.threedee.assets.AssetType;
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.events.TouchListener;
 import de.ailis.threedee.rendering.GL;
@@ -28,7 +30,7 @@ import de.ailis.threedee.scene.textures.TextureManager;
  * @version $Revision: 84727 $
  */
 
-public class Scene
+public class Scene extends Asset
 {
     /** The root scene node */
     private SceneNode rootNode;
@@ -54,10 +56,14 @@ public class Scene
 
     /**
      * Constructs a new scene.
+     *
+     * @param id
+     *            The asset ID
      */
 
-    public Scene()
+    public Scene(final String id)
     {
+        super(id, AssetType.SCENE);
         this.lastUpdate = System.nanoTime();
         setRootNode(createDefaultRootNode());
         this.cameraNode = createDefaultCamera();
@@ -434,5 +440,16 @@ public class Scene
         for (final Animation animation : this.animations)
             if (id.equals(animation.getId())) return animation;
         return null;
+    }
+
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+
+    @Override
+    public String toString()
+    {
+        return "Scene " + getId();
     }
 }

@@ -10,8 +10,11 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import de.ailis.threedee.collada.reader.ColladaSceneReader;
-import de.ailis.threedee.io.resources.ClasspathResourceProvider;
+import de.ailis.threedee.assets.AssetProvider;
+import de.ailis.threedee.assets.AssetType;
+import de.ailis.threedee.assets.Assets;
+import de.ailis.threedee.assets.ClasspathAssetProvider;
+import de.ailis.threedee.collada.ColladaAssetsReader;
 import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.scene.Camera;
 import de.ailis.threedee.scene.Scene;
@@ -37,9 +40,15 @@ public class ColladaLogo
 
     public static void main(final String args[]) throws IOException
     {
-        // Load the scene
-        final String filename = "/collada_logo/collada.dae";
-        final Scene scene = new ColladaSceneReader(new ClasspathResourceProvider()).read(filename);
+        // Load assets
+        final AssetProvider provider = new ClasspathAssetProvider();
+        final Assets assets = new Assets(provider);
+        new ColladaAssetsReader().read(assets, provider
+            .openInputStream(AssetType.ASSETS, "collada"));
+
+        // Get the scene
+        final Scene scene = assets.getScenes().iterator().next();
+
 
         // Create the frame
         final JFrame frame = new JFrame();

@@ -25,19 +25,6 @@ public class TransformAnimation extends Animation
     /**
      * Constructs a new transformation animation.
      *
-     * @param sampler
-     *            The sampler
-     */
-
-    public TransformAnimation(final Sampler<Matrix4f> sampler)
-    {
-        this(null, sampler);
-    }
-
-
-    /**
-     * Constructs a new transformation animation.
-     *
      * @param id
      *            The animation id
      * @param sampler

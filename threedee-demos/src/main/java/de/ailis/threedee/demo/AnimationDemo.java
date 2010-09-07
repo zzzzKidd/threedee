@@ -58,7 +58,7 @@ public class AnimationDemo
         final SceneNode root = scene.getRootNode();
 
         // Create a cube model
-        final Model model = new Model(MeshFactory.createBox(1, 1, 1));
+        final Model model = new Model(MeshFactory.createBox("box", 1, 1, 1));
         root.appendChild(model);
 
         // Add a simple animation
@@ -67,7 +67,7 @@ public class AnimationDemo
         {
             sampler.addSample((float) i / 90, new SamplerValue<Matrix4f>(MutableMatrix4f.identity().translateZ(0 * -i / 10).rotateY((float) Math.PI * i / 180).rotateX((float) Math.PI * i / 180), Interpolation.LINEAR));
         }
-        final Animation animation = new TransformAnimation(sampler);
+        final Animation animation = new TransformAnimation("animation", sampler);
         animation.addNode(model);
         scene.addAnimation(animation);
 

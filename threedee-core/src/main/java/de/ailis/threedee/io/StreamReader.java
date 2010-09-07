@@ -16,6 +16,9 @@ import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 import java.nio.channels.Channels;
 
+import de.ailis.gramath.Color4f;
+import de.ailis.gramath.ImmutableColor4f;
+
 
 /**
  * A reader with many specialized methods to read data from a stream.
@@ -48,8 +51,8 @@ public class StreamReader
 
 
     /**
-     * Closes the stream used by the stream reader. You don't need to call
-     * this method if you close the stream yourself.
+     * Closes the stream used by the stream reader. You don't need to call this
+     * method if you close the stream yourself.
      *
      * @throws IOException
      *             When stream could not be closed
@@ -206,9 +209,9 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of bytes from the stream and return it
-     * in form of a byte buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads the specified number of bytes from the stream and return it in form
+     * of a byte buffer. The position of the returned buffer is at the
+     * beginning.
      *
      * @param size
      *            The number of bytes to read
@@ -227,9 +230,9 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of shorts from the stream and return it
-     * in form of a short buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads the specified number of shorts from the stream and return it in
+     * form of a short buffer. The position of the returned buffer is at the
+     * beginning.
      *
      * @param size
      *            The number of shorts to read
@@ -250,9 +253,8 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of ints from the stream and return it
-     * in form of a int buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads the specified number of ints from the stream and return it in form
+     * of a int buffer. The position of the returned buffer is at the beginning.
      *
      * @param size
      *            The number of ints to read
@@ -273,9 +275,9 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of longs from the stream and return it
-     * in form of a longs buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads the specified number of longs from the stream and return it in form
+     * of a longs buffer. The position of the returned buffer is at the
+     * beginning.
      *
      * @param size
      *            The number of longs to read
@@ -296,9 +298,9 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of floats from the stream and return it
-     * in form of a float buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads the specified number of floats from the stream and return it in
+     * form of a float buffer. The position of the returned buffer is at the
+     * beginning.
      *
      * @param size
      *            The number of floats to read
@@ -319,9 +321,28 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of doubles from the stream and return it
-     * in form of a double buffer. The position of the returned buffer is at
-     * the beginning.
+     * Reads a float array.
+     *
+     * @param size
+     *            The array size.
+     * @return The float array.
+     * @throws IOException
+     *             When read fails
+     */
+
+    public float[] readFloatArray(final int size) throws IOException
+    {
+        final float array[] = new float[size];
+        for (int i = 0; i < size; i++)
+            array[i] = readFloat();
+        return array;
+    }
+
+
+    /**
+     * Reads the specified number of doubles from the stream and return it in
+     * form of a double buffer. The position of the returned buffer is at the
+     * beginning.
      *
      * @param size
      *            The number of doubles to read
@@ -342,8 +363,8 @@ public class StreamReader
 
 
     /**
-     * Reads the specified number of bytes, converts them into a UTF-8
-     * string and returns it.
+     * Reads the specified number of bytes, converts them into a UTF-8 string
+     * and returns it.
      *
      * @param size
      *            The number of bytes to read
@@ -370,10 +391,30 @@ public class StreamReader
      * @throws IOException
      *             If read fails
      */
-    public String readString(final int size, final String charset) throws IOException
+    public String readString(final int size, final String charset)
+        throws IOException
     {
         final byte[] bytes = new byte[size];
         this.stream.read(bytes);
         return new String(bytes, charset);
+    }
+
+
+    /**
+     * Reads and returns a Color4f.
+     *
+     * @return The read color
+     * @throws IOException
+     *             When read fails
+     */
+
+    public Color4f readColor4f() throws IOException
+    {
+        final int red = readByte();
+        final int green = readByte();
+        final int blue = readByte();
+        final int alpha = readByte();
+        return new ImmutableColor4f(red / 255f, green / 255f, blue / 255f,
+            alpha / 255f);
     }
 }

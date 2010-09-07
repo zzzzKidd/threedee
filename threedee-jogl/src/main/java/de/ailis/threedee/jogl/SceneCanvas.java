@@ -57,7 +57,7 @@ public class SceneCanvas extends JComponent
 
     public SceneCanvas()
     {
-        this(new Scene());
+        this(new Scene("scene"));
     }
 
 

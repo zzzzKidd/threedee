@@ -10,7 +10,8 @@ import java.nio.IntBuffer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.assets.AssetProvider;
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.utils.BufferUtils;
 
@@ -108,7 +109,7 @@ class TextureReference
      *            The resource provider to use for loading the texture
      */
 
-    void load(final GL gl, final ResourceProvider resourceProvider)
+    void load(final GL gl, final AssetProvider resourceProvider)
     {
         if (this.loaded)
             throw new IllegalStateException("Texture is already loaded: "

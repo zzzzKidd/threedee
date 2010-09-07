@@ -8,6 +8,7 @@ package de.ailis.threedee.scene.textures;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.events.TextureListener;
 import de.ailis.threedee.rendering.GL;
 
@@ -20,17 +21,13 @@ import de.ailis.threedee.rendering.GL;
  *            The concrete dynamic texture type
  */
 
-public abstract class DynamicTexture<T extends DynamicTexture<T>> implements
-        Texture
+public abstract class DynamicTexture<T extends DynamicTexture<T>> extends Texture
 {
     /** If loaded texture is up-to-date */
     private boolean valid = true;
 
     /** The texture listeners */
     private final List<TextureListener<T>> listeners = new ArrayList<TextureListener<T>>();
-
-    /** The texture id. */
-    private final String id;
 
     /**
      * Constructor.
@@ -41,7 +38,7 @@ public abstract class DynamicTexture<T extends DynamicTexture<T>> implements
 
     public DynamicTexture(final String id)
     {
-        this.id = id;
+        super(id);
     }
 
 

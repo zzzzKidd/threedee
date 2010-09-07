@@ -44,7 +44,7 @@ public class SceneRenderer implements GLSurfaceView.Renderer
 
     public SceneRenderer(final SceneSurfaceView view)
     {
-        this.scene = new Scene();
+        this.scene = new Scene("scene");
         this.view = view;
         this.gl = new AndroidGL();
         this.viewport = new Viewport(this.gl);

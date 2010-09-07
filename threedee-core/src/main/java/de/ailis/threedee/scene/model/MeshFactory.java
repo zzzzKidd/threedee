@@ -5,6 +5,7 @@
 
 package de.ailis.threedee.scene.model;
 
+import de.ailis.threedee.assets.Mesh;
 import de.ailis.threedee.builder.MeshBuilder;
 
 
@@ -30,6 +31,8 @@ public final class MeshFactory
     /**
      * Creates and returns a box mesh.
      *
+     * @param id
+     *            The id
      * @param xRadius
      *            The X radius
      * @param yRadius
@@ -39,7 +42,8 @@ public final class MeshFactory
      * @return The box mesh
      */
 
-    public static Mesh createBox(final float xRadius, final float yRadius,
+    public static Mesh createBox(final String id, final float xRadius,
+        final float yRadius,
             final float zRadius)
     {
         final MeshBuilder builder = new MeshBuilder();
@@ -60,6 +64,6 @@ public final class MeshFactory
         builder.addElement(4, 1, 5, 6, 2);
         builder.addElement(4, 0, 3, 7, 4);
 
-        return builder.build();
+        return builder.build(id);
     }
 }

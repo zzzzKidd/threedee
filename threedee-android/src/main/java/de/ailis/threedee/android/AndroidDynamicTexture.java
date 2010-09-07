@@ -9,10 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.opengl.GLUtils;
-import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.assets.AssetProvider;
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.scene.textures.DynamicTexture;
-import de.ailis.threedee.scene.textures.Texture;
 
 
 /**
@@ -62,11 +62,11 @@ public class AndroidDynamicTexture extends
 
 
     /**
-     * @see Texture#load(GL, ResourceProvider)
+     * @see Texture#load(GL, AssetProvider)
      */
 
     @Override
-    public void load(final GL gl, final ResourceProvider resourceProvider)
+    public void load(final GL gl, final AssetProvider resourceProvider)
     {
         GLUtils.texImage2D(GL.GL_TEXTURE_2D, 0, this.bitmap, 0);
     }

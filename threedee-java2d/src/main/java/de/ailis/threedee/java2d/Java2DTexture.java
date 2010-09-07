@@ -18,10 +18,10 @@ import java.awt.image.WritableRaster;
 import java.nio.ByteBuffer;
 import java.util.Hashtable;
 
-import de.ailis.threedee.io.resources.ResourceProvider;
+import de.ailis.threedee.assets.AssetProvider;
+import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.scene.textures.DynamicTexture;
-import de.ailis.threedee.scene.textures.Texture;
 
 
 /**
@@ -113,11 +113,11 @@ public class Java2DTexture extends DynamicTexture<Java2DTexture>
 
 
     /**
-     * @see Texture#load(GL, ResourceProvider)
+     * @see Texture#load(GL, AssetProvider)
      */
 
     @Override
-    public void load(final GL gl, final ResourceProvider resourceProvider)
+    public void load(final GL gl, final AssetProvider resourceProvider)
     {
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, this.width,
                 this.height, 0, this.srcPixelFormat, GL.GL_UNSIGNED_BYTE,

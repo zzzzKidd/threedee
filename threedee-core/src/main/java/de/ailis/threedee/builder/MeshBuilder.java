@@ -13,9 +13,9 @@ import de.ailis.gramath.MutableVector2f;
 import de.ailis.gramath.MutableVector3f;
 import de.ailis.gramath.Vector2f;
 import de.ailis.gramath.Vector3f;
+import de.ailis.threedee.assets.Mesh;
+import de.ailis.threedee.assets.MeshPolygons;
 import de.ailis.threedee.exceptions.ModelBuilderException;
-import de.ailis.threedee.scene.model.Mesh;
-import de.ailis.threedee.scene.model.MeshPolygons;
 import de.ailis.threedee.utils.FloatBufferBuilder;
 import de.ailis.threedee.utils.ShortBufferBuilder;
 
@@ -432,13 +432,16 @@ public class MeshBuilder
     /**
      * Builds the mesh.
      *
+     * @param id
+     *            The mesh ID
      * @return The mesh
      */
 
-    public Mesh build()
+    public Mesh build(final String id)
     {
         finishElements();
-        final Mesh model = new Mesh(this.elements.toArray(new MeshPolygons[0]),
+        final Mesh model = new Mesh(id,
+            this.elements.toArray(new MeshPolygons[0]),
                 this.materials.toArray(new String[0]));
         return model;
     }
