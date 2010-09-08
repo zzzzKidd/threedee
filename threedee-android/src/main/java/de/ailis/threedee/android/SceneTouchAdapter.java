@@ -9,11 +9,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import de.ailis.threedee.events.TouchEvent;
-import de.ailis.threedee.scene.Scene;
 
 
 /**
- * Translates mouse events into touch events for the connected scene.
+ * Translates mouse events into touch events for the connected scene renderer.
  *
  * @author Klaus Reimer (k@ailis.de)
  */
@@ -21,7 +20,7 @@ import de.ailis.threedee.scene.Scene;
 public class SceneTouchAdapter implements OnTouchListener
 {
     /** The scene */
-    private final Scene scene;
+    private final SceneSurfaceView sceneRenderer;
 
 
     /**
@@ -31,9 +30,9 @@ public class SceneTouchAdapter implements OnTouchListener
      *            The scene
      */
 
-    public SceneTouchAdapter(final Scene scene)
+    public SceneTouchAdapter(final SceneSurfaceView scene)
     {
-        this.scene = scene;
+        this.sceneRenderer = scene;
     }
 
 
@@ -55,15 +54,15 @@ public class SceneTouchAdapter implements OnTouchListener
             switch (event.getAction())
             {
                 case MotionEvent.ACTION_DOWN:
-                    this.scene.touchDown(touchEvent);
+                    this.sceneRenderer.touchDown(touchEvent);
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    this.scene.touchMove(touchEvent);
+                    this.sceneRenderer.touchMove(touchEvent);
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    this.scene.touchRelease(touchEvent);
+                    this.sceneRenderer.touchRelease(touchEvent);
                     break;
             }
         }

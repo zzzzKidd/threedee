@@ -49,7 +49,8 @@ public class TransformTest
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create the canvas component displaying the scene
-        final SceneCanvas canvas = new SceneCanvas(scene);
+        final SceneCanvas canvas = new SceneCanvas();
+        canvas.setScene(scene);
         canvas.setPreferredSize(new Dimension(640, 480));
         frame.getContentPane().add(canvas);
 

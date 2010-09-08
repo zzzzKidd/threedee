@@ -38,14 +38,13 @@ public class AssetDemo
         final Assets assets = new Assets(new ClasspathAssetProvider());
         assets.addAssets("duck");
 
-        //new ColladaAssetsReader().read(assets, AssetDemo.class.getResourceAsStream("/cup.dae"));
-
         // Create the frame
         final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create the canvas component displaying the scene
-        final SceneCanvas canvas = new SceneCanvas(assets.getScenes().iterator().next());
+        final SceneCanvas canvas = new SceneCanvas();
+        canvas.setScene(assets.getScenes().iterator().next());
         canvas.setPreferredSize(new Dimension(640, 480));
         frame.getContentPane().add(canvas);
 

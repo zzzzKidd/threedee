@@ -20,6 +20,7 @@ import de.ailis.threedee.assets.MeshPolygons;
 import de.ailis.threedee.assets.Texture;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.events.NodeAdapter;
+import de.ailis.threedee.events.SceneAdapter;
 import de.ailis.threedee.rendering.BoundsRenderer;
 import de.ailis.threedee.rendering.GL;
 import de.ailis.threedee.rendering.Viewport;
@@ -63,6 +64,22 @@ public class Model extends SceneNode
     /** The last used diffuse texture */
     private Texture diffuseTexture;
 
+    /** The scene listener. */
+    final SceneAdapter sceneAdapter = new SceneAdapter()
+    {
+        @Override
+        public void sceneInsertedIntoViewport()
+        {
+            referenceTextures();
+        }
+
+        @Override
+        public void sceneRemovedFromViewport()
+        {
+            dereferenceTextures();
+        }
+    };
+
 
     /**
      * Constructor
@@ -75,38 +92,74 @@ public class Model extends SceneNode
     {
         this.mesh = mesh;
         this.materials = new Material[mesh.getMaterials().length];
-        final Map<String, Texture> textures = this.textures;
-        final Material[] materials = this.materials;
         addNodeListener(new NodeAdapter()
         {
             @Override
             public void nodeInsertedIntoScene()
             {
-                final TextureManager manager = TextureManager.getInstance();
-                for (final Texture texture : textures.values())
-                    manager.referenceTexture(texture);
-                for (final Material material : materials)
-                {
-                    final Texture texture = material.getDiffuseTexture();
-                    if (texture != null)
-                        manager.referenceTexture(texture);
-                }
+                final Scene scene = getScene();
+
+                // Connect scene listener
+                scene.addSceneListener(Model.this.sceneAdapter);
+
+                // Do nothing more if scene is not viewed
+                if (!scene.hasViewport()) return;
+
+                // Reference textures
+                referenceTextures();
             }
 
             @Override
             public void nodeRemovedFromScene()
             {
-                final TextureManager manager = TextureManager.getInstance();
-                for (final Texture texture : textures.values())
-                    manager.dereferenceTexture(texture);
-                for (final Material material : materials)
-                {
-                    final Texture texture = material.getDiffuseTexture();
-                    if (texture != null)
-                        manager.dereferenceTexture(texture);
-                }
+                final Scene scene = getScene();
+
+                // Remove scene listener
+                scene.removeSceneListener(Model.this.sceneAdapter);
+
+                // Do nothing more if scene is not viewed
+                if (!scene.hasViewport()) return;
+
+                // Dereference textures
+                dereferenceTextures();
             }
         });
+    }
+
+
+    /**
+     * References the textures.
+     */
+
+    void referenceTextures()
+    {
+        final TextureManager manager = TextureManager.getInstance();
+        for (final Texture texture : this.textures.values())
+            manager.referenceTexture(texture);
+        for (final Material material : this.materials)
+        {
+            final Texture texture = material.getDiffuseTexture();
+            if (texture != null)
+                manager.referenceTexture(texture);
+        }
+    }
+
+
+    /**
+     * Dereferences the textures.
+     */
+
+    void dereferenceTextures()
+    {
+        final TextureManager manager = TextureManager.getInstance();
+        for (final Texture texture : this.textures.values())
+            manager.dereferenceTexture(texture);
+        for (final Material material : this.materials)
+        {
+            final Texture texture = material.getDiffuseTexture();
+            if (texture != null)
+                manager.dereferenceTexture(texture);
+        }
     }
 
 

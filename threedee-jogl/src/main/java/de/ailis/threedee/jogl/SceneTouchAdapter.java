@@ -11,7 +11,6 @@ import java.awt.event.MouseMotionListener;
 
 import de.ailis.threedee.events.TouchEvent;
 import de.ailis.threedee.rendering.Viewport;
-import de.ailis.threedee.scene.Scene;
 
 
 /**
@@ -22,29 +21,23 @@ import de.ailis.threedee.scene.Scene;
 
 public class SceneTouchAdapter implements MouseMotionListener, MouseListener
 {
-    /** The scene */
-    private final Scene scene;
-
-    /** The viewport */
-    private final Viewport viewport;
+    /** The scene canvas */
+    private final SceneCanvas sceneCanvas;
 
     /** The pressed states of the four buttons. */
     private final boolean[] pressed = { false, false, false };
 
 
     /**
-     * Constructs a new scene touch adapter.
+     * Constructs a new touch adapter.
      *
-     * @param scene
-     *            The scene
-     * @param viewport
-     *            The viewport
+     * @param sceneCanvas
+     *            The scene canvas
      */
 
-    public SceneTouchAdapter(final Scene scene, final Viewport viewport)
+    public SceneTouchAdapter(final SceneCanvas sceneCanvas)
     {
-        this.scene = scene;
-        this.viewport = viewport;
+        this.sceneCanvas = sceneCanvas;
     }
 
 
@@ -55,13 +48,14 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mouseDragged(final MouseEvent e)
     {
+        final Viewport viewport = this.sceneCanvas.getViewport();
         for (int i = 0; i < 3; i++)
         {
             final boolean pressed = this.pressed[i];
             if (pressed)
-                this.scene.touchMove(new TouchEvent(i, e.getX()
-                    - this.viewport.getWidth()
-                    / 2, this.viewport.getHeight() / 2 - e.getY()));
+                this.sceneCanvas.touchMove(new TouchEvent(i, e.getX()
+                    - viewport.getWidth()
+                    / 2, viewport.getHeight() / 2 - e.getY()));
         }
     }
 
@@ -117,11 +111,12 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mousePressed(final MouseEvent e)
     {
+        final Viewport viewport = this.sceneCanvas.getViewport();
         final int id = e.getButton() - 1;
         this.pressed[id] = true;
-        this.scene.touchDown(new TouchEvent(id, e.getX()
-            - this.viewport.getWidth()
-                / 2, this.viewport.getHeight() / 2 - e.getY()));
+        this.sceneCanvas.touchDown(new TouchEvent(id, e.getX()
+            - viewport.getWidth()
+                / 2, viewport.getHeight() / 2 - e.getY()));
     }
 
 
@@ -132,10 +127,11 @@ public class SceneTouchAdapter implements MouseMotionListener, MouseListener
     @Override
     public void mouseReleased(final MouseEvent e)
     {
+        final Viewport viewport = this.sceneCanvas.getViewport();
         final int id = e.getButton() - 1;
         this.pressed[id] = false;
-        this.scene.touchRelease(new TouchEvent(id, e.getX()
-                - this.viewport.getWidth() / 2, this.viewport.getHeight() / 2
+        this.sceneCanvas.touchRelease(new TouchEvent(id, e.getX()
+                - viewport.getWidth() / 2, viewport.getHeight() / 2
                 - e.getY()));
     }
 }

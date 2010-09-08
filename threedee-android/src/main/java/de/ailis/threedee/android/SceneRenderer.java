@@ -11,7 +11,6 @@ import javax.microedition.khronos.opengles.GL11;
 
 import android.opengl.GLSurfaceView;
 import de.ailis.threedee.rendering.Viewport;
-import de.ailis.threedee.scene.Scene;
 
 
 /**
@@ -22,9 +21,6 @@ import de.ailis.threedee.scene.Scene;
 
 public class SceneRenderer implements GLSurfaceView.Renderer
 {
-    /** The scene to render */
-    private Scene scene;
-
     /** The view */
     private final SceneSurfaceView view;
 
@@ -44,22 +40,9 @@ public class SceneRenderer implements GLSurfaceView.Renderer
 
     public SceneRenderer(final SceneSurfaceView view)
     {
-        this.scene = new Scene("scene");
         this.view = view;
         this.gl = new AndroidGL();
-        this.viewport = new Viewport(this.gl);
-    }
-
-
-    /**
-     * Returns the scene.
-     *
-     * @return The scene
-     */
-
-    public Scene getScene()
-    {
-        return this.scene;
+        this.viewport = new Viewport(view, this.gl);
     }
 
 
@@ -95,24 +78,20 @@ public class SceneRenderer implements GLSurfaceView.Renderer
     @Override
     public void onDrawFrame(final GL10 gl)
     {
-        if (this.scene != null)
-        {
-            final boolean changed = this.scene.update();
-            this.scene.render(this.viewport);
-            if (changed) this.view.requestRender();
-        }
+        this.viewport.render();
+        final boolean changed = this.viewport.update();
+        if (changed) this.view.requestRender();
     }
 
 
     /**
-     * Sets the scene.
+     * Returns the viewport.
      *
-     * @param scene
-     *            The scene to set
+     * @return The viewport.
      */
 
-    public void setScene(final Scene scene)
+    public Viewport getViewport()
     {
-        this.scene = scene;
+        return this.viewport;
     }
 }

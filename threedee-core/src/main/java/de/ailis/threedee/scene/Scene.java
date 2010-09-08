@@ -10,12 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.ailis.gramath.Color4f;
 import de.ailis.threedee.assets.Asset;
 import de.ailis.threedee.assets.AssetType;
-import de.ailis.threedee.events.TouchEvent;
-import de.ailis.threedee.events.TouchListener;
-import de.ailis.threedee.rendering.GL;
+import de.ailis.threedee.events.SceneListener;
 import de.ailis.threedee.rendering.Viewport;
 import de.ailis.threedee.scene.animation.Animation;
 import de.ailis.threedee.scene.animation.AnimationInputType;
@@ -38,20 +35,17 @@ public class Scene extends Asset
     /** The used camera */
     private Camera cameraNode;
 
-    /** The last update time (Nanosecond timestamp) */
-    private long lastUpdate;
-
-    /** The color used to clear the screen */
-    private Color4f clearColor = Color4f.BLACK;
-
-    /** The list of touch listeners */
-    private final List<TouchListener> touchListeners = new ArrayList<TouchListener>();
+    /** The list with scene listeners */
+    private List<SceneListener> sceneListeners;
 
     /** The ID-to-node mapping */
     private final Map<String, SceneNode> nodes = new HashMap<String, SceneNode>();
 
     /** The list with animations */
     private List<Animation> animations = null;
+
+    /** The viewport this scene is currently connected to. */
+    private Viewport viewport;
 
 
     /**
@@ -64,7 +58,6 @@ public class Scene extends Asset
     public Scene(final String id)
     {
         super(id, AssetType.SCENE);
-        this.lastUpdate = System.nanoTime();
         setRootNode(createDefaultRootNode());
         this.cameraNode = createDefaultCamera();
     }
@@ -97,50 +90,15 @@ public class Scene extends Asset
 
 
     /**
-     * Sets the clear color. This is the color used for clearing the screen
-     * before rendering a frame. The default clear color is black.
-     *
-     * @param clearColor
-     *            The clear color to set. Must not be null.
-     */
-
-    public void setClearColor(final Color4f clearColor)
-    {
-        if (clearColor == null)
-            throw new IllegalArgumentException("clearColor must be set");
-        if (!this.clearColor.equals(clearColor))
-        {
-            this.clearColor = clearColor.asImmutable();
-            // TODO Must reinit the scene rendering
-        }
-    }
-
-
-    /**
-     * Returns the current clear color.
-     *
-     * @return The clear color. Never null.
-     */
-
-    public Color4f getClearColor()
-    {
-        return this.clearColor;
-    }
-
-
-    /**
      * Updates the scene. Call this regularly to enable animations.
      *
+     * @param delta
+     *            The time elapsed since the last scene update (in seconds)
      * @return True if the scene needs to be rendered again, false if not
      */
 
-    public boolean update()
+    public boolean update(final float delta)
     {
-        // Calculate time delta
-        final long now = System.nanoTime();
-        final float delta = ((now - this.lastUpdate)) / 1000000000f;
-        this.lastUpdate = now;
-
         // Initialize changed flag
         boolean changed = false;
 
@@ -159,7 +117,6 @@ public class Scene extends Asset
                 }
             }
         }
-
 
         // Update textures and update the changed-flag if needed
         changed |= TextureManager.getInstance().update(delta);
@@ -225,80 +182,6 @@ public class Scene extends Asset
 
 
     /**
-     * Adds a touch listener.
-     *
-     * @param touchListener
-     *            The touch listener to add
-     */
-
-    public void addTouchListener(final TouchListener touchListener)
-    {
-        this.touchListeners.add(touchListener);
-    }
-
-
-    /**
-     * Remove touch listener.
-     *
-     * @param touchListener
-     *            The touch listener to remove
-     */
-
-    public void removeTouchListener(final TouchListener touchListener)
-    {
-        this.touchListeners.remove(touchListener);
-    }
-
-
-    /**
-     * Fires the touch down event.
-     *
-     * @param event
-     *            The event object
-     */
-
-    public void touchDown(final TouchEvent event)
-    {
-        for (final TouchListener touchListener : this.touchListeners)
-        {
-            touchListener.touchDown(event);
-        }
-    }
-
-
-    /**
-     * Fires the touch move event.
-     *
-     * @param event
-     *            The event object
-     */
-
-    public void touchMove(final TouchEvent event)
-    {
-        for (final TouchListener touchListener : this.touchListeners)
-        {
-            touchListener.touchMove(event);
-        }
-    }
-
-
-    /**
-     * Fires the touch release event.
-     *
-     * @param event
-     *            The event object
-     */
-
-    public void touchRelease(final TouchEvent event)
-    {
-        for (final TouchListener touchListener : this.touchListeners)
-        {
-            touchListener.touchRelease(event);
-        }
-    }
-
-
-    /**
      * Renders the scene.
      *
      * @param viewport
@@ -307,17 +190,8 @@ public class Scene extends Asset
 
     public void render(final Viewport viewport)
     {
-        // Create some shortcuts
-        final GL gl = viewport.getGL();
+        // Only process camera and nodes when a root node is set
         final SceneNode rootNode = this.rootNode;
-        final Color4f clearColor = this.clearColor;
-
-        // Clear the viewport
-        gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
-                .getBlue(), clearColor.getAlpha());
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
-        // Only perform camera and nodes when a root node is set
         if (rootNode != null)
         {
             // Apply camera transformation if camera is present
@@ -329,12 +203,6 @@ public class Scene extends Asset
             // Remove camera transformation if camera is present
             if (this.cameraNode != null) this.cameraNode.remove(viewport);
         }
-
-        // Clean-up unused textures
-       // TextureManager.getInstance().cleanUp(gl);
-
-        // Finish renderering
-        gl.glFlush();
     }
 
 
@@ -444,6 +312,35 @@ public class Scene extends Asset
 
 
     /**
+     * Adds a node listener.
+     *
+     * @param listener
+     *            The node listener to add
+     */
+
+    public void addSceneListener(final SceneListener listener)
+    {
+        if (this.sceneListeners == null)
+            this.sceneListeners = new ArrayList<SceneListener>();
+        this.sceneListeners.add(listener);
+    }
+
+
+    /**
+     * Removes a node listener.
+     *
+     * @param listener
+     *            The node listener to remove
+     */
+
+    public void removeSceneListener(final SceneListener listener)
+    {
+        if (this.sceneListeners == null) return;
+        this.sceneListeners.remove(listener);
+    }
+
+
+    /**
      * @see java.lang.Object#toString()
      */
 
@@ -451,5 +348,84 @@ public class Scene extends Asset
     public String toString()
     {
         return "Scene " + getId();
+    }
+
+
+    /**
+     * Fires the sceneRemovedFromViewport event.
+     */
+
+    private void fireSceneRemovedFromViewport()
+    {
+        if (this.sceneListeners == null) return;
+        for (final SceneListener listener : this.sceneListeners)
+            listener.sceneRemovedFromViewport();
+    }
+
+
+    /**
+     * Fires the sceneInsertedIntoViewport event.
+     */
+
+    private void fireSceneInsertedIntoViewport()
+    {
+        if (this.sceneListeners == null) return;
+        for (final SceneListener listener : this.sceneListeners)
+            listener.sceneInsertedIntoViewport();
+    }
+
+
+    /**
+     * Sets the viewport. This is called internally, don't do it yourself.
+     *
+     * @param viewport
+     *            The viewport to set.
+     */
+
+    public void setViewport(final Viewport viewport)
+    {
+        // Do nothing if viewport has not changed
+        if (viewport == this.viewport) return;
+
+        // Detach from old viewport
+        if (this.viewport != null)
+        {
+            final Viewport oldViewport = this.viewport;
+            fireSceneRemovedFromViewport();
+            this.viewport = null;
+            oldViewport.setScene(null);
+        }
+
+        // Attach to new viewport
+        this.viewport = viewport;
+        if (viewport != null)
+        {
+            viewport.setScene(this);
+            fireSceneInsertedIntoViewport();
+        }
+    }
+
+
+    /**
+     * Returns the viewport this scene is currently connected to.
+     *
+     * @return The viewport. May be null if scene is not displayed.
+     */
+
+    public Viewport getViewport()
+    {
+        return this.viewport;
+    }
+
+
+    /**
+     * Checks if scene is currently displayed in a viewport.
+     *
+     * @return True if scene has a viewport, false if not.
+     */
+
+    public boolean hasViewport()
+    {
+        return this.viewport != null;
     }
 }
