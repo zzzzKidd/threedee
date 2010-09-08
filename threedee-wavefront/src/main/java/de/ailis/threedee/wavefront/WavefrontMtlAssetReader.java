@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import de.ailis.gramath.Color4f;
 import de.ailis.gramath.ImmutableColor4f;
+import de.ailis.threedee.assets.AssetFormat;
 import de.ailis.threedee.assets.Assets;
 import de.ailis.threedee.assets.Material;
 import de.ailis.threedee.assets.reader.assets.AssetsReader;
@@ -243,5 +244,16 @@ public class WavefrontMtlAssetReader implements AssetsReader
                     + tokenizer.countTokens() + " found");
         }
         return tokenizer.nextToken();
+    }
+
+
+    /**
+     * @see de.ailis.threedee.assets.reader.assets.AssetsReader#getFormat()
+     */
+
+    @Override
+    public AssetFormat getFormat()
+    {
+        return AssetFormat.MTL;
     }
 }

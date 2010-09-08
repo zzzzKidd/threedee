@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.nio.ByteOrder;
 
 import de.ailis.threedee.assets.Asset;
+import de.ailis.threedee.assets.AssetFormat;
 import de.ailis.threedee.assets.Assets;
 import de.ailis.threedee.exceptions.AssetIOException;
 import de.ailis.threedee.exceptions.ReaderException;
@@ -24,7 +25,7 @@ import de.ailis.threedee.io.StreamReader;
  *            The asset type
  */
 
-public abstract class TDBReader<T extends Asset> extends AssetReader
+public abstract class TDBReader<T extends Asset> extends AbstractAssetReader<T>
 {
     /** The stream reader */
     protected StreamReader reader;
@@ -56,7 +57,7 @@ public abstract class TDBReader<T extends Asset> extends AssetReader
     public TDBReader(final String id, final byte minVersion,
         final byte maxVersion)
     {
-        super(id);
+        super(id, AssetFormat.TDB);
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
     }
@@ -74,6 +75,7 @@ public abstract class TDBReader<T extends Asset> extends AssetReader
      *             When reading fails.
      */
 
+    @Override
     public T read(final InputStream stream, final Assets assets)
         throws AssetIOException
     {

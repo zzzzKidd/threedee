@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.ailis.threedee.assets.Assets;
 import de.ailis.threedee.assets.Mesh;
 import de.ailis.threedee.assets.MeshPolygons;
@@ -25,6 +28,9 @@ import de.ailis.threedee.utils.BufferUtils;
 public class TDBMeshReader extends TDBReader<Mesh> implements
     MeshReader
 {
+    /** The logger */
+    private final static Log log = LogFactory.getLog(TDBMeshReader.class);
+
     /**
      * Constructor
      *
@@ -46,9 +52,15 @@ public class TDBMeshReader extends TDBReader<Mesh> implements
     @Override
     protected Mesh readAsset(final Assets assets) throws IOException
     {
+        log.trace("Loading mesh " + this.id);
+        log.trace("  Loading polygons");
         final MeshPolygons[] polygons = readMeshPolygons();
+        log.trace("  Loading materials");
         final String[] materials = readMaterials();
-        return new Mesh(this.id, polygons, materials);
+        log.trace("  Creating mesh");
+        final Mesh mesh = new Mesh(this.id, polygons, materials);
+        log.trace("Finished mesh");
+        return mesh;
     }
 
 
@@ -62,10 +74,12 @@ public class TDBMeshReader extends TDBReader<Mesh> implements
 
     private MeshPolygons[] readMeshPolygons() throws IOException
     {
-        final int groupCount = this.reader.readInt();
+        final int groupCount = this.reader.readShort();
         final MeshPolygons[] groups = new MeshPolygons[groupCount];
+        log.trace("    Number of groups: " + groupCount);
         for (int i = 0; i < groupCount; i++)
         {
+            log.trace("    Loading group " + this.id);
             groups[i] = readMeshPolygon();
         }
         return groups;
@@ -82,27 +96,35 @@ public class TDBMeshReader extends TDBReader<Mesh> implements
 
     private MeshPolygons readMeshPolygon() throws IOException
     {
-        final int material = this.reader.readShort();
+        final int material = this.reader.readByte();
         final byte flags = (byte) this.reader.readByte();
         final boolean hasNormals = (flags & 1) != 0;
         final boolean hasTexCoords = (flags & 2) != 0;
         final byte mode = (byte) this.reader.readByte();
         final int vertexCount = this.reader.readInt();
+        log.trace("      Loading vertices (" + vertexCount * 3 * 4 +" bytes)");
         final FloatBuffer vertices = BufferUtils
                 .convertToNativeEndian(this.reader
                         .readFloatBuffer(vertexCount * 3));
         FloatBuffer normals = null, texCoords = null;
         if (hasNormals)
+        {
+            log.trace("      Loading normals (" + vertexCount * 3 * 4+ " bytes)");
             normals = BufferUtils.convertToNativeEndian(this.reader
                     .readFloatBuffer(vertexCount * 3));
+        }
         if (hasTexCoords)
+        {
+            log.trace("      Loading tex coords (" + vertexCount * 2 * 4+ " bytes)");
             texCoords = BufferUtils.convertToNativeEndian(this.reader
                     .readFloatBuffer(vertexCount * 2));
-
+        }
         final int indexCount = this.reader.readInt();
+        log.trace("      Loading indices (" + indexCount * 2 + " bytes)");
         final ShortBuffer indices = BufferUtils
             .convertToNativeEndian(this.reader
                     .readShortBuffer(indexCount));
+        log.trace("      Creating mesh polygons object");
         return new MeshPolygons(material, mode, indices, vertices, texCoords,
             normals);
     }

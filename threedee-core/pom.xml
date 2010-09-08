@@ -26,7 +26,12 @@
     <dependency>
       <groupId>de.ailis.gramath</groupId>
       <artifactId>gramath</artifactId>
-    </dependency> 
+    </dependency>
+    <dependency>
+      <groupId>de.ailis.jollada</groupId>
+      <artifactId>jollada</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
 </project>

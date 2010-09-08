@@ -27,7 +27,10 @@ public enum AssetFormat
     TDB(".tdb"),
 
     /** COLLADA format. */
-    DAE(".dae");
+    DAE(".dae"),
+
+    /** Wavefront MTL format. */
+    MTL(".mtl");
 
     /** The formats extension. */
     private String[] extensions;

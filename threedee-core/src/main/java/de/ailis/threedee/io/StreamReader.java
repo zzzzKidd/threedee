@@ -34,6 +34,9 @@ public class StreamReader
     /** The byte order */
     private ByteOrder byteOrder = ByteOrder.nativeOrder();
 
+    /** The current position in the stream. */
+    private long pos = 0;
+
 
     /**
      * Creates a stream reader reading from the specified stream.
@@ -99,6 +102,7 @@ public class StreamReader
 
     public int readByte() throws IOException
     {
+        this.pos++;
         return this.stream.read();
     }
 
@@ -113,6 +117,7 @@ public class StreamReader
 
     public int readShort() throws IOException
     {
+        this.pos += 2;
         if (this.byteOrder == ByteOrder.LITTLE_ENDIAN)
         {
             return this.stream.read() | this.stream.read() << 8;
@@ -134,6 +139,7 @@ public class StreamReader
 
     public int readInt() throws IOException
     {
+        this.pos += 4;
         if (this.byteOrder == ByteOrder.LITTLE_ENDIAN)
         {
             return this.stream.read() | (this.stream.read() << 8)
@@ -157,6 +163,7 @@ public class StreamReader
 
     public long readLong() throws IOException
     {
+        this.pos += 8;
         if (this.byteOrder == ByteOrder.LITTLE_ENDIAN)
         {
             return (this.stream.read()) | (((long) this.stream.read()) << 8)
@@ -222,8 +229,11 @@ public class StreamReader
 
     public ByteBuffer readByteBuffer(final int size) throws IOException
     {
+        this.pos += size;
         final ByteBuffer buffer = ByteBuffer.allocateDirect(size);
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < size)
+            read += Channels.newChannel(this.stream).read(buffer);
         buffer.rewind();
         return buffer;
     }
@@ -243,10 +253,14 @@ public class StreamReader
 
     public ShortBuffer readShortBuffer(final int size) throws IOException
     {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(size * 2);
+        final int realSize = size * 2;
+        this.pos += realSize;
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(realSize);
         buffer.order(this.byteOrder);
         final ShortBuffer shortBuffer = buffer.asShortBuffer();
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < realSize)
+            read += Channels.newChannel(this.stream).read(buffer);
         shortBuffer.rewind();
         return shortBuffer;
     }
@@ -265,10 +279,14 @@ public class StreamReader
 
     public IntBuffer readIntBuffer(final int size) throws IOException
     {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(size * 4);
+        final int realSize = size * 4;
+        this.pos += realSize;
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(realSize);
         buffer.order(this.byteOrder);
         final IntBuffer intBuffer = buffer.asIntBuffer();
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < realSize)
+            read += Channels.newChannel(this.stream).read(buffer);
         intBuffer.rewind();
         return intBuffer;
     }
@@ -288,10 +306,14 @@ public class StreamReader
 
     public LongBuffer readLongBuffer(final int size) throws IOException
     {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(size * 8);
+        final int realSize = size * 8;
+        this.pos += realSize;
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(realSize);
         buffer.order(this.byteOrder);
         final LongBuffer longBuffer = buffer.asLongBuffer();
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < realSize)
+            read += Channels.newChannel(this.stream).read(buffer);
         longBuffer.rewind();
         return longBuffer;
     }
@@ -311,10 +333,16 @@ public class StreamReader
 
     public FloatBuffer readFloatBuffer(final int size) throws IOException
     {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(size * 4);
+        final int realSize = size * 4;
+        if (realSize > 10*1024*1024)
+            throw new RuntimeException("Nah! " + realSize);
+        this.pos += realSize;
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(realSize);
         buffer.order(this.byteOrder);
         final FloatBuffer floatBuffer = buffer.asFloatBuffer();
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < realSize)
+            read += Channels.newChannel(this.stream).read(buffer);
         floatBuffer.rewind();
         return floatBuffer;
     }
@@ -353,10 +381,14 @@ public class StreamReader
 
     public DoubleBuffer readDoubleBuffer(final int size) throws IOException
     {
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(size * 8);
+        final int realSize = size * 8;
+        this.pos += realSize;
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(realSize);
         buffer.order(this.byteOrder);
         final DoubleBuffer doubleBuffer = buffer.asDoubleBuffer();
-        Channels.newChannel(this.stream).read(buffer);
+        int read = 0;
+        while (read < realSize)
+            read += Channels.newChannel(this.stream).read(buffer);
         doubleBuffer.rewind();
         return doubleBuffer;
     }
@@ -394,6 +426,7 @@ public class StreamReader
     public String readString(final int size, final String charset)
         throws IOException
     {
+        this.pos += size;
         final byte[] bytes = new byte[size];
         this.stream.read(bytes);
         return new String(bytes, charset);
@@ -416,5 +449,17 @@ public class StreamReader
         final int alpha = readByte();
         return new ImmutableColor4f(red / 255f, green / 255f, blue / 255f,
             alpha / 255f);
+    }
+
+
+    /**
+     * Returns the current position in the stream.
+     *
+     * @return The current position in the stream
+     */
+
+    public long getPosition()
+    {
+        return this.pos;
     }
 }

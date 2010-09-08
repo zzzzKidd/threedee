@@ -96,11 +96,6 @@
       </dependency>
       <dependency>
         <groupId>de.ailis.threedee</groupId>
-        <artifactId>threedee-collada</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>de.ailis.threedee</groupId>
         <artifactId>threedee-wavefront</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -125,7 +120,6 @@
   <modules>
     <module>threedee-android</module>
     <module>threedee-core</module>
-  	<module>threedee-collada</module>
   	<module>threedee-jogl</module>
   	<module>threedee-demos</module>
   	<module>threedee-wavefront</module>

@@ -11,6 +11,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import de.ailis.threedee.assets.reader.assets.ColladaAssetsReader;
 import de.ailis.threedee.assets.reader.material.TDBMaterialReader;
 import de.ailis.threedee.assets.reader.mesh.TDBMeshReader;
 import de.ailis.threedee.exceptions.AssetNotFoundException;
@@ -29,6 +33,9 @@ import de.ailis.threedee.scene.textures.ImageTexture;
 
 public class Assets
 {
+    /** The logger. */
+    private static final Log log = LogFactory.getLog(Assets.class);
+
     /** The loaded textures. */
     private final Map<String, Texture> textures = new HashMap<String, Texture>();
 
@@ -45,14 +52,26 @@ public class Assets
     private final Map<String, Animation> animations = new HashMap<String, Animation>();
 
     /** If assets should be loaded automatically when requested. */
-    private final boolean autoLoad;
+    private boolean autoLoad;
 
     /** The asset provider to use. */
-    private final AssetProvider provider;
+    private AssetProvider assetProvider;
 
 
     /**
-     * Constructor. Auto-Loading is enabled by default.
+     * Constructs a new Assets container which uses a ClasspathAssetProvider and
+     * has auto-loading enabled.
+     */
+
+    public Assets()
+    {
+        this(new ClasspathAssetProvider());
+    }
+
+
+    /**
+     * Constructs a new Assets container using the specified asset provider and
+     * has auto-loading enabled.
      *
      * @param provider
      *            The asset provider.
@@ -65,19 +84,20 @@ public class Assets
 
 
     /**
-     * Constructor.
+     * Constructs an new Assets container with the specified provider and
+     * auto-loading setting.
      *
      * @param provider
      *            The asset provider.
      * @param autoLoad
-     *            If assets should be loaded automatically when requested.
-     *            If false then exceptions are thrown when unloaded assets
-     *            are requested.
+     *            If assets should be loaded automatically when requested. If
+     *            false then exceptions are thrown when unloaded assets are
+     *            requested.
      */
 
     public Assets(final AssetProvider provider, final boolean autoLoad)
     {
-        this.provider = provider;
+        this.assetProvider = provider;
         this.autoLoad = autoLoad;
     }
 
@@ -116,7 +136,7 @@ public class Assets
 
     private Texture loadTexture(final String id)
     {
-        if (!this.provider.exists(AssetType.TEXTURE, id))
+        if (!this.assetProvider.exists(AssetType.TEXTURE, id))
             throw new AssetNotFoundException("Texture not found: " + id);
         final Texture texture = new ImageTexture(id);
         addTexture(texture);
@@ -218,7 +238,7 @@ public class Assets
 
     private void loadMaterial(final String id)
     {
-        final AssetInputStream stream = this.provider
+        final AssetInputStream stream = this.assetProvider
             .openInputStream(AssetType.MATERIAL, id);
         try
         {
@@ -226,7 +246,9 @@ public class Assets
             switch (format)
             {
                 case TDB:
+                    log.trace("Started loading material " + id);
                     addMaterial(new TDBMaterialReader(id).read(stream, this));
+                    log.trace("Finished loading material " + id);
                     break;
 
                 default:
@@ -324,7 +346,7 @@ public class Assets
         final Mesh meshes = this.meshes.get(id);
         if (meshes == null)
         {
-            if (this.autoLoad) loadMesh(id);
+            if (this.autoLoad) return loadMesh(id);
             throw new AssetNotFoundException("Mesh not found: " + id);
         }
         return meshes;
@@ -336,27 +358,33 @@ public class Assets
      *
      * @param id
      *            The meshes id
+     * @return The loaded mesh
      * @throws AssetNotFoundException
      *             When meshes was not found.
      */
 
-    private void loadMesh(final String id)
+    private Mesh loadMesh(final String id)
     {
-        final AssetInputStream stream = this.provider
-            .openInputStream(AssetType.MATERIAL, id);
+        final AssetInputStream stream = this.assetProvider
+            .openInputStream(AssetType.MESH, id);
         try
         {
             final AssetFormat format = stream.getFormat();
+            Mesh mesh;
             switch (format)
             {
                 case TDB:
-                    addMesh(new TDBMeshReader(id).read(stream, this));
+                    log.trace("Started loading mesh " + id);
+                    mesh = new TDBMeshReader(id).read(stream, this);
+                    log.trace("Finished loading mesh " + id);
                     break;
 
                 default:
                     throw new UnknownAssetFormatException(
                         "Unknown meshes format: " + format);
             }
+            addMesh(mesh);
+            return mesh;
         }
         finally
         {
@@ -466,8 +494,8 @@ public class Assets
 
     private void loadScene(final String id)
     {
-        final AssetInputStream stream = this.provider
-            .openInputStream(AssetType.MATERIAL, id);
+        final AssetInputStream stream = this.assetProvider
+            .openInputStream(AssetType.SCENE, id);
         try
         {
             final AssetFormat format = stream.getFormat();
@@ -586,7 +614,7 @@ public class Assets
 
     private void loadAnimation(final String id)
     {
-        final AssetInputStream stream = this.provider
+        final AssetInputStream stream = this.assetProvider
             .openInputStream(AssetType.MATERIAL, id);
         try
         {
@@ -674,20 +702,30 @@ public class Assets
 
 
     /**
+     * Loads assets.
      *
+     * @param id
+     *            The assets ID.
      */
 
-    public void loadAssets(final String id)
+    public void addAssets(final String id)
     {
-        final AssetInputStream stream = this.provider.openInputStream(AssetType.ASSETS, id);
+        final AssetInputStream stream = this.assetProvider
+            .openInputStream(AssetType.ASSETS, id);
         try
         {
             final AssetFormat format = stream.getFormat();
             switch (format)
             {
+                case DAE:
+                    log.trace("Started loading assets " + id);
+                    new ColladaAssetsReader().read(stream, this);
+                    log.trace("Finished loading assets " + id);
+                    break;
+
                 default:
                     throw new UnknownAssetFormatException(
-                        "Unknown animation format: " + format);
+                        "Unknown assets format: " + format);
             }
         }
         finally
@@ -701,5 +739,71 @@ public class Assets
                 // Ignored
             }
         }
+    }
+
+
+    /**
+     * Checks if auto-loading is enabled.
+     *
+     * @return True if auto-loading is enabled, false if not.
+     */
+
+    public boolean isAutoLoad()
+    {
+        return this.autoLoad;
+    }
+
+
+    /**
+     * Sets the auto-loading flag.
+     *
+     * @param autoLoad
+     *            True to enable auto-loading, false to disable it.
+     */
+
+    public void setAutoLoad(final boolean autoLoad)
+    {
+        this.autoLoad = autoLoad;
+    }
+
+
+    /**
+     * Returns the asset provider.
+     *
+     * @return The asset provider. Never null.
+     */
+
+    public AssetProvider getAssetProvider()
+    {
+        return this.assetProvider;
+    }
+
+
+    /**
+     * Sets the asset provider.
+     *
+     * @param assetProvider
+     *            The asset provider to set. Must not be null.
+     */
+
+    public void setAssetProvider(final AssetProvider assetProvider)
+    {
+        if (assetProvider == null)
+            throw new IllegalArgumentException("assetProvider must not be null");
+        this.assetProvider = assetProvider;
+    }
+
+
+    /**
+     * Clears all assets.
+     */
+
+    public void clear()
+    {
+        removeAnimations();
+        removeMaterials();
+        removeMeshes();
+        removeScenes();
+        removeTextures();
     }
 }

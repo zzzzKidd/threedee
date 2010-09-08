@@ -46,7 +46,7 @@ public class TDBMeshWriter extends TDBWriter<Mesh> implements
             writeMeshPolygons(group);
         }
         final String[] materials = mesh.getMaterials();
-        this.writer.writeShort(materials.length);
+        this.writer.writeByte(materials.length);
         for (final String material: materials)
         {
             this.writer.writeByte(material.getBytes("UTF-8").length);
@@ -67,7 +67,7 @@ public class TDBMeshWriter extends TDBWriter<Mesh> implements
     private void writeMeshPolygons(final MeshPolygons polygons)
         throws IOException
     {
-        this.writer.writeShort(polygons.getMaterial());
+        this.writer.writeByte(polygons.getMaterial());
         final boolean hasNormals = polygons.hasNormals();
         final boolean hasTexCoords = polygons.hasTexCoords();
         final byte flags = (byte) ((hasNormals ? 1 : 0) | (hasTexCoords ? 2 : 0));
@@ -76,7 +76,8 @@ public class TDBMeshWriter extends TDBWriter<Mesh> implements
         final int vertexCount = polygons.getVertexCount();
         this.writer.writeInt(vertexCount);
         this.writer.writeFloatBuffer(polygons.getVertices());
-        if (hasNormals) this.writer.writeFloatBuffer(polygons.getNormals());
+        if (hasNormals)
+            this.writer.writeFloatBuffer(polygons.getNormals());
         if (hasTexCoords)
             this.writer.writeFloatBuffer(polygons.getTexCoords());
         this.writer.writeInt(polygons.getIndexCount());

@@ -33,6 +33,9 @@ public class StreamWriter
     /** The byte order */
     private ByteOrder byteOrder = ByteOrder.nativeOrder();
 
+    /** The current position in the stream. */
+    private long pos = 0;
+
 
     /**
      * Creates a stream writer writing to the specified stream.
@@ -100,6 +103,7 @@ public class StreamWriter
     public void writeByte(final int value) throws IOException
     {
         this.stream.write(value);
+        this.pos++;
     }
 
 
@@ -124,6 +128,7 @@ public class StreamWriter
             this.stream.write((value >> 8) & 0xff);
             this.stream.write(value & 0xff);
         }
+        this.pos += 2;
     }
 
 
@@ -152,6 +157,7 @@ public class StreamWriter
             this.stream.write((value >> 8) & 0xff);
             this.stream.write(value & 0xff);
         }
+        this.pos += 4;
     }
 
 
@@ -188,6 +194,7 @@ public class StreamWriter
             this.stream.write((int) ((value >> 8) & 0xff));
             this.stream.write((int) (value & 0xff));
         }
+        this.pos += 8;
     }
 
 
@@ -233,6 +240,7 @@ public class StreamWriter
 
     public void writeByteBuffer(final ByteBuffer buffer) throws IOException
     {
+        this.pos += buffer.remaining();
         Channels.newChannel(this.stream).write(buffer);
     }
 
@@ -371,7 +379,9 @@ public class StreamWriter
     public void writeString(final String string, final String charset)
             throws IOException
     {
-        this.stream.write(string.getBytes(charset));
+        final byte[] bytes = string.getBytes(charset);
+        this.stream.write(bytes);
+        this.pos += bytes.length;
     }
 
 
@@ -390,5 +400,17 @@ public class StreamWriter
         writeByte((int) (color.getGreen() * 255));
         writeByte((int) (color.getBlue() * 255));
         writeByte((int) (color.getAlpha() * 255));
+    }
+
+
+    /**
+     * Returns the current position in the stream.
+     *
+     * @return The current position in the stream
+     */
+
+    public long getPosition()
+    {
+        return this.pos;
     }
 }

@@ -11,10 +11,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import de.ailis.threedee.assets.AssetProvider;
-import de.ailis.threedee.assets.AssetType;
 import de.ailis.threedee.assets.Assets;
 import de.ailis.threedee.assets.ClasspathAssetProvider;
-import de.ailis.threedee.collada.ColladaAssetsReader;
 import de.ailis.threedee.jogl.SceneCanvas;
 import de.ailis.threedee.scene.Scene;
 
@@ -41,7 +39,7 @@ public class Duck
         // Load assets
         final AssetProvider provider = new ClasspathAssetProvider();
         final Assets assets = new Assets(provider);
-        new ColladaAssetsReader().read(assets, provider.openInputStream(AssetType.ASSETS, "duck"));
+        assets.addAssets("duck");
 
         // Get the scene
         final Scene scene = assets.getScenes().iterator().next();

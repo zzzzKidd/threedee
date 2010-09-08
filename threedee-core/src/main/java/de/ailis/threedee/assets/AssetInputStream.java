@@ -51,6 +51,28 @@ public class AssetInputStream extends InputStream
 
 
     /**
+     * @see java.io.InputStream#read(byte[])
+     */
+
+    @Override
+    public int read(final byte b[]) throws IOException
+    {
+        return this.stream.read(b);
+    }
+
+
+    /**
+     * @see java.io.InputStream#read(byte[], int, int)
+     */
+
+    @Override
+    public int read(final byte b[], final int off, final int len) throws IOException
+    {
+        return this.stream.read(b, off, len);
+    }
+
+
+    /**
      * @see java.io.InputStream#close()
      */
 

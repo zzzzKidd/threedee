@@ -23,13 +23,14 @@ public interface AssetsReader
      * Reads assets from the specified stream and appends them to the specified
      * assets. The stream is NOT closed after reading.
      *
-     * @param assets
-     *            The assets to append to
      * @param stream
      *            The stream.
+     * @param assets
+     *            The assets to append to
+     * @return Reference to the same assets as already specified
      * @throws AssetIOException
      *             When assets could not be read
      */
 
-    void read(Assets assets, InputStream stream) throws AssetIOException;
+    Assets read(InputStream stream, Assets assets) throws AssetIOException;
 }

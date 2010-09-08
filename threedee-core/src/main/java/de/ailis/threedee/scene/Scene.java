@@ -331,7 +331,7 @@ public class Scene extends Asset
         }
 
         // Clean-up unused textures
-        TextureManager.getInstance().cleanUp(gl);
+       // TextureManager.getInstance().cleanUp(gl);
 
         // Finish renderering
         gl.glFlush();

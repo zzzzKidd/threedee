@@ -59,7 +59,7 @@ public final class TextureManager
      *            The resource provider to set
      */
 
-    public void setResourceProvider(final AssetProvider resourceProvider)
+    public void setAssetProvider(final AssetProvider resourceProvider)
     {
         this.resourceProvider = resourceProvider;
     }
@@ -122,11 +122,11 @@ public final class TextureManager
             this.textures.put(id, ref);
             if (texture instanceof DynamicTexture<?>)
                 this.dynamicTextures.put(id, (DynamicTexture<?>) texture);
-            log.debug("Cached texture: " + id);
+            log.info("Cached texture: " + id);
         }
         ref.addReference();
 
-        log.debug("Referenced texture: " + id);
+        log.info("Referenced texture: " + id);
     }
 
 
@@ -145,7 +145,7 @@ public final class TextureManager
             throw new IllegalStateException(
                     "Tried to dereference unknown texture");
         ref.removeReference();
-        log.debug("Dereferenced texture: " + id);
+        log.info("Dereferenced texture: " + id);
     }
 
 
@@ -193,7 +193,7 @@ public final class TextureManager
                 if (ref.isLoaded()) ref.unload(gl);
                 iterator.remove();
                 this.dynamicTextures.remove(id);
-                log.debug("Removed texture " + id);
+                log.info("Removed texture " + id);
             }
         }
     }

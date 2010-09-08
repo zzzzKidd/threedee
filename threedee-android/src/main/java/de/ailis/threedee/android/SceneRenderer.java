@@ -95,9 +95,12 @@ public class SceneRenderer implements GLSurfaceView.Renderer
     @Override
     public void onDrawFrame(final GL10 gl)
     {
-        final boolean changed = this.scene.update();
-        this.scene.render(this.viewport);
-        if (changed) this.view.requestRender();
+        if (this.scene != null)
+        {
+            final boolean changed = this.scene.update();
+            this.scene.render(this.viewport);
+            if (changed) this.view.requestRender();
+        }
     }
 
 

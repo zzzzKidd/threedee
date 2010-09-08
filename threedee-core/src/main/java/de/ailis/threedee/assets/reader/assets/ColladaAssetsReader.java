@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information.
  */
 
-package de.ailis.threedee.collada;
+package de.ailis.threedee.assets.reader.assets;
 
 import java.io.File;
 import java.io.InputStream;
@@ -71,7 +71,6 @@ import de.ailis.jollada.reader.ColladaReader;
 import de.ailis.threedee.assets.Assets;
 import de.ailis.threedee.assets.Material;
 import de.ailis.threedee.assets.Mesh;
-import de.ailis.threedee.assets.reader.assets.AssetsReader;
 import de.ailis.threedee.builder.MaterialBuilder;
 import de.ailis.threedee.builder.MeshBuilder;
 import de.ailis.threedee.exceptions.AssetIOException;
@@ -113,11 +112,12 @@ public class ColladaAssetsReader implements AssetsReader
 
 
     /**
-     * @see de.ailis.threedee.assets.reader.assets.AssetsReader#read(de.ailis.threedee.assets.Assets, java.io.InputStream)
+     * @see AssetsReader#read(InputStream, Assets)
      */
 
     @Override
-    public void read(final Assets assets, final InputStream stream) throws AssetIOException
+    public Assets read(final InputStream stream, final Assets assets)
+        throws AssetIOException
     {
         this.assets = assets;
         this.doc = new ColladaReader().read(stream);
@@ -126,6 +126,8 @@ public class ColladaAssetsReader implements AssetsReader
         readMeshes();
         readScenes();
         readAnimations();
+
+        return assets;
     }
 
 
@@ -185,7 +187,8 @@ public class ColladaAssetsReader implements AssetsReader
             {
                 final Texture colladaTexture = diffuseShader.getDiffuse()
                         .getTexture();
-                builder.setDiffuseTexture(this.assets.getTexture(getTextureId(profile, colladaTexture)));
+                builder.setDiffuseTexture(this.assets
+                    .getTexture(getTextureId(profile, colladaTexture)));
             }
         }
         if (shader instanceof BRDFShader)
@@ -285,7 +288,8 @@ public class ColladaAssetsReader implements AssetsReader
     {
         for (final AnimationLibrary lib : this.doc.getAnimationLibraries())
         {
-            for (final de.ailis.jollada.model.Animation animation : lib.getAnimations())
+            for (final de.ailis.jollada.model.Animation animation : lib
+                .getAnimations())
             {
                 final Animation anim = processAnimation(animation);
                 if (anim != null)
@@ -345,7 +349,8 @@ public class ColladaAssetsReader implements AssetsReader
         for (final GeometryInstance instanceGeometry : node
                 .getGeometryInstances())
         {
-            final Mesh mesh = this.assets.getMesh(instanceGeometry.getUrl().getFragment());
+            final Mesh mesh = this.assets.getMesh(instanceGeometry.getUrl()
+                .getFragment());
             final Model model = new Model(mesh);
             for (final MaterialInstance instanceMaterial : instanceGeometry
                     .getMaterialBinding().getCommonTechnique()
@@ -354,11 +359,11 @@ public class ColladaAssetsReader implements AssetsReader
                 model.bindMaterial(instanceMaterial.getSymbol(), this.assets
                     .getMaterial(instanceMaterial.getTarget().getFragment()));
             }
-//            for (final Map.Entry<String, ImageTexture> entry : this.textures
-//                    .entrySet())
-//            {
-//                model.bindTexture(entry.getKey(), entry.getValue());
-//            }
+            // for (final Map.Entry<String, ImageTexture> entry : this.textures
+            // .entrySet())
+            // {
+            // model.bindTexture(entry.getKey(), entry.getValue());
+            // }
             sceneNode.appendChild(model);
         }
 
@@ -404,7 +409,6 @@ public class ColladaAssetsReader implements AssetsReader
         final AnimationChannels channels = colladaAnimation.getChannels();
         String id = colladaAnimation.getId();
         if (id == null) id = UUID.randomUUID().toString();
-        System.out.println(id);
         final Animation group = new AnimationGroup(id);
         for (final AnimationChannel channel : channels)
         {

@@ -11,6 +11,9 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 /**
  * Utility methods for working with NIO buffers.
@@ -21,6 +24,9 @@ import java.nio.ShortBuffer;
 
 public class BufferUtils
 {
+    /** The logger. */
+    private static final Log log = LogFactory.getLog(BufferUtils.class);
+
     /** The number of bytes allocated by a float */
     private static final int FLOAT_BYTES = Float.SIZE / 8;
 
@@ -35,7 +41,7 @@ public class BufferUtils
      * Creates a direct byte buffer with native byte order.
      *
      * @param size
-     *      The data
+     *            The data
      * @return The created direct byte buffer
      */
 
@@ -49,7 +55,7 @@ public class BufferUtils
      * Creates a direct float buffer with native byte order.
      *
      * @param size
-     *      The data
+     *            The data
      * @return The created direct float buffer
      */
 
@@ -65,7 +71,7 @@ public class BufferUtils
      * Creates a direct short buffer with native byte order.
      *
      * @param size
-     *      The data
+     *            The data
      * @return The created direct short buffer
      */
 
@@ -81,7 +87,7 @@ public class BufferUtils
      * Creates a direct integer buffer with native byte order.
      *
      * @param size
-     *      The data
+     *            The data
      * @return The created direct integer buffer
      */
 
@@ -94,9 +100,9 @@ public class BufferUtils
 
 
     /**
-     * Converts the specified float buffer to native endian and returns this
-     * new buffer. If buffer is already in correct endian format then it is
-     * returned right away.
+     * Converts the specified float buffer to native endian and returns this new
+     * buffer. If buffer is already in correct endian format then it is returned
+     * right away.
      *
      * @param buffer
      *            The float buffer to convert
@@ -108,6 +114,10 @@ public class BufferUtils
     {
         if (buffer.order() == ByteOrder.nativeOrder()) return buffer;
 
+        if (log.isTraceEnabled())
+            log.trace("Converting endianess of " + buffer.capacity()
+                + " floats");
+
         final ByteBuffer bytes = ByteBuffer.allocateDirect(buffer.capacity());
         bytes.order(ByteOrder.nativeOrder());
         final FloatBuffer floats = bytes.asFloatBuffer();
@@ -115,11 +125,10 @@ public class BufferUtils
         return floats;
     }
 
-
     /**
-     * Converts the specified short buffer to native endian and returns this
-     * new buffer. If buffer is already in correct endian format then it is
-     * returned right away.
+     * Converts the specified short buffer to native endian and returns this new
+     * buffer. If buffer is already in correct endian format then it is returned
+     * right away.
      *
      * @param buffer
      *            The short buffer to convert
@@ -147,8 +156,7 @@ public class BufferUtils
      * @param buffer
      *            The integer buffer to convert
      * @return The converted integer buffer or the source buffer if no
-     *         conversion
-     *         is needed
+     *         conversion is needed
      */
 
     public static IntBuffer convertToNativeEndian(final IntBuffer buffer)
