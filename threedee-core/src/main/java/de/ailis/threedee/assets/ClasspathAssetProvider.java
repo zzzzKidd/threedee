@@ -47,7 +47,7 @@ public class ClasspathAssetProvider implements AssetProvider
 
     public ClasspathAssetProvider()
     {
-        this("");
+        this.baseDir = "";
     }
 
 
