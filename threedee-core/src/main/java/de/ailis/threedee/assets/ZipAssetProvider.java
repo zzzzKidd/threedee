@@ -5,6 +5,7 @@
 
 package de.ailis.threedee.assets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -38,6 +39,26 @@ public class ZipAssetProvider implements AssetProvider
         directories.put(AssetType.MESH, "meshes/");
         directories.put(AssetType.SCENE, "scenes/");
         directories.put(AssetType.ASSETS, "assets/");
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param file
+     *            The ZIP file.
+     */
+
+    public ZipAssetProvider(final File file)
+    {
+        try
+        {
+            this.zipFile = new ZipFile(file);
+        }
+        catch (final IOException e)
+        {
+            throw new AssetIOException(e.toString(), e);
+        }
     }
 
 
