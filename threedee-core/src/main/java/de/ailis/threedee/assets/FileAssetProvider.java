@@ -10,7 +10,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -27,20 +29,10 @@ import de.ailis.threedee.exceptions.AssetNotFoundException;
 public class FileAssetProvider implements AssetProvider
 {
     /** The asset type directory mapping. */
-    private static Map<AssetType, String> directories;
+    private final Map<AssetType, List<String>> directories = new HashMap<AssetType, List<String>>();
 
     /** The base directory. */
     private final File baseDir;
-
-    {
-        directories = new HashMap<AssetType, String>();
-        directories.put(AssetType.TEXTURE, "/textures/");
-        directories.put(AssetType.MATERIAL, "/materials/");
-        directories.put(AssetType.ANIMATION, "/animations/");
-        directories.put(AssetType.MESH, "/meshes/");
-        directories.put(AssetType.SCENE, "/scenes/");
-        directories.put(AssetType.ASSETS, "/assets/");
-    }
 
 
     /**
@@ -53,6 +45,42 @@ public class FileAssetProvider implements AssetProvider
     public FileAssetProvider(final File baseDir)
     {
         this.baseDir = baseDir;
+        setupDefaultDirectories();
+    }
+
+
+    /**
+     * Setup the default directories.
+     */
+
+    private void setupDefaultDirectories()
+    {
+        for (final AssetType type : AssetType.values())
+        {
+            this.directories.put(type, new ArrayList<String>());
+        }
+        this.directories.get(AssetType.TEXTURE).add("textures");
+        this.directories.get(AssetType.MATERIAL).add("materials");
+        this.directories.get(AssetType.ANIMATION).add("animations");
+        this.directories.get(AssetType.MESH).add("meshes");
+        this.directories.get(AssetType.SCENE).add("scenes");
+        this.directories.get(AssetType.ASSETS).add("assets");
+    }
+
+
+    /**
+     * Returns the list of directories which are search for the specified asset
+     * type. You are free to modifiy the content of the list to change the
+     * loading behaviour of this asset provider.
+     *
+     * @param type
+     *            The asset type.
+     * @return The list of directories.
+     */
+
+    public List<String> getDirectories(final AssetType type)
+    {
+        return this.directories.get(type);
     }
 
 
@@ -63,14 +91,18 @@ public class FileAssetProvider implements AssetProvider
     @Override
     public boolean exists(final AssetType type, final String id)
     {
-        final String dir = directories.get(type);
-        for (final AssetFormat format : type.getFormats())
+        for (final String dir : this.directories.get(type))
         {
-            for (final String extension : format.getExtensions())
+            for (final AssetFormat format : type.getFormats())
             {
-                final String filename = dir + id + extension;
-                if (new File(this.baseDir, filename + ".gz").exists()) return true;
-                if (new File(this.baseDir, filename).exists()) return true;
+                for (final String extension : format.getExtensions())
+                {
+                    final String filename = new File(dir, id + extension)
+                        .getPath();
+                    if (new File(this.baseDir, filename + ".gz").exists())
+                        return true;
+                    if (new File(this.baseDir, filename).exists()) return true;
+                }
             }
         }
         return false;
@@ -85,46 +117,50 @@ public class FileAssetProvider implements AssetProvider
     public AssetInputStream openInputStream(final AssetType type,
         final String id)
     {
-        final String dir = directories.get(type);
-        for (final AssetFormat format : type.getFormats())
+        for (final String dir : this.directories.get(type))
         {
-            for (final String extension : format.getExtensions())
+            for (final AssetFormat format : type.getFormats())
             {
-                final String filename = dir + id + extension;
-
-                // Try to load GZIP compressed file.
-                File file = new File(this.baseDir, filename + ".gz");
-                if (file.exists())
+                for (final String extension : format.getExtensions())
                 {
-                    InputStream stream;
-                    try
-                    {
-                        stream = new GZIPInputStream(new FileInputStream(file));
-                        return new AssetInputStream(format, stream);
-                    }
-                    catch (final FileNotFoundException e)
-                    {
-                        // Ignored
-                    }
-                    catch (final IOException e)
-                    {
-                        throw new AssetIOException(e.toString(), e);
-                    }
-                }
+                    final String filename = new File(dir, id + extension)
+                        .getPath();
 
-                // Try to load plain file
-                file = new File(this.baseDir, filename);
-                if (file.exists())
-                {
-                    InputStream stream;
-                    try
+                    // Try to load GZIP compressed file.
+                    File file = new File(this.baseDir, filename + ".gz");
+                    if (file.exists())
                     {
-                        stream = new FileInputStream(file);
-                        return new AssetInputStream(format, stream);
+                        InputStream stream;
+                        try
+                        {
+                            stream = new GZIPInputStream(new FileInputStream(
+                                file));
+                            return new AssetInputStream(format, stream);
+                        }
+                        catch (final FileNotFoundException e)
+                        {
+                            // Ignored
+                        }
+                        catch (final IOException e)
+                        {
+                            throw new AssetIOException(e.toString(), e);
+                        }
                     }
-                    catch (final FileNotFoundException e)
+
+                    // Try to load plain file
+                    file = new File(this.baseDir, filename);
+                    if (file.exists())
                     {
-                        // Ignored
+                        InputStream stream;
+                        try
+                        {
+                            stream = new FileInputStream(file);
+                            return new AssetInputStream(format, stream);
+                        }
+                        catch (final FileNotFoundException e)
+                        {
+                            // Ignored
+                        }
                     }
                 }
             }
