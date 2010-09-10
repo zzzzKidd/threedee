@@ -8,13 +8,10 @@ package de.ailis.threedee.assets;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import de.ailis.threedee.exceptions.AssetIOException;
-import de.ailis.threedee.exceptions.AssetNotFoundException;
 
 
 /**
@@ -23,23 +20,10 @@ import de.ailis.threedee.exceptions.AssetNotFoundException;
  * @author Klaus Reimer (k@ailis.de)
  */
 
-public class ZipAssetProvider implements AssetProvider
+public class ZipAssetProvider extends StructuredAssetProvider
 {
-    /** The asset type directory mapping. */
-    private static Map<AssetType, String> directories;
-
     /** The ZIP file. */
     private final ZipFile zipFile;
-
-    {
-        directories = new HashMap<AssetType, String>();
-        directories.put(AssetType.TEXTURE, "textures/");
-        directories.put(AssetType.MATERIAL, "materials/");
-        directories.put(AssetType.ANIMATION, "animations/");
-        directories.put(AssetType.MESH, "meshes/");
-        directories.put(AssetType.SCENE, "scenes/");
-        directories.put(AssetType.ASSETS, "assets/");
-    }
 
 
     /**
@@ -51,6 +35,22 @@ public class ZipAssetProvider implements AssetProvider
 
     public ZipAssetProvider(final File file)
     {
+        this(file, null);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param file
+     *            The ZIP file.
+     * @param baseDir
+     *            The base directory inside the ZIP file.
+     */
+
+    public ZipAssetProvider(final File file, final String baseDir)
+    {
+        super(baseDir);
         try
         {
             this.zipFile = new ZipFile(file);
@@ -71,61 +71,52 @@ public class ZipAssetProvider implements AssetProvider
 
     public ZipAssetProvider(final ZipFile zipFile)
     {
+        this(zipFile, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param zipFile
+     *            The ZIP file.
+     * @param baseDir
+     *            The base directory inside the ZIP file.
+     */
+
+    public ZipAssetProvider(final ZipFile zipFile, final String baseDir)
+    {
+        super(baseDir);
         this.zipFile = zipFile;
     }
 
 
     /**
-     * @see AssetProvider#exists(AssetType, String)
+     * @see de.ailis.threedee.assets.StructuredAssetProvider#exists(java.lang.String)
      */
 
     @Override
-    public boolean exists(final AssetType type, final String id)
+    protected boolean exists(final String filename)
     {
-        final String dir = directories.get(type);
-        for (final AssetFormat format : type.getFormats())
-        {
-            for (final String extension : format.getExtensions())
-            {
-                final String filename = dir + id + extension;
-                if (this.zipFile.getEntry(filename) != null) return true;
-            }
-        }
-        return false;
+        return this.zipFile.getEntry(filename) != null;
     }
 
 
     /**
-     * @see AssetProvider#openInputStream(AssetType, String)
+     * @see de.ailis.threedee.assets.StructuredAssetProvider#openInputStream(java.lang.String)
      */
 
     @Override
-    public AssetInputStream openInputStream(final AssetType type,
-        final String id)
+    protected InputStream openInputStream(final String filename)
     {
-        final String dir = directories.get(type);
-        for (final AssetFormat format : type.getFormats())
+        final ZipEntry entry = this.zipFile.getEntry(filename);
+        if (entry == null) return null;
+        try
         {
-            for (final String extension : format.getExtensions())
-            {
-                final String filename = dir + id + extension;
-                final ZipEntry entry = this.zipFile.getEntry(filename);
-                if (entry != null)
-                {
-                    InputStream stream;
-                    try
-                    {
-                        stream = this.zipFile.getInputStream(entry);
-                    }
-                    catch (final IOException e)
-                    {
-                        throw new AssetIOException(e.toString(), e);
-                    }
-                    return new AssetInputStream(format, stream);
-                }
-            }
+            return this.zipFile.getInputStream(entry);
         }
-        throw new AssetNotFoundException("Asset not found: " + type + " / "
-            + id);
+        catch (final IOException e)
+        {
+            throw new AssetIOException(e.toString(), e);
+        }
     }
 }
