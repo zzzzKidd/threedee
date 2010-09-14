@@ -31,7 +31,7 @@ public class Viewport
     /** The aspect ratio (width/height) */
     private float aspectRatio;
 
-    /** The currently displayed scene. null if none. */
+    /** The currently set scene. Null if none. */
     private Scene scene;
 
     /** The view component. */
@@ -42,6 +42,9 @@ public class Viewport
 
     /** The last update time (Nanosecond timestamp) */
     private long lastUpdate;
+
+    /** Mutex to synchronize scene changes. */
+    private final Object sceneMutex = new Object();
 
 
     /**
@@ -95,7 +98,7 @@ public class Viewport
         // GL.GL_TEXTURE_MAX_ANISOTROPY_EXT, 4);
 
         // Initialize the texture manager.
-        TextureManager.getInstance().clear(gl);
+        TextureManager.getInstance(). clear(gl);
     }
 
 
@@ -105,22 +108,26 @@ public class Viewport
 
     public void render()
     {
-        // Get the clear color
-        final Color4f clearColor = this.clearColor;
+        synchronized (this.sceneMutex)
+        {
+            // Get the clear color
+            final Color4f clearColor = this.clearColor;
 
-        // Clear the viewport
-        this.gl.glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
-                .getBlue(), clearColor.getAlpha());
-        this.gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+            // Clear the viewport
+            this.gl
+                .glClearColor(clearColor.getRed(), clearColor.getGreen(), clearColor
+                    .getBlue(), clearColor.getAlpha());
+            this.gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-        // Draw the scene if present
-        if (this.scene != null) this.scene.render(this);
+            // Draw the scene if present
+            if (this.scene != null) this.scene.render(this);
 
-        // Clean-up unused textures
-        TextureManager.getInstance().cleanUp(this.gl);
+            // Clean-up unused textures
+            TextureManager.getInstance().cleanUp(this.gl);
 
-        // Finish renderering
-        this.gl.glFlush();
+            // Finish renderering
+            this.gl.glFlush();
+        }
     }
 
 
@@ -223,22 +230,26 @@ public class Viewport
     {
         if (scene != this.scene)
         {
-            // Detach old scene
-            if (this.scene != null)
+            synchronized (this.sceneMutex)
             {
-                final Scene oldScene = this.scene;
-                this.scene = null;
-                oldScene.setViewport(null);
+                // Detach old scene
+                if (this.scene != null)
+                {
+                    final Scene oldScene = this.scene;
+                    this.scene = null;
+                    oldScene.setViewport(null);
+                }
+
+                // Attach new scene
+                this.scene = scene;
+                if (this.scene != null) this.scene.setViewport(this);
+
+                // Request re-rendering
+                this.viewComponent.requestRender();
             }
-
-            // Attach new scene
-            this.scene = scene;
-            if (scene != null) scene.setViewport(this);
-
-            // Render the view.
-            this.viewComponent.requestRender();
         }
     }
+
 
     /**
      * Returns the currently displayed scene.

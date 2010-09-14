@@ -184,7 +184,10 @@ public class Model extends SceneNode
             if (texture != null)
             {
                 final TextureManager manager = TextureManager.getInstance();
-                manager.referenceTexture(texture);
+
+                // Reference texture when scene is already viewed
+                if (getScene().hasViewport())
+                    manager.referenceTexture(texture);
             }
         }
     }
@@ -210,7 +213,10 @@ public class Model extends SceneNode
                 if (texture != null)
                 {
                     final TextureManager manager = TextureManager.getInstance();
-                    manager.dereferenceTexture(texture);
+
+                    // Dereference texture when scene is viewed
+                    if (getScene().hasViewport())
+                        manager.dereferenceTexture(texture);
                 }
             }
             this.materials[index] = null;
@@ -252,42 +258,6 @@ public class Model extends SceneNode
         for (int index = indices.length - 1; index >= 0; --index)
             if (id != null && id.equals(indices[index])) return index;
         return -1;
-    }
-
-
-    /**
-     * Binds a texture to a texture id.
-     *
-     * @param id
-     *            The texture id
-     * @param texture
-     *            The texture
-     */
-
-    public void bindTexture(final String id, final Texture texture)
-    {
-        final Texture oldTexture = this.textures.put(id, texture);
-        if (isInScene())
-        {
-            final TextureManager manager = TextureManager.getInstance();
-            manager.referenceTexture(texture);
-            if (oldTexture != null) manager.dereferenceTexture(oldTexture);
-        }
-    }
-
-
-    /**
-     * Unbinds the texture bound to the specified id.
-     *
-     * @param id
-     *            The texture id
-     */
-
-    public void unbindTexture(final String id)
-    {
-        final Texture oldTexture = this.textures.remove(id);
-        if (oldTexture != null && isInScene())
-            TextureManager.getInstance().dereferenceTexture(oldTexture);
     }
 
 
@@ -692,5 +662,30 @@ public class Model extends SceneNode
     public Map<String, Texture> getTextures()
     {
         return this.textures;
+    }
+
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public Model clone()
+    {
+        final Model model = new Model(this.mesh);
+        model.setTransform(getTransform());
+        for (final String id: this.mesh.getMaterials())
+        {
+            final Material material = this.materials[getMaterialIndex(id)];
+            if (material != null) model.bindMaterial(id, material);
+        }
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            model.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return model;
     }
 }

@@ -9,6 +9,7 @@ import java.nio.FloatBuffer;
 
 import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
+import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -61,10 +62,31 @@ public class AmbientLight extends Light
      *            The diffuse color
      */
 
-    public AmbientLight(final Color4f ambientColor, final Color4f specularColor,
+    public AmbientLight(final Color4f ambientColor,
+        final Color4f specularColor,
             final Color4f diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
         this.position = ambientLightPosition;
+    }
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public AmbientLight clone()
+    {
+        final AmbientLight light = new AmbientLight(getAmbientColor(),
+            getSpecularColor(), getDiffuseColor());
+        light.setTransform(getTransform());
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            light.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return light;
     }
 }

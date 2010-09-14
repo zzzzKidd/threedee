@@ -9,6 +9,7 @@ import java.nio.FloatBuffer;
 
 import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
+import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.utils.BufferUtils;
 
 
@@ -93,5 +94,25 @@ public class SpotLight extends Light
     public void setCutOff(final float cutOff)
     {
         this.cutOff = cutOff;
+    }
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public PointLight clone()
+    {
+        final PointLight light = new PointLight(getAmbientColor(),
+            getSpecularColor(), getDiffuseColor());
+        light.setTransform(getTransform());
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            light.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return light;
     }
 }

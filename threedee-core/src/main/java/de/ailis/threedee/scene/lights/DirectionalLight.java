@@ -9,8 +9,8 @@ import java.nio.FloatBuffer;
 
 import de.ailis.gramath.Color4f;
 import de.ailis.threedee.scene.Light;
+import de.ailis.threedee.scene.SceneNode;
 import de.ailis.threedee.utils.BufferUtils;
-
 
 
 /**
@@ -62,10 +62,31 @@ public class DirectionalLight extends Light
      *            The diffuse color
      */
 
-    public DirectionalLight(final Color4f ambientColor, final Color4f specularColor,
+    public DirectionalLight(final Color4f ambientColor,
+        final Color4f specularColor,
             final Color4f diffuseColor)
     {
         super(ambientColor, specularColor, diffuseColor);
         this.position = directionalLightPosition;
+    }
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public DirectionalLight clone()
+    {
+        final DirectionalLight light = new DirectionalLight(getAmbientColor(),
+            getSpecularColor(), getDiffuseColor());
+        light.setTransform(getTransform());
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            light.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return light;
     }
 }

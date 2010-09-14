@@ -15,5 +15,21 @@ package de.ailis.threedee.scene;
 
 public class Group extends SceneNode
 {
-    // Empty
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public Group clone()
+    {
+        final Group group = new Group();
+        group.setTransform(getTransform());
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            group.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return group;
+    }
 }

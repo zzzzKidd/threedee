@@ -268,4 +268,23 @@ public class Camera extends SceneNode
     {
         viewport.getGL().glPopMatrix();
     }
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public Camera clone()
+    {
+        final Camera camera = new Camera(this.fovY, this.aspectRatio, this.zNear, this.zFar);
+        camera.setTransform(getTransform());
+        SceneNode child = getFirstChild();
+        while (child != null)
+        {
+            camera.appendChild(child.clone());
+            child = child.getNextSibling();
+        }
+        return camera;
+    }
 }

@@ -5,9 +5,9 @@
 
 package de.ailis.threedee.scene.textures;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,10 +33,10 @@ public final class TextureManager
     private static final TextureManager instance = new TextureManager();
 
     /** The cached textures */
-    private final Map<String, TextureReference> textures = new HashMap<String, TextureReference>();
+    private final Map<String, TextureReference> textures = new ConcurrentHashMap<String, TextureReference>();
 
     /** The dynamic textures. */
-    private final Map<String, DynamicTexture<?>> dynamicTextures = new HashMap<String, DynamicTexture<?>>();
+    private final Map<String, DynamicTexture<?>> dynamicTextures = new ConcurrentHashMap<String, DynamicTexture<?>>();
 
     /** The resource provider */
     public AssetProvider resourceProvider = new ClasspathAssetProvider();
@@ -238,8 +238,10 @@ public final class TextureManager
         final String id = texture.getId();
         final TextureReference ref = this.textures.get(id);
         if (ref == null)
+        {
             throw new IllegalStateException("Tried to bind unknown texture: "
                     + id);
+        }
 
         // If texture is not loaded then load it now.
         if (!ref.isLoaded()) ref.load(gl, this.resourceProvider);

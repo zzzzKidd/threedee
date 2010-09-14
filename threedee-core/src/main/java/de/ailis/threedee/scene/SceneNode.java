@@ -27,7 +27,7 @@ import de.ailis.threedee.scene.properties.NodeProperty;
  * @version $Revision$
  */
 
-public abstract class SceneNode implements Iterable<SceneNode>
+public abstract class SceneNode implements Iterable<SceneNode>, Cloneable
 {
     /** The scene this node is currently connected to */
     private Scene scene;
@@ -1003,4 +1003,12 @@ public abstract class SceneNode implements Iterable<SceneNode>
         this.id = id;
         if (this.scene != null) this.scene.reregisterNode(this, oldId);
     }
+
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+
+    @Override
+    public abstract SceneNode clone();
 }
