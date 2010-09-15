@@ -244,6 +244,22 @@ public class Model extends SceneNode
 
 
     /**
+     * Returns the material bound to the specified slot id.
+     *
+     * @param id
+     *            The material slot id
+     * @return The bound material
+     */
+
+    public Material getMaterial(final String id)
+    {
+        final int index = getMaterialIndex(id);
+        if (index == -1) return Material.DEFAULT;
+        return this.materials[index];
+    }
+
+
+    /**
      * Returns the material index of the material with the specified id. Returns
      * -1 if no material with this id was found.
      *
@@ -665,7 +681,6 @@ public class Model extends SceneNode
     }
 
 
-
     /**
      * @see java.lang.Object#clone()
      */
@@ -675,7 +690,7 @@ public class Model extends SceneNode
     {
         final Model model = new Model(this.mesh);
         model.setTransform(getTransform());
-        for (final String id: this.mesh.getMaterials())
+        for (final String id : this.mesh.getMaterials())
         {
             final Material material = this.materials[getMaterialIndex(id)];
             if (material != null) model.bindMaterial(id, material);

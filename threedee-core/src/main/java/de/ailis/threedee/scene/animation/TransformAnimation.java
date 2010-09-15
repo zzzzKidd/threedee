@@ -47,4 +47,27 @@ public class TransformAnimation extends Animation
     {
         sceneNode.getTransform().set(this.sampler.getSample(time));
     }
+
+
+    /**
+     * @see de.ailis.threedee.scene.animation.Animation#trimIndex(float)
+     */
+
+    @Override
+    public float trimIndex(final float index)
+    {
+        return this.sampler.trimInput(index);
+    }
+
+
+    /**
+     * Returns the sampler.
+     *
+     * @return The sampler
+     */
+
+    public Sampler<Matrix4f> getSampler()
+    {
+        return this.sampler;
+    }
 }

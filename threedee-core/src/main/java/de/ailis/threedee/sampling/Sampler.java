@@ -30,6 +30,9 @@ public class Sampler<T>
     /** The maximum input value */
     private float maxInput = Float.NEGATIVE_INFINITY;
 
+    /** If animation is repeating. */
+    private boolean repeating = true;
+
 
     /**
      * Adds a sample.
@@ -87,9 +90,7 @@ public class Sampler<T>
             return first.getValue().getValue();
 
         // Trim input value
-        float trimmedInput = this.minInput + mod((input - this.minInput)
-            , (this.maxInput - this.minInput));
-        if (trimmedInput < this.minInput) trimmedInput += this.minInput;
+        final float trimmedInput = trimInput(input);
 
         // Get the floor entry
         while (current.getKey() < trimmedInput)
@@ -136,5 +137,54 @@ public class Sampler<T>
     private Class<T> getValueClass(final T value)
     {
         return (Class<T>) value.getClass();
+    }
+
+
+    /**
+     * Trims the input so it fits into the sample range.
+     *
+     * @param input
+     *            The original input value
+     * @return The input value trimmed to the sample range.
+     */
+
+    public float trimInput(final float input)
+    {
+        if (this.repeating)
+        {
+            float trimmed = this.minInput + mod((input - this.minInput)
+                , (this.maxInput - this.minInput));
+            if (trimmed < this.minInput) trimmed += this.minInput;
+            return trimmed;
+        }
+        else
+            return Math.min(this.maxInput, Math.max(this.minInput, input));
+    }
+
+
+
+
+    /**
+     * Checks if animation is repeating.
+     *
+     * @return True if animation is repeating, false if not.
+     */
+
+    public boolean isRepeating()
+    {
+        return this.repeating;
+    }
+
+
+    /**
+     * Enables or disables repeating mode.
+     *
+     * @param repeating
+     *            True to let the animation repeat, false to not repeat.
+     */
+
+    public void setRepeating(final boolean repeating)
+    {
+        this.repeating = repeating;
     }
 }

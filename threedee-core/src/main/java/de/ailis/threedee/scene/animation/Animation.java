@@ -102,6 +102,10 @@ public abstract class Animation extends Asset
         final float realDelta = delta * this.speed;
         boolean changed = false;
         this.index += realDelta;
+
+        // Trim the index
+        this.index = trimIndex(this.index);
+
         for (final SceneNode node : this.nodes)
             animate(node, this.index);
         for (final Animation animation : this.animations)
@@ -352,5 +356,45 @@ public abstract class Animation extends Asset
     public void setMinSpeed(final float minSpeed)
     {
         this.minSpeed = minSpeed;
+    }
+
+
+    /**
+     * Trims the specified animation index so it fits into the animation range.
+     *
+     * @param index
+     *            The original animation index
+     * @return The trimmed animation index
+     */
+
+    public float trimIndex(final float index)
+    {
+        // Original implementation does no trimming
+        return index;
+    }
+
+
+    /**
+     * Sets the animation index manually.
+     *
+     * @param index
+     *            The animation index to set
+     */
+
+    public void setIndex(final float index)
+    {
+        this.index = index;
+    }
+
+
+    /**
+     * Returns the current animation index.
+     *
+     * @return The current animation index.
+     */
+
+    public float getIndex()
+    {
+        return this.index;
     }
 }
