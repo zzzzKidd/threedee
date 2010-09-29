@@ -5,7 +5,7 @@ syntax: regexp
 ^.*/\.settings$
 
 syntax: glob
-target
 .project
 .classpath
 .settings
+target
