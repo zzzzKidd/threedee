@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <parent>
-    <artifactId>maven-java</artifactId>
-    <groupId>de.ailis.maven</groupId>
-    <version>2</version>
-  </parent>
-    
   <groupId>de.ailis.threedee</groupId>
   <artifactId>threedee</artifactId>
   <packaging>pom</packaging>
   <name>ThreeDee</name>
   <version>1.0.0-SNAPSHOT</version>
-  <url>http://www.ailis.de/~k/projects/threedee</url>
+  <url>http://kayahr.github.com/${project.artifactId}/</url>
   <description>
     A scene-graph based 3D engine for Java based on OpenGL.
   </description>
   <inceptionYear>2010</inceptionYear>
+  
   <organization>
     <name>Klaus Reimer</name>
     <url>http://www.ailis.de/~k/</url>
@@ -44,38 +38,53 @@
       <url>http://www.ailis.de/~k/</url>
     </developer>        
   </developers>
-   
-  <scm>
-    <url>http://www.ailis.de/~k/hg/java/threedee</url>
-    <connection>scm:hg:http://www.ailis.de/~k/hg/java/threedee</connection>
-    <developerConnection>scm:hg:ssh://k@ailis.de/hg/java/threedee</developerConnection>
-  </scm>  
-  
-  <repositories>  
-    <repository>
-      <id>ailis-releases</id>
-      <name>Ailis Maven Releases</name>
-      <url>http://www.ailis.de/nexus/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>ailis-snapshots</id>
-      <name>Ailis Maven Snapshots</name>
-      <url>http://www.ailis.de/nexus/content/groups/public-snapshots/</url>
-      <snapshots />
-    </repository>
-  </repositories>
-   
-  <distributionManagement>
-    <site>
-      <id>project-website</id>
-      <url>scpexe://k@ailis.de/home/k/public_html/projects/threedee/</url>
-    </site>
-  </distributionManagement>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jogl.version>1.1.1a</jogl.version>
     <gluegen.version>1.0b06</gluegen.version>
   </properties>
+  
+  <scm>
+    <connection>scm:git:git://github.com/kayahr/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kayahr/${project.artifactId}.git</developerConnection>
+    <url>http://github.com/kayahr/${project.artifactId}</url>
+  </scm>
+       
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/kayahr/${project.artifactId}/issues</url>
+  </issueManagement>
+  
+  <repositories>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://nexus.ailis.de/content/groups/public/</url>
+      <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <repository> 
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://nexus.ailis.de/content/groups/public-snapshots/</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://nexus.ailis.de/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://nexus.ailis.de/content/repositories/snapshots</url>
+    </snapshotRepository>    
+  </distributionManagement>
   
   <dependencyManagement>
     <dependencies>
@@ -97,7 +106,7 @@
       <dependency>
         <groupId>de.ailis.gramath</groupId>
         <artifactId>gramath</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1</version>
       </dependency> 
       <dependency>
         <groupId>junit</groupId>
@@ -115,9 +124,9 @@
   <modules>
     <module>threedee-android</module>
     <module>threedee-core</module>
-  	<module>threedee-jogl</module>
-  	<module>threedee-demos</module>
-  	<module>threedee-java2d</module>
+    <module>threedee-jogl</module>
+    <module>threedee-demos</module>
+    <module>threedee-java2d</module>
   </modules>
   
   <profiles>
